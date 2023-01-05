@@ -1,0 +1,238 @@
+<!DOCTYPE html><!--  This site was created in Webflow. http://www.webflow.com  -->
+<!--  Last Published: Thu Mar 31 2022 01:51:32 GMT+0000 (Coordinated Universal Time)  -->
+<html data-wf-page="6243f40beda301425535f9d9" data-wf-site="61fb361452ff0215fe4db1db">
+<head>
+  <title>API_gameDetail</title>
+  <meta content="API_GameDetail" property="og:title">
+  <meta content="API_GameDetail" property="twitter:title">
+  <%-include('../apiFrame/head.ejs') %>
+</head>
+<body class="api_body">
+  <div class="api_frame">
+    <div class="api_top return">
+      <div>게임목록</div>
+      <a href="javascript:history.back();" class="api_topreturn w-inline-block"><img src="../user/images/chevron-left.svg" loading="lazy" alt="" class="image-25"></a>
+    </div>
+    <div class="api_innerframe">
+      <div class="api_section">
+        <div class="api_list_container">
+          <div class="title"><%= rows.Kname %> <span class="detail_subtilte"><%= rows.Ename %></span></div>
+          <div class="api_detail_subtxt">게임장르: <%= rows.genre %></div>
+          <div class="api_detailbord">
+            <div class="div-block-36"><img src="/<%= rows.pic %>" loading="lazy" alt="" class="game_photo" height="246">
+              <div><%= rows.Kname %></div>
+              <div class="gameinfo_category_api">
+                <div class="gameinfo_circle_api">
+                  <div class="gameinfo_circletxt_api"><span class="text-span-2">인원<br>‍</span><%= rows.umin %>~<%= rows.umax %>명</div>
+                </div>
+                <div class="gameinfo_circle_api">
+                  <div class="gameinfo_circletxt_api"><span class="text-span-2">시간<br>‍</span><%= rows.playtime %></div>
+                </div>
+                <div class="gameinfo_circle_api">
+                  <div class="gameinfo_circletxt_api"><span class="text-span-2">설명<br>‍</span><%= rows.explantime %></div>
+                </div>
+                <div class="gameinfo_circle_api">
+                  <div class="gameinfo_circletxt_api"><span class="text-span-2">장르<br>‍</span><%= rows.genre %></div>
+                </div>
+                <div class="gameinfo_circle_api _2">
+                  <div class="gameinfo_circletxt_api"><%= rows.level %></div>
+                </div>
+              </div>
+              <div class="api_qrbox">
+                <div class="api_minititle">QR</div><img src="https://d3e54v103j8qbb.cloudfront.net/plugins/Basic/assets/placeholder.60f9b1840c.svg" loading="lazy" alt="" class="game_photo">
+                <div class="api_-gameinfo">영상링크: 영상URL링크<br></div>
+              </div>
+            </div>
+            <a href="javascript:videopop('<%= rows.idx %>')" class="link-block-25 w-inline-block"><img src="../user/images/Icon-awesome-youtube.svg" loading="lazy" alt="" class="image-44">
+              <div>게임영상</div>
+            </a>
+            <a href="javascript:explanpop('<%= rows.idx %>')" class="button-37 w-button">게임설명</a>
+            <a href="javascript:questionpop('<%= rows.idx %>')" class="button-37 w-button">자주묻는질문</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom">
+      <a href="main" class="api_bottombtn w-inline-block"><img src="../user/images/home.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/home2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>홈</div>
+      </a>
+      <a href="gamesearch" aria-current="page" class="api_bottombtn select w-inline-block w--current"><img src="../user/images/grid.svg" loading="lazy" alt="" class="api_bottombtn_img _1 select"><img src="../user/images/grid2.svg" loading="lazy" alt="" class="api_bottombtn_img _2 select">
+        <div>게임</div>
+      </a>
+      <a href="roomsearch" class="api_bottombtn w-inline-block"><img src="../user/images/calendar.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/calendar2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>예약</div>
+      </a>
+      <a href="customer" class="api_bottombtn w-inline-block"><img src="../user/images/headset_white.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/headset_color.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>고객센터</div>
+      </a>
+    </div>
+    <!-- ==============================================================================================================================팝업 -->
+    <!-- 팝업 -->
+    <div class="api_pop" style="display:none;">
+      <div class="commonpop" style="display:none;">
+        <div class="commonpopbox">
+          <div>준비된 영상이 없습니다.</div>
+        </div>
+      </div>
+      <div class="api_game_videopop" id = "pop_video" style="display:none;">
+        <div class="api_game_videopopbox">
+          <div class="apipop_title">게임영상</div>
+          <div class="video-3 w-video w-embed">
+            <video id="vid_" src="" width="302px" height="220px" muted="muted" controls="controls" autoplay="autoplay" loop="loop"></video>
+          </div>
+          <a href="javascript:closePop()" class="apipop_exist w-inline-block"><img src="../user/images/Icon-material-close.svg" loading="lazy" alt="" class="exsiticon"></a>
+        </div>
+      </div>
+      <div class="api_game_explainpop" id = "pop_explain" style="display:none;">
+        <div class="api_game_popbox">
+          <div class="apipop_title">게임설명</div>
+          <div class="api_game_containner"><img src="/<%= rows.pic %>" loading="lazy" alt="" class="image-45">
+            <div class="api_-gameinfo" ><span class="api_minititle"><%= rows.Kname %></span></div><div id="explan_text" style="word-wrap: break-word; width:250px;"><br></div>
+          </div>
+          <a href="javascript:closePop()" class="apipop_exist w-inline-block"><img src="../user/images/Icon-material-close.svg" loading="lazy" alt="" class="exsiticon"></a>
+        </div>
+      </div>
+      <div class="api_game_questionpop" id = "pop_question" style="display:none;">
+        <div class="api_game_q_popbox">
+          <a href="javascript:closePop()" class="apipop_exist w-inline-block"><img src="../user/images/Icon-material-close.svg" loading="lazy" alt="" class="exsiticon"></a>
+          <div class="apipop_title">자주 묻는 질문</div>
+          <div class="explanation_warp_api">
+            <div><%= rows.Kname %></div>
+            <div class="game_questionscroll_api">
+              <a href="#" class="game_toggletbox w-inline-block" style="display:flex;">
+                <div class="game_toggletitle">질문:</div>
+                <div class="game_togglecontent">답변:<span class="game_a" name="game_ans"></span></div>
+                <div class="gmae_toggledate">2022.02.10 / 작성자:홍길동</div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ============================================================================================================================================================================// -->
+  <%-include('../apiFrame/footer.ejs') %>
+</body>
+</html>
+<style>
+.api_game_containner::-webkit-scrollbar {
+width: 4px;
+height:4px;
+}
+.api_game_containner::-webkit-scrollbar-thumb {
+background: #a9a9a9;
+border-radius:20px;
+opacity:50%;
+}
+.game_questionscroll_api::-webkit-scrollbar {
+width: 4px;
+height:4px;
+}
+.game_questionscroll_api::-webkit-scrollbar-thumb {
+background: #a9a9a9;
+border-radius:20px;
+opacity:50%;
+}
+  </style>
+<script>
+  //==========================================================================================================기늗구현
+  $(".game_toggletbox").css("display","none");
+  $(".nodata_pop").css("display","flex");
+  $(".game_toggletbox").click(function () {
+    $(this).children(".game_togglecontent").slideToggle(200);
+    });
+  function openPop(id){
+    $("#"+id).css("display","flex");
+    $(".api_pop").css("display","flex");
+  }
+  function closePop(){
+    $("[id*=pop_]").css("display","none");
+    $(".api_pop").css("display","none");
+  }
+  function videopop(idx){
+    $.ajax({
+      type : 'get' , 
+      url : '/getapiVideo?idx='+idx , 
+    }).done(function(data){
+      if(data.result == 'success'){
+        $("#vid_").attr('src',"/"+data.msg);
+        $(".api_game_videopop").css('display','flex');
+        $(".api_pop").css('display','flex');
+      }
+      else if (data.result == 'fail'){
+        commonpop('준비된 영상이 없습니다')
+      } 
+    }).fail(function(e){
+      console.log(JSON.stringify(e));
+    })
+  }
+  function explanpop(idx){
+    $.ajax({
+      type : 'get' , 
+      url : '/getapiExplan?idx='+idx , 
+    }).done(function(data){         
+      if(data.result == 'success'){
+        $("#explan_text").html(data.msg);
+        texta('explan_text')
+      $(".api_game_explainpop").css('display','flex');
+      $(".api_pop").css('display','flex');
+      }
+      else if (data.result == 'fail'){
+       commonpop('준비된 게임 설명이 없습니다')
+      } 
+    }).fail(function(e){
+      console.log(JSON.stringify(e));
+    })        
+  }
+  function questionpop(idx){//자주묻는 질문-> 아직 안함
+    $.ajax({
+      type : 'get' , 
+      url : '/getapiQuestion?idx='+idx , 
+    }).done(function(data){      
+      if(data.result == 'success'){
+        let str ='' 
+        for(i=data.msg.length-1;i>-1;i--){
+          var answer=data.msg[i].ans;
+          console.log("answer",answer)
+          answer=answer.replace(/(?:\r\n|\r|\n)/g, '<br />');
+          console.log("answer2",answer)
+          str+='<a href="#" class="game_toggletbox w-inline-block" onclick="togglebox(this)" style="display:flex;">';
+          str+='<div class="game_toggletitle">질문:'+data.msg[i].que+'</div>';
+          str+='<div class="game_togglecontent">답변:<span class="game_a" name="game_ans" style="word-wrap:break-word;">'+' '+answer+'</span></div>';
+          str+='<div class="gmae_toggledate">'+new Date(data.msg[i].udate).toLocaleString()+'</div>';
+          str+='</a>';
+        }
+        $(".game_questionscroll_api").html(str);
+        $(".api_game_questionpop").css('display','flex');
+        $(".api_pop").css('display','flex');
+        
+      }
+      else{
+        commonpop('준비된 질문이 없습니다')
+      }
+    }).fail(function(e){
+      console.log(JSON.stringify(e));
+    })
+  }
+
+  function togglebox(self){    
+    $(self).children(".game_togglecontent").slideToggle();
+  }
+
+  function texta(id){
+    var str = $("#"+id).html();
+    console.log($("#"+id).html())
+    str = str.replace(/(?:\r\n|\r|\n)/g, '<br />');
+    $("#"+id).html(str);
+  }
+
+  function commonpop(con){
+    closePop()
+    $(".commonpopbox").html(con)
+    $(".commonpop").css('display','flex');
+    $(".api_pop").css('display','flex');
+    setTimeout(function(){$(".commonpop").css('display','none')(false);},1000);
+    setTimeout(function(){$(".api_pop").css('display','none')(false);},1000);
+  }
+
+</script>

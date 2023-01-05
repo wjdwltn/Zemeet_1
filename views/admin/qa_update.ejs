@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script type="text/javascript" src="../../js/HuskyEZCreator.js" charset="utf-8"></script>
+<head>
+    <%-include('../adminFrame/head.ejs')%>
+</head>
+<body>
+    <div id="wrapper">
+        <!-- Navigation -->
+        <%-include('../adminFrame/nav.ejs')%>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">이벤트 수정하기</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-10">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            이벤트 수정
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <form id="noticeForm"  enctype="multipart/form-data"  method="post" >
+                                <div class="row" style="margin-bottom:15px">
+                                    <div class="col-lg-5">
+                                        <div class="form-group">
+                                            <label>제목</label>
+                                            <input input value="<%= rows.title %>" type="varhcar" name="title" maxlength="100" required class="form-control" style="width:600px; height:30px;" >
+                                        </div>
+                                        <div class="form-group">
+                                            <label>내용</label>
+                                            <textarea id="smartEditor"  rows="20" name="content" style="min-width:100%;" wrap="hard" ><%= rows.content %></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <div class="form-group">
+                                            <label>시작일</label>
+                                            <input class="form-control" input value="<%= rows.start.toLocaleString().slice(0,-3) %>"type="date" name="start">
+                                        
+                                        </div>
+                                        <div class="form-group">
+                                            <label>종료일</label>
+                                            <input class="form-control" input value="<%= rows.end.toLocaleString().slice(0,-3) %>" type="date" name="start">
+                                        
+                                        </div>
+                                        <div class="form-group">
+                                            <label>진행 여부</label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="process" value="0" <% if(rows.process == '0'){ %> checked <%} %> />O
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="process" value="1" <% if(rows.process == '1'){ %> checked <%} %> />X분
+                                            </label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>등록일</label>
+                                            <input input value="<%= rows.udate.toLocaleString() %>" type="varhcar" name="udate" maxlength="100" required class="form-control" style="width:600px; height:30px;" >
+                                        </div>
+                                    </div>
+                                </div>
+                                <tr>
+                                    <td colspan="2">
+                                        <td><button type="button" class="btn btn-warning" style="padding:4px 12px;" onclick="fileUpdate('<%=rows.idx%>')">수정</button></td> 
+                                        <td><button type="button" class="btn btn-primary" style="padding:4px 12px;" onclick="location.href='/admin/event';">목록</button></td>
+                                    </td>
+                                </tr>
+                            </form>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+        </div>
+    </div>
+    <style>
+       .textarea {
+            width: 100%;
+            height: 1000px;
+        }       
+    </style>
+</body>
+</html>
+<%-include('../adminFrame/footer.ejs')%>
+<script>
+    function fileUpdate(idx){
+        oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD",[]); // 스마트에디터 내용 추가
+        let formData = $("#noticeForm").serialize();
+        $.ajax({
+                type : 'get' , 
+                url : '/admin/updateNotice?idx='+idx, 
+                data : formData , 
+                dataType : 'json' ,                 
+        }).done(function(data){                
+            alert(data.msg);
+            if(data.result == 'success'){
+                location.href = '/admin/event_detail?idx='+idx
+            }            
+        }).fail(function(e){
+                console.log(JSON.stringify(e));
+        })
+    }
+    var oEditors = []; 
+    nhn.husky.EZCreator.createInIFrame({ 
+        oAppRef : oEditors, 
+        elPlaceHolder : "smartEditor",  
+        sSkinURI : "../SmartEditor2Skin.html",  
+        fCreator : "createSEditor2", 
+        htParams : {  
+            bUseToolbar : true,   // 툴사용여부 
+            bUseVerticalResizer : false, // 입력창 크기 조절 바 
+            //bSkipXssFilter : true, // xss 필터 
+            bUseModeChanger : false  // 텍스트 모드 변경 
+            },
+        fOnAppLoad : function(){
+            //oEditors.getById["smartEditor"].exec("PASTE_HTML", ['${text}']); // 미리 적용할 텍스트 내용이 있는경우 
+        },		
+    });
+
+</script>

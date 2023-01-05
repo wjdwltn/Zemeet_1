@@ -1,0 +1,245 @@
+<!DOCTYPE html><!--  This site was created in Webflow. http://www.webflow.com  -->
+<!--  Last Published: Tue Mar 15 2022 02:52:20 GMT+0000 (Coordinated Universal Time)  -->
+<html data-wf-page="621590ddcdfaae0f1798d91c" data-wf-site="61fb361452ff0215fe4db1db">
+<head>
+  <title>API_login</title>
+  <meta content="API_login" property="og:title">
+  <meta content="API_login" property="twitter:title">
+  <%-include('../apiFrame/head.ejs') %>
+</head>
+<body class="api_body">
+  <div class="api_frame">
+    <div class="api_top return">
+      <% if(session.isLogin){ %>
+        <!--로그인 했을때-->
+      <div>내 정보</div>
+      <a href="myinfo" class="api_topreturn w-inline-block"><img src="../user/images/chevron-left.svg" loading="lazy" alt="" class="image-25"></a>
+      <% } else {%>
+        <!--로그인 안했을때-->
+        <div>홈으로</div>
+      <a href="main" class="api_topreturn w-inline-block"><img src="../user/images/chevron-left.svg" loading="lazy" alt="" class="image-25"></a>
+      <% } %>
+    </div>
+    <div class="api_innerframe">
+      <div class="div-block-11">
+        <div class="div-block-12"><img src="../user/images/zemeet_logo.svg" loading="lazy" alt="" class="image-26">
+          <div class="div-block-13">
+            <div class="title3">로그인</div>
+            <div class="w-form">
+              <form id="loginForm" method="post">
+                <div> ID (아이디)</div><input type="varchar" class="text-field-5 w-input" maxlength="50" name="id" placeholder="" id="name">
+                <div>PW (비밀번호)</div><input type="password" class="text-field-5 w-input" maxlength="50" name="pw" placeholder="" id="name-2" onKeyPress="if(event.keyCode==13) {login();}"/><label class="w-checkbox checkbox-field-3">
+                  <!-- <div class="w-checkbox-input w-checkbox-input--inputType-custom checkbox"></div><input type="checkbox" id="checkbox" name="checkbox" data-name="Checkbox" style="opacity:0;position:absolute;z-index:-1"><span class="checkbox-label-2 w-form-label" for="checkbox">자동 로그인</span> -->
+                </label>
+              </form>
+              <div class="w-form-done">
+                <div>Thank you! Your submission has been received!</div>
+              </div>
+              <div class="w-form-fail">
+                <div>Oops! Something went wrong while submitting the form.</div>
+              </div>
+            </div>
+            <a href="#" class="button-10 w-button" onclick="login()">Login / 로그인</a>
+          </div>
+          <div class="div-block-14">
+            <a href="registration" class="link-block-14 w-inline-block">
+              <div>회원가입</div>
+            </a>
+            <div>/</div>
+            <a href="javascript:openPop('pop_pwrefresh')" class="link-block-14 w-inline-block">
+              <div>비밀번호 찾기</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom">
+      <a href="main" class="api_bottombtn w-inline-block"><img src="../user/images/home.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/home2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>홈</div>
+      </a>
+      <a href="gamesearch" class="api_bottombtn w-inline-block"><img src="../user/images/grid.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/grid2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>게임</div>
+      </a>
+      <a href="roomsearch" class="api_bottombtn w-inline-block"><img src="../user/images/calendar.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/calendar2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>예약</div>
+      </a>
+      </a>
+      <a href="customer" class="api_bottombtn w-inline-block"><img src="../user/images/mypage.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/mypage2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>고객센터</div>
+      </a>
+    </div>
+    <div class="api_pop" style = "display:none;">
+      <div class="pwrefresh_pop" style = "display:none;" id = "pop_pwrefresh">
+        <div class="pwrefresh_popbox">
+          <div class="title3">비밀번호 찾기</div>
+          <div class="w-form">
+            <form id="findPwForm" method="get">
+              <div> ID (아이디)</div><input id = "inputAN_id" type="text" class="text-field-5 w-input" maxlength="8" name="id" data-name="Name 3" placeholder="ID를 입력해주세요">
+              <div>회원명 (이름)</div><input id = "inputName" type="text" class="text-field-5 w-input" maxlength="8" name="name" data-name="Name 2" placeholder="이름을 입력해주세요">
+              <div>연락처 (뒷자리 4)</div><input id = "int_phone" type="text" class="text-field-5 w-input" maxlength="4" name="bNumber4" data-name="Name 2" placeholder="연락처의 뒷자리 번호 4자리를 입력해주세요">
+            </form>
+            <div class="w-form-done">
+              <div>Thank you! Your submission has been received!</div>
+            </div>
+            <div class="w-form-fail">
+              <div>Oops! Something went wrong while submitting the form.</div>
+            </div>
+          </div>
+          <div class="apipop_btnarea">
+            <a href="javascript:findPw()" class="apipop_btn _2 w-button">확인</a>
+            <a href="javascript:closePop()" class="apipop_btn w-button">취소</a>
+          </div>
+        </div>
+      </div>
+      <div class="simplepop" style="display:none;" id="pop_alert">
+        <div class="simplepop_box">
+          <div class="poptitle">알림</div>
+          <div class="simplepop_warp">
+            <div id = "alertMsg"></div>
+          </div>
+          <div class="btnarea1">
+            <a href="javascript:closePop()" class="okbtn w-button">확인</a>
+          </div>
+        </div>
+      </div>
+      <div class="simplepop" style="display:none;" id="pop_fwAlert">
+        <div class="simplepop_box">
+          <div class="poptitle">알림</div>
+          <div class="simplepop_warp">
+            <div id = "fwAlertMsg"></div>
+          </div>
+          <div class="btnarea1">
+            <a href="javascript:closeAlertPop()" class="okbtn w-button">확인</a>
+          </div>
+        </div>
+      </div>
+      <div class="simplepop" style="display:none;" id="pop_simple">
+        <div class="simplepop_box">
+          <div class="poptitle">알림</div>
+          <div class="simplepop_warp">
+            <div>비밀번호가 '0000'으로<br> 초기화 되었습니다.<br><span class="small">로그인 후 비밀번호를 변경해주세요.</span></div>
+          </div>
+          <div class="btnarea1">
+            <a href="login" class="okbtn w-button">확인</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> 
+  <%-include('../apiFrame/footer.ejs') %>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+  function login(){
+      let formData = $("#loginForm").serialize();
+      $.ajax({
+              type : 'post' , 
+              url : '/api/loginProcess' , 
+              data : formData , 
+              dataType : 'json' ,                 
+      }).done(function(data){                        
+          if(data.result == 'success'){
+              location.href = '/api/main'
+          }else{
+              $(".api_pop").css("display","flex");
+              $("#pop_alert").css("display","flex");
+              $("#alertMsg").html(data.msg);
+          }
+      }).fail(function(e){
+              console.log(JSON.stringify(e));
+      })
+  }
+  function findPw(){
+      let formData = $("#findPwForm").serialize();
+      $.ajax({
+              type : 'post' , 
+              url : '/api/findPwProcess' , 
+              data : formData , 
+              dataType : 'json' ,                 
+      }).done(function(data){                        
+          if(data.result == 'success'){
+            openResetPop();
+          }else{
+            $(".api_pop").css("display","flex");
+            $("#pop_fwAlert").css("display","flex");
+            $("#fwAlertMsg").html(data.msg);
+          }
+      }).fail(function(e){
+              console.log(JSON.stringify(e));
+      })
+  }
+  function openPop(id){
+    $("#"+id).css("display","flex");
+    $(".api_pop").css("display","flex");
+  }
+  function closePop(){
+    $("[id*=pop_]").css("display","none");
+    $(".api_pop").css("display","none");
+  }
+  function openResetPop(){
+    $(".api_pop").css("display","flex");
+    $("#pop_pwrefresh").css("display","none");
+    $("#pop_simple").css("display","flex");
+  }
+  function closeAlertPop(){
+    $("#pop_fwAlert").css("display","none");
+  }
+  var replaceNotPhone = /[^0123456789-]/g; //전화번호가 아닌 경우 비입력 처리
+    $(document).ready(function(){
+        $("#inputPhone").on("focusout", function() {
+            var x = $(this).val();
+            if (x.length > 0) {
+                if (x.match(replaceNotPhone)) {
+                   x = x.replace(replaceNotPhone, "");
+                }
+                $(this).val(x);
+            }
+        }).on("keyup", function() {
+            $(this).val($(this).val().replace(replaceNotPhone, ""));
+        });
+});
+var replaceNotInt = /[^0-9]/gi; //숫자가 아닌 경우 비입력 처리
+    $(document).ready(function(){
+        $("[id*=int_]").on("focusout", function() {
+            var x = $(this).val();
+            if (x.length > 0) {
+                if (x.match(replaceNotInt)) {
+                   x = x.replace(replaceNotInt, "");
+                }
+                $(this).val(x);
+            }
+        }).on("keyup", function() {
+            $(this).val($(this).val().replace(replaceNotInt, ""));
+        });
+    });
+var replaceChar = /[a-zA-Z~!@\#$%^&*\()\-=+_'\;<>0-9\/.\`:\"\\,\[\]?|{}]/gi;  // 완성형 한글이 아닌 경우 비입력 처리
+ var replaceNotFullKorean = /[ㄱ-ㅎㅏ-ㅣ]/gi;
+ $(document).ready(function(){
+     $("#inputName").on("focusout", function() {
+         var x = $(this).val();
+         if (x.length > 0) {
+             if (x.match(replaceChar) || x.match(replaceNotFullKorean)) {
+                 x = x.replace(replaceChar, "").replace(replaceNotFullKorean, "");
+             }
+             $(this).val(x);
+         }
+         }).on("keyup", function() {
+             $(this).val($(this).val().replace(replaceChar, ""));
+    });
+ }); 
+ var replaceNotAN = /[^0-9a-zA-Z]/gi; //알파벳과 숫자만 입력 가능
+    $(document).ready(function(){
+        $("[id*=inputAN_]").on("focusout", function() {
+            var x = $(this).val();
+            if (x.length > 0) {
+                if (x.match(replaceNotAN)) {
+                   x = x.replace(replaceNotAN, "");
+                }
+                $(this).val(x);
+            }
+        }).on("keyup", function() {
+            $(this).val($(this).val().replace(replaceNotAN, ""));
+        });
+    });
+  </script>
+</body>
+</html>

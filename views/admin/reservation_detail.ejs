@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%-include('../adminFrame/head.ejs') %>
+</head>
+
+<body>
+    <div id="wrapper">
+        <%-include('../adminFrame/nav.ejs') %>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">예약정보 상세보기</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            예약정보 세부사항
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <form id="reservationForm" role="form">
+                                <div class="row" style="margin-bottom:15px">
+                                    <div class="col-lg-3">
+                                        <input type="hidden" name="idx" value="<%=info.idx%>">
+                                        <div class="form-group">
+                                            <label>예약자</label>
+                                            <div><%= info.name %></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>예약한 방</label>
+                                            <div><%= info.roomNm %> 번</div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>예약 날짜 및 시간</label>
+                                            <div><script>document.write(dateTimeFormat('<%=info.stime%>'))</script></div>
+                                        </div>
+                                    </div>        
+                                    <!-- /.col-lg-5 (nested) -->
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label>예약 인원수</label>
+                                            <div><%= info.people %> 명</div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>총 이용시간 </label>
+                                            <div id="reserveTime"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>예약자 전화번호 </label>
+                                            <div><%= info.number.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)%></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-bottom:15px">
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label>예약 상태</label>
+                                            <% if(info.status == 0) { %>
+                                                <div>예약 중</div>
+                                            <% }else if (info.status == 1) { %>
+                                                <div>취소</div>
+                                            <% }else if (info.status == 2) { %>
+                                                <div>예약완료</div>
+                                            <% } %>  
+                                        </div>
+                                    </div>
+                                    <% if(info.status == 0) { %>
+                                        <% }else if (info.status == 1) { %>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label>취소 사유</label>
+                                            <div><%= info.reason %></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>취소 시간</label>
+                                            <div><script>document.write(dateTimeFormat('<%=info.ctime%>'))</script></div>
+                                        </div>
+                                    </div>
+                                    <% } %> 
+                                </div>
+                                <div class="row" style="margin-bottom:15px">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>추가 요청사항 </label>
+                                            <textarea class="form-control" name="memo" cols="10" rows="7" value="<%= info.memo%>" style="overflow-y:scroll" readonly><%= info.memo%></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style = "text-align:left;">
+                                    <td colspan="2">
+                                        <td><button type="button" class="btn btn-primary" style="padding:4px 12px;" onclick="location.href='reservation_list?result=<%=result%>'">목록</a></button></td> 
+                                        <td><button type="button" class="btn btn-warning" style="padding:4px 12px;" onclick="location.href='/admin/reservation_update?idx=<%= info.idx %>&result=<%=result%>';">수정</button></td>
+                                        <td><button type="button" class="btn btn-danger" style="padding:4px 12px;" onclick= "deletePop()">삭제</button></td>
+                                    </td>
+                                </div>
+                            </form> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<%-include('../adminFrame/footer.ejs')%>
+<script>
+function deletePop() {
+    if(confirm('정말 삭제하시겠습니까?')){
+        location.href='/admin/deleteReservation?idx=<%= info.idx %>&result=<%=result%>'
+    } else {
+        return false;
+    }
+}
+$(document).ready(function(){
+    let info = JSON.parse('<%-jsInfo%>');
+    var originTime = new Date(info.stime);
+    let startTime = originTime.toLocaleString([],{
+        hourCycle: 'h23',
+        hour: '2-digit',
+        minute: '2-digit'
+    })    
+    let newTime = new Date(originTime.getTime() + info.duration*60*1000)
+    let endTime = newTime.toLocaleString([],{
+        hourCycle: 'h23',
+        hour: '2-digit',
+        minute: '2-digit'
+    })    
+    $("#reserveTime").text(startTime + ' ~ ' + endTime +' ('+info.duration+'분)');
+})
+function goBack() {
+    var lastUrl = document.referrer;
+    if (lastUrl.includes("list") === true) {
+        if (lastUrl.includes("result=0")) {
+            location.href='/admin/reservation_list?result=0'
+        } else {
+            location.href='/admin/reservation_list?result=1'
+        }
+    } else {
+        location.href='/admin/reservation';
+    }
+}
+</script>

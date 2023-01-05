@@ -1,0 +1,40 @@
+<a href="javascript:sidePop()" class="asidebtn w-inline-block"><img src="../user/images/grid.svg" loading="lazy" alt="" class="image-42"></a>
+<% if(session.isLogin){ %>
+<a href="alarmlog" class="api_alarmbtn w-inline-block"><img src="../user/images/bell.svg" loading="lazy" alt="" class="api_alarm_img">
+    <div class="api_alrm_n" style="display:none;">
+        <div id="alarmcount">99</div>
+    </div>
+</a>
+<a href="myinfo" class="myinfo w-inline-block"><img src="../user/images/mypage.svg" loading="lazy" alt="" class="image-41">
+    <div id="login_name" class="<%=session.idx%>" ><%=session.name%> 님</div>
+<% } else {%>
+<a href="myinfo" class="myinfo w-inline-block"><img src="../user/images/mypage.svg" loading="lazy" alt="" class="image-41">
+    <div id="login_name"  class="<%=session.idx%>">비회원 님</div>
+<% } %>
+</a>
+<script>
+  if($("#login_name").html()!='비회원 님'){
+    init()
+  }
+  function init(){
+    alarm()
+    setInterval(alarm,60000)
+  }
+  function alarm(){
+    let idx = $("#login_name").attr('class')
+    console.log("idx",idx)
+    $.ajax({
+      type : 'get' , 
+      url : '/countAlarm?idx='+idx ,
+    }).done(function(data){
+      if(data.result == 'success'){
+        if(data.alarm.count>0){
+          $(".api_alrm_n").css('display','flex');
+          $("#alarmcount").html(data.alarm.count);
+        }
+      }
+    }).fail(function(e){
+      console.log(JSON.stringify(e));
+    })
+  }
+</script>

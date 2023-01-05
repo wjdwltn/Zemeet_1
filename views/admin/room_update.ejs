@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<script type="text/javascript" src="../../js/HuskyEZCreator.js" charset="utf-8"></script>
+<html lang="en">
+
+<head>
+    <%-include('../adminFrame/head.ejs')%>
+</head>
+<body>
+    <div id="wrapper">
+        <!-- Navigation -->
+        <%-include('../adminFrame/nav.ejs')%>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">방 상세보기</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            방 세부사항
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="row" style="margin-bottom:15px">
+                                <div class="col-lg-6">
+                                    <div class="form-group" style="padding: 10px 10px;">
+                                        <label>기존 이미지</label>
+                                        <% for(var i = 0; i < pics.length ; i++) {  %>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">No.<%= i+1 %></div>
+                                                <div class="panel-body">
+                                                    <img src= "/<%= pics[i].file %>" style="width: 100%; padding: 10px 10px; box-sizing: border-box; float:center;" id="pic_<%= pics[i].subIdx %>">
+                                                </div>
+                                                <div class="panel-footer" style = "text-align: right;">   
+                                                    <!-- <button type="button" class="btn btn-default btn-xs" style = "margin-right:5px;" onclick="onClickUpload('<%= pics[i].subIdx %>');">파일 선택</button> -->
+                                                    <input type="file" name="file" id="file_<%= pics[i].subIdx %>" onchange='chk_file_type(this)' class="btn btn-default  btn-xs" style = "float: left;width:auto resize;display:inline;"/>
+                                                    <div style="display: inline-block; text-align: right;">
+                                                        <button type="button" class="btn btn-warning btn-xs" style = "margin-right:5px;" onclick="updateOneRoomPic('<%= pics[i].subIdx %>')">수정</button>
+                                                        <button type="button" class="btn btn-danger btn-xs" onclick="deleteOneRoomPic('<%= pics[i].subIdx %>')">삭제</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <%}%>    
+                                    </div>
+                                </div>
+                                <!-- <"col-lg-6" nest> -->
+                                <form id="roomFileForm" role="form">
+                                    <input type="hidden" name="idx" value="<%=rows.idx%>"/>
+                                    <div class="col-lg-6" >
+                                        <div class="form-group" style="padding: 10px 10px;">
+                                            <label>사진 추가<span class='identify'> *</span></label>
+                                            <input type="file" name="file" accept="image/*" onchange='chk_file_type(this)' multiple/>
+                                        </div>
+                                        <div class="form-group" style="padding: 10px 10px;">
+                                            <label>방 이름</label>
+                                            <input input type="varhcar" value="<%= rows.name %>" name="name" maxlength="100" required class="form-control" style="width:200px; height:30px;" >
+                                        </div>
+                                        <div class="form-group" style="padding: 10px 10px;">
+                                            <label>방 번호</label>
+                                            <input input type="varhcar" value="<%= rows.roomNm %>" name="roomNm" maxlength="100" required class="form-control" style="width:200px; height:30px;" >
+                                        </div>
+                                        <div class="form-group" style="padding: 10px 10px;">
+                                            <label>이용가능 인원수</label>
+                                            <div>
+                                                <select name="peopleMin" required class="form-control" style="width:90px; height:30px;display: inline-block;" >
+                                                    <option value="1" <% if(rows.peopleMin == '1'){ %> selected  <% } %>>1</option>
+                                                    <option value="2" <% if(rows.peopleMin == '2'){ %> selected  <% } %>>2</option>
+                                                    <option value="3" <% if(rows.peopleMin == '3'){ %> selected  <% } %>>3</option>
+                                                    <option value="4" <% if(rows.peopleMin == '4'){ %> selected  <% } %>>4</option>
+                                                    <option value="5" <% if(rows.peopleMin == '5'){ %> selected  <% } %>>5</option>
+                                                    <option value="6" <% if(rows.peopleMin == '6'){ %> selected  <% } %>>6</option>
+                                                    <option value="7" <% if(rows.peopleMin == '7'){ %> selected  <% } %>>7</option>
+                                                    <option value="8" <% if(rows.peopleMin == '8'){ %> selected  <% } %>>8</option>
+                                                    <option value="9" <% if(rows.peopleMin == '9'){ %> selected  <% } %>>9</option>
+                                                    <option value="10" <% if(rows.peopleMin == '10'){ %> selected  <% } %>>10</option>
+                                                </select>
+                                                ~
+                                                <select name="peopleMax" value="<%= rows.peopleMax %>" required class="form-control" style="width:90px; height:30px;display: inline-block;">
+                                                    <option value="1" <% if(rows.peopleMax == '1'){ %> selected  <% } %>>1</option>
+                                                    <option value="2" <% if(rows.peopleMax == '2'){ %> selected  <% } %>>2</option>
+                                                    <option value="3" <% if(rows.peopleMax == '3'){ %> selected  <% } %>>3</option>
+                                                    <option value="4" <% if(rows.peopleMax == '4'){ %> selected  <% } %>>4</option>
+                                                    <option value="5" <% if(rows.peopleMax == '5'){ %> selected  <% } %>>5</option>
+                                                    <option value="6" <% if(rows.peopleMax == '6'){ %> selected  <% } %>>6</option>
+                                                    <option value="7" <% if(rows.peopleMax == '7'){ %> selected  <% } %>>7</option>
+                                                    <option value="8" <% if(rows.peopleMax == '8'){ %> selected  <% } %>>8</option>
+                                                    <option value="9" <% if(rows.peopleMax == '9'){ %> selected  <% } %>>9</option>
+                                                    <option value="10" <% if(rows.peopleMax == '10'){ %> selected  <% } %>>10</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" style="padding: 10px 10px;">
+                                            <label>방 기본가격</label>
+                                            <div class="form-group input-group">
+                                                <span class="input-group-addon">￦</span>
+                                                <input type="int" class="form-control" name="price" value="<%= rows.price %>" style="width:160px; height:30px;" required/>
+                                            </div>
+                                            <!-- <div><input input type="varhcar" value="<%= rows.price %>" name="price" maxlength="100" required class="form-control" style="width:200px; height:30px;" ></div> -->
+                                        </div>
+                                        <div class="form-group" style="padding: 10px 10px;">
+                                            <label>시간당 추가 금액</label>
+                                            <select name="TPRate" value="<%= rows.TPRate %>" required class="form-control" style="width:200px; height:30px;">
+                                                <option value="1000"<% if(rows.TPRate == '1000'){ %> selected  <% } %>>￦ 1,000</option>
+                                                <option value="2000"<% if(rows.TPRate == '2000'){ %> selected  <% } %>>￦ 2,000</option>
+                                                <option value="3000"<% if(rows.TPRate == '3000'){ %> selected  <% } %>>￦ 3,000</option>
+                                                <option value="4000"<% if(rows.TPRate == '4000'){ %> selected  <% } %>>￦ 4,000</option>
+                                                <option value="5000"<% if(rows.TPRate == '5000'){ %> selected  <% } %>>￦ 5,000</option>
+                                                <option value="6000"<% if(rows.TPRate == '6000'){ %> selected  <% } %>>￦ 6,000</option>
+                                                <option value="7000"<% if(rows.TPRate == '7000'){ %> selected  <% } %>>￦ 7,000</option>
+                                                <option value="8000"<% if(rows.TPRate == '8000'){ %> selected  <% } %>>￦ 8,000</option>
+                                                <option value="9000"<% if(rows.TPRate == '9000'){ %> selected  <% } %>>￦ 9,000</option>
+                                                <option value="10000"<% if(rows.TPRate == '10000'){ %> selected  <% } %>>￦ 10,000</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group" style="padding: 10px 10px;">
+                                            <label>인원당 추가 금액</label>
+                                            <select name="PPRate" required class="form-control" style="width:200px; height:30px;">
+                                                <option value="1000"<% if(rows.PPRate == '1000'){ %> selected  <% } %>>￦ 1,000</option>
+                                                <option value="2000"<% if(rows.PPRate == '2000'){ %> selected  <% } %>>￦ 2,000</option>
+                                                <option value="3000"<% if(rows.PPRate == '3000'){ %> selected  <% } %>>￦ 3,000</option>
+                                                <option value="4000"<% if(rows.PPRate == '4000'){ %> selected  <% } %>>￦ 4,000</option>
+                                                <option value="5000"<% if(rows.PPRate == '5000'){ %> selected  <% } %>>￦ 5,000</option>
+                                                <option value="6000"<% if(rows.PPRate == '6000'){ %> selected  <% } %>>￦ 6,000</option>
+                                                <option value="7000"<% if(rows.PPRate == '7000'){ %> selected  <% } %>>￦ 7,000</option>
+                                                <option value="8000"<% if(rows.PPRate == '8000'){ %> selected  <% } %>>￦ 8,000</option>
+                                                <option value="9000"<% if(rows.PPRate == '9000'){ %> selected  <% } %>>￦ 9,000</option>
+                                                <option value="10000"<% if(rows.PPRate == '10000'){ %> selected  <% } %>>￦ 10,000</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group" style="padding: 10px 10px;">
+                                            <label>방 설명</label>
+                                            <textarea id="smartEditor" rows="10" name="account" style="min-width:75%;"><%= rows.account %></textarea>
+                                        </div>   
+                                    </div>
+                                </form>   
+                            </div>
+                            <div class="text-left">
+                                <td colspan="2">
+                                    <td><button type="button" class="btn btn-warning" style="padding:4px 12px;" onclick="roomUpdate()">등록</a></button></td>
+                                    <td><button type="button" class="btn btn-primary" style="padding:4px 12px;" onclick="location.href='/admin/room';">목록</button></td>                                                
+                                </td>
+                            </div>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<%-include('../adminFrame/footer.ejs')%>
+<script>
+function onClickUpload(subIdx) {
+    $("#file_"+subIdx).click();
+}
+function roomUpdate(){
+    oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD",[]); // 스마트에디터 내용 추가
+    let form = $("#roomFileForm")[0]; 
+	let data = new FormData(form);
+    $.ajax({
+            type : 'post' , 
+            url : '/admin/roomUpdateProcess' , 
+            data : data , 
+            dataType : 'json' ,              
+            processData:false, 
+            contentType:false,
+    }).done(function(data){                
+        alert(data.msg);
+        if(data.result == 'success'){
+            location.href = '/admin/room_detail?idx='+data.idx
+        }            
+    }).fail(function(e){
+            console.log(JSON.stringify(e));
+    })
+}
+function insert(){
+    oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD",[]); // 스마트에디터 내용 추가
+    let form = $("#roomInfoForm")[0]; 
+	let data = new FormData(form);          
+    $.ajax({
+            type : 'post' , 
+            url : '/admin/roomInfoProcess',
+            data : data , 
+            dataType : 'json' ,              
+            processData:false, 
+            contentType:false,
+    }).done(function(data){                
+        alert(data.msg);
+        if(data.result == 'success'){
+            location.href = '/admin/room'
+        }            
+    }).fail(function(e){
+            console.log(JSON.stringify(e));
+    })
+}
+function deleteOneRoomPic(subIdx){
+        if(confirm("삭제하시겠습니까?")){
+            $.ajax({
+                type : 'get' , 
+                url : '/DeleteOneRoomProcess?subIdx='+subIdx, 
+            }).done(function(data){                
+                alert(data.msg);
+                if(data.result == 'success'){
+                    location.reload();
+                }            
+            }).fail(function(e){
+                    console.log(JSON.stringify(e));
+            })            
+        }
+};
+function updateOneRoomPic(subIdx){
+    if(confirm("수정하시겠습니까?")){
+        let fileData = $("#file_"+subIdx)[0].files[0]; // 파일데이터 가져오는법
+        let formData = new FormData(); // js에서 form을 만들어줌
+        formData.append('idx',subIdx); // 만들어진 form에 데이터 넣기
+        formData.append('file',fileData);
+        $.ajax({
+                type : 'post' , 
+                url : '/UpdateOneRoomProcess?subIdx='+subIdx, 
+                data : formData , 
+                dataType : 'json' ,                
+                processData:false, 
+                contentType:false,
+        }).done(function(data){                
+            alert(data.msg);
+            if(data.result == 'success'){
+                location.reload();
+            }            
+        }).fail(function(e){
+                console.log(JSON.stringify(e));
+        })
+    }
+}
+function chk_file_type(obj) {
+     var file_kind = obj.value.lastIndexOf('.');
+    var file_name = obj.value.substring(file_kind+1,obj.length);
+    var file_type = file_name.toLowerCase();
+    var check_file_type=new Array();
+    check_file_type=['jpg','gif','png','jpeg','bmp'];
+    if(check_file_type.indexOf(file_type)==-1){
+        alert('이미지 파일만 선택할 수 있습니다.');
+        obj.value = '';
+         return false;
+    }
+}
+var oEditors = []; 
+nhn.husky.EZCreator.createInIFrame({ 
+    oAppRef : oEditors, 
+    elPlaceHolder : "smartEditor",  
+    sSkinURI : "../../SmartEditor2Skin.html",  
+    fCreator : "createSEditor2", 
+    htParams : {  
+        bUseToolbar : true,   // 툴사용여부 
+        bUseVerticalResizer : false, // 입력창 크기 조절 바 
+        //bSkipXssFilter : true, // xss 필터 
+        bUseModeChanger : false  // 텍스트 모드 변경 
+        },
+    fOnAppLoad : function(){
+        //oEditors.getById["smartEditor"].exec("PASTE_HTML", ['${text}']); // 미리 적용할 텍스트 내용이 있는경우 
+    },		
+});
+</script>

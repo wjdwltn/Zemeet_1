@@ -1,0 +1,191 @@
+<!DOCTYPE html><!--  This site was created in Webflow. http://www.webflow.com  -->
+<!--  Last Published: Thu Mar 31 2022 01:51:32 GMT+0000 (Coordinated Universal Time)  -->
+<html data-wf-page="6243c1983b74f90a9bb62d45" data-wf-site="61fb361452ff0215fe4db1db">
+<head>
+  <title>API_Questiondetail</title>
+  <meta content="API_Questiondetail" property="og:title">
+  <meta content="API_Questiondetail" property="twitter:title">
+  <%-include('../apiFrame/head.ejs') %>
+</head>
+<script>
+  function getfilename(name){
+    var parts = name.split('.');
+    return parts[parts.length - 1];
+  }
+
+  function isVideo(name){
+    var name = getfilename(name);
+    switch(name.toLowerCase()){
+      case 'm4v':
+      case 'avi':
+      case 'mpg':
+      case 'mp4':
+        return true;
+    }
+    return false;
+  }
+  function isImage(name){
+    var name = getfilename(name);
+    switch(name.toLowerCase()){
+      case 'jpg':
+      case 'gif':
+      case 'bmp':
+      case 'png':
+        return true;
+    }
+    return false;
+  } 
+</script>
+<body class="api_body">
+  <div class="api_frame">
+    <div class="api_top return">
+      <div>문의사항</div>
+      <a href="questionboard" class="api_topreturn w-inline-block"><img src="../user/images/chevron-left.svg" loading="lazy" alt="" class="image-25"></a>
+    </div>
+    <div class="api_innerframe">
+      <div class="api_section">
+        <div class="api_list_container">
+          <div class="title">문의내역</div>
+          <div class="title_question" style="word-break:break-all;word-wrap:break-word;"><%- list.title %></div>
+          <div class="api_detail_subtxt" >작성일:<%=new Date(list.udate).toLocaleString()%> <span class="question"> <%=list.anscheck%></span></div>
+          <% if(list.anscheck == '미답변') { %>
+            <a href="#" class="questionbtn w-button"  onclick= "fileDelete('<%= list.idx%>')">삭제</a>
+          <% }else { %>
+            <div class="questionbtn inable" >삭제불가</div>
+          <% } %>
+          
+          <div class="api_questionbord"style="display:block;"> 
+            <div style="word-wrap: break-word;" id="text"><%- list.content.replace(/(?:\r\n|\r|\n)/g, '<br/>') %></div>
+            <br>
+            <div>
+              <div id="imgvideo"></div>
+              <br>
+              <div id="imgvideo2"></div>
+            </div>
+          </div>
+          <script>
+            if('<%= list.pic1%>'==''){
+            }
+            else{
+              if(isImage('<%= list.pic1%>')==true){
+              console.log("true")
+              $("#imgvideo").html("<span><img src=\"/<%= list.pic1 %>\" width=\"100%;\"/></span>")
+              } else{
+                console.log("false")
+                $("#imgvideo").html("<span><video src=\"/<%= list.pic1 %>\" width=\"100%;\" controls=\"controls\" autoplay=\"autoplay\" loop=\"loop\" /></span>")
+              }
+            }            
+            if('<%= list.pic2%>'==''){
+            }
+            else{
+              if(isImage('<%= list.pic2%>')==true){
+              console.log("true")
+              $("#imgvideo2").html("<span><img src=\"/<%= list.pic2 %>\" width=\"100%;\"/></span>")
+               }
+              else{
+                console.log("false")
+                $("#imgvideo2").html("<span><video src=\"/<%= list.pic2 %>\" width=\"100%;\" controls=\"controls\" autoplay=\"autoplay\" loop=\"loop\" /></span>")
+              }
+            }
+          </script>
+          <div class="detail_file">
+            <% if(list.pic1==''){%>
+              <% if(list.pic2=='') { %>
+              <% }else { %>
+                <a href="/<%= list.pic2%>" download="<%= list.pic2%>" class="link-block-19 w-inline-block"><img src="../user/images/Icon-open-plus.svg" loading="lazy" alt="" class="image-34">
+                  <div><%= list.pic2%></div>
+                </a>
+              <% } %>
+            <% }else { %>
+              <% if(list.pic2=='') { %>
+                <a href="/<%= list.pic1%>" download="<%= list.pic1%>" class="link-block-19 first w-inline-block"><img src="../user/images/Icon-open-plus.svg" loading="lazy" alt="" class="image-34">
+                  <div><%= list.pic1%></div>
+                </a>
+              <% }else { %>
+                <a href="/<%= list.pic1%>" download="<%= list.pic1%>" class="link-block-19 first w-inline-block"><img src="../user/images/Icon-open-plus.svg" loading="lazy" alt="" class="image-34">
+                  <div><%= list.pic1%></div>
+                </a>
+                <a href="/<%= list.pic2%>" download="<%= list.pic2%>" class="link-block-19 w-inline-block"><img src="../user/images/Icon-open-plus.svg" loading="lazy" alt="" class="image-34">
+                <div><%= list.pic2%></div>
+                </a>
+              <% } %>
+            <% } %>
+          </div>
+          <div class="title">답변</div>
+          <% if(list.anscheck == '미답변') { %>
+            <div class="api_questionbord" >
+              <div>답변 대기중입니다...</div>
+            </div>
+          <% }else { %>
+            <div class="api_detail_subtxt">답변일:<%=new Date(list.ansdate).toLocaleString()%></div>
+            <div class="api_questionbord" style="word-wrap: break-word;">
+              <div><%- list.anscontent.replace(/(?:\r\n|\r|\n)/g, '<br/>') %></div>
+            </div>
+          <% } %>
+        </div>
+        <div class="detail_bottom">
+          <% if (next.length == 0) {%>
+            <div class="api_detail_bbtn w-inline-block"><img src="../user/images/Icon-awesome-caret-down.svg" loading="lazy" alt="" class="arrow1">
+              <div class="title4">다음 글</div>
+              <div>다음 글이 없습니다.</div>
+            </div>
+          <% } else {%>  
+            <a href="#" class="api_detail_bbtn w-inline-block" onclick="location.href='/api/questiondetail?idx=<%= next[0].idx%>'"><img src="../user/images/Icon-awesome-caret-down.svg" loading="lazy" alt="" class="arrow1">
+              <div class="title4">다음 글</div>
+              <div><%=next[0].title%></div>
+            </a>
+          <%}%>
+          <% if (prev.length == 0) {%>
+            <div class="api_detail_bbtn w-inline-block"><img src="../user/images/Icon-awesome-caret-down.svg" loading="lazy" alt="" class="arrow2">
+              <div class="title4">이전 글</div>
+              <div>이전 글이 없습니다.</div>
+            </div>
+          <% } else {%>  
+            <a href="#" class="api_detail_bbtn w-inline-block" onclick="location.href='/api/questiondetail?idx=<%=prev[0].idx%>'"><img src="../user/images/Icon-awesome-caret-down.svg" loading="lazy" alt="" class="arrow2">
+              <div class="title4">이전 글</div>
+              <div><%=prev[0].title%></div>
+            </a>
+          <%}%>
+        </div>
+      </div>
+    </div>
+    <div class="bottom">
+      <a href="main" class="api_bottombtn w-inline-block"><img src="../user/images/home.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/home2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>홈</div>
+      </a>
+      <a href="gamesearch" class="api_bottombtn w-inline-block"><img src="../user/images/grid.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/grid2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>게임</div>
+      </a>
+      <a href="roomsearch" class="api_bottombtn w-inline-block"><img src="../user/images/calendar.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/calendar2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>예약</div>
+      </a>
+      </a>
+      <a href="customer" aria-current="page" class="api_bottombtn w-inline-block"><img src="../user/images/headset_white.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/headset_color.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>고객센터</div>
+      </a>
+    </div>
+  </div>
+  <%-include('../apiFrame/footer.ejs') %>
+</body>
+</html>
+<script>
+  function fileDelete(idx){
+        if(confirm("삭제하시겠습니까?")){
+            $.ajax({
+                type : 'get' , 
+                url : '/api/deleteQuestion_api?idx='+idx , 
+            }).done(function(data){                
+                alert(data.msg);
+                if(data.result == 'success'){
+                    location.href='/api/questionboard'
+                }            
+            }).fail(function(e){
+                    console.log(JSON.stringify(e));
+            })            
+        }
+  }
+  
+  
+
+    
+</script>

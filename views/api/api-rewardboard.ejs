@@ -1,0 +1,72 @@
+<!DOCTYPE html><!--  This site was created in Webflow. http://www.webflow.com  -->
+<!--  Last Published: Thu Mar 31 2022 01:51:32 GMT+0000 (Coordinated Universal Time)  -->
+<html data-wf-page="6243d79637ad5abf2f44b4e5" data-wf-site="61fb361452ff0215fe4db1db">
+<head>
+  <title>API_rewardbord</title>
+  <meta content="API_rewardbord" property="og:title">
+  <meta content="API_rewardbord" property="twitter:title">
+  <%-include('../apiFrame/head.ejs') %>
+</head>
+<body class="api_body">
+  <div class="api_frame">
+    <div class="api_top return">
+      <div>내 정보</div>
+      <a href="myinfo" class="api_topreturn w-inline-block"><img src="../user/images/chevron-left.svg" loading="lazy" alt="" class="image-25"></a>
+    </div>
+    <div class="api_innerframe">
+      <div class="api_section">
+        <div class="api_list_container">
+          <div class="title">적립내역</div>
+          <div>총 적립금: <%=point[0].point%> pt</div>
+          <%if(list.length == 0){%>
+            <div style="width:100%; ; text-align: center;   line-height:570px; color:#a9a9a9 ">적립 내역이 없습니다.</div>
+          <%} else{%>
+            <%for(var i=0; i< list.length;i++){%>
+              <a href="#" class="reservebox w-inline-block">
+                <% if( list[i].kind == 1) { %>
+                  <div class="api_listbord_title ">+<%=list[i].amount%>pt</div>
+                <%} else{%>
+                  <div class="api_listbord_title"><span style='color:red;'>-<%=list[i].amount%>pt</span></div>
+                <%}%>
+                <div><%=list[i].content%></div>
+                <div class="api_listbord_date"><script>document.write(dateTimeFormat2('<%=list[i].time%>'))</script></div>
+              </a>
+            <%}%>
+          <%}%>
+        </div>
+      </div>
+      <div class="api_list_page">
+        <% if(page == 0) { %>
+          <a href="javascript:void()" class="button-13 _2 w-button">&lt;&lt;</a>
+        <% }else { %>
+          <a href="/api/rewardboard?page=<%=page-1%>" class="button-13 _2 w-button">&lt;&lt;</a>
+        <% } %>
+        <%  for(var j = 0; j < Math.ceil(totalitems/countperpage) ; j++){  %>   
+          <a href="/api/rewardboard?page=<%=j%>" class="button-13 w-button <% if (page == j) { %> click<%}%>"><%= j + 1 %></a>
+        <%}%>                                        
+        <% if(page+1 == Math.ceil(totalitems/countperpage)) { %>
+          <a href="javascript:void(0)" class="button-13 _2 w-button">&gt;&gt;</a>
+        <% }else { %>
+          <a href="/api/rewardboard?page=<%=page+1%>" class="button-13 _2 w-button">&gt;&gt;</a>
+        <% } %>                                        
+      </div>
+    </div>
+    <div class="bottom">
+      <a href="main" class="api_bottombtn w-inline-block"><img src="../user/images/home.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/home2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>홈</div>
+      </a>
+      <a href="gamesearch" class="api_bottombtn w-inline-block"><img src="../user/images/grid.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/grid2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>게임</div>
+      </a>
+      <a href="roomsearch" class="api_bottombtn w-inline-block"><img src="../user/images/calendar.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/calendar2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>예약</div>
+      </a>
+      </a>
+      <a href="customer" class="api_bottombtn w-inline-block"><img src="../user/images/headset_white.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/headset_color.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>고객센터</div>
+      </a>
+    </div>
+  </div>
+  <%-include('../apiFrame/footer.ejs') %>
+</body>
+</html>

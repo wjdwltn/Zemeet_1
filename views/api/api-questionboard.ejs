@@ -1,0 +1,80 @@
+<!DOCTYPE html><!--  This site was created in Webflow. http://www.webflow.com  -->
+<!--  Last Published: Thu Mar 31 2022 01:51:32 GMT+0000 (Coordinated Universal Time)  -->
+<html data-wf-page="6243b7f652082e29a9204f4c" data-wf-site="61fb361452ff0215fe4db1db">
+<head>
+  <title>API_Questionbord</title>
+  <meta content="API_Questionbord" property="og:title">
+  <meta content="API_Questionbord" property="twitter:title">
+  <%-include('../apiFrame/head.ejs') %>
+</head>
+<body class="api_body">
+  <div class="api_frame">
+    <div class="api_top return">
+      <div>내 정보</div>
+      <a href="myinfo" class="api_topreturn w-inline-block"><img src="../user/images/chevron-left.svg" loading="lazy" alt="" class="image-25"></a>
+    </div>
+    <div class="api_innerframe">
+      <div class="api_section">
+        <div class="api_list_container">
+          <div class="title">문의목록</div>
+          <% if (rows.length == 0) {%>
+            <div id="nodata" style="color:#a9a9a9;">데이터가 없습니다.</div>
+          <% } else {%>
+            <% for(var i = 0; i < rows.length ; i++) { %>
+              <a href="#" class="reservebox w-inline-block" onclick="location.href='/api/questiondetail?idx=<%= rows[i].idx%>'">
+                <% if(rows[i].title.length>40){%>
+                  <div class="api_listbord_title" style="word-wrap:break-word;"><%= rows[i].title.substr(0,40)+"..." %></div>
+                <%} else {%>
+                  <div class="api_listbord_title" style="word-wrap:break-word;"><%= rows[i].title %></div>
+                <%}%>
+                <div class="api_listbord_date"><span class="question"><%=rows[i].anscheck%></span><%=new Date(rows[i].udate).toLocaleString()%></div>
+              </a>
+            <%}%>
+          <%}%>
+          <a href="question" class="button-23 w-button">문의작성</a>
+        </div>
+      </div>
+      <div class="api_list_page">
+        <% if(page == 0) { %>
+          <a href="javascript:void(0)" class="button-13 _2 w-button">&lt;&lt;</a>
+        <% }else { %>
+          <a href="/api/questionboard?page=<%=page-1%>" class="button-13 _2 w-button">&lt;&lt;</a>
+        <% } %>
+        <%  for(var j = 0; j < Math.ceil(totalitems/countperpage) ; j++){  %>                                            
+          <a href="/api/questionboard?page=<%=j%>" class="button-13 w-button <% if (page == j) { %> click<%}%>"><%= j + 1 %></a>
+        <%}%>                                        
+        <% if(page+1 == Math.ceil(totalitems/countperpage)) { %>
+          <a href="javascript:void(0)" class="button-13 _2 w-button">&gt;&gt;</a>
+        <% }else { %>
+          <a href="/api/questionboard?page=<%=page+1%>" class="button-13 _2 w-button">&gt;&gt;</a>
+        <% } %>                                        
+      </div>
+    </div>
+    <div class="bottom">
+      <a href="main" class="api_bottombtn w-inline-block"><img src="../user/images/home.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/home2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>홈</div>
+      </a>
+      <a href="gamesearch" class="api_bottombtn w-inline-block"><img src="../user/images/grid.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/grid2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>게임</div>
+      </a>
+      <a href="roomsearch" class="api_bottombtn w-inline-block"><img src="../user/images/calendar.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/calendar2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>예약</div>
+      </a>
+      </a>
+      <a href="customer" class="api_bottombtn w-inline-block"><img src="../user/images/headset_white.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/headset_color.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>고객센터</div>
+      </a>
+    </div>
+  </div>
+  <%-include('../apiFrame/footer.ejs') %>
+  <style>
+    #nodata{
+      width: 328px;
+      height:600px;
+      text-align: center;
+      line-height:600px;
+    
+    }
+  </style>
+</body>
+</html>

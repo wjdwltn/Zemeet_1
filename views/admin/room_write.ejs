@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<script type="text/javascript" src="../../js/HuskyEZCreator.js" charset="utf-8"></script>
+<html lang="en">
+
+<head>
+    <%-include('../adminFrame/head.ejs')%>
+</head>
+<body>
+    <div id="wrapper">
+        <!-- Navigation -->
+        <%-include('../adminFrame/nav.ejs')%>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">방 등록하기</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            상세 등록 정보
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <form id="roomInfoForm"  enctype="multipart/form-data"  method="post">
+                                <div class="row" style="margin-bottom:15px">
+                                    <div class="col-lg-6">
+                                        <div class="form-group" style="padding: 10px 10px;">
+                                            <label>사진<span class='identify'> *</span></label>
+                                            <input type="file" name="file" accept="image/*" onchange='chk_file_type(this)' multiple/>
+                                        </div>
+                                        <div class="form-group" style="padding: 10px 10px;">
+                                            <label>방 설명</label>
+                                            <textarea id="smartEditor" rows="19" name="account" style="min-width:100%;"></textarea>
+                                        </div>   
+                                    </div>
+                                    <!-- <"col-lg-6" nest> -->
+                                    <div class="col-lg-6" >
+                                        <div class="form-group" style="padding: 10px 10px;">
+                                            <label>방 이름</label>
+                                            <input input type="varhcar" name="name" maxlength="100" required class="form-control" style="width:200px; height:30px;" >
+                                        </div>
+                                        <div class="form-group" style="padding: 10px 10px;">
+                                            <label>방 번호</label>
+                                            <input input type="varhcar" name="roomNm" maxlength="100" required class="form-control" style="width:200px; height:30px;" >
+                                        </div>
+                                        <div class="form-group" style="padding: 10px 10px;">
+                                            <label>이용가능 인원수</label>
+                                            <div>
+                                                <select name="peopleMin" required class="form-control" style="width:90px; height:30px;display: inline-block;">
+                                                    <option value="1" selected>1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                    <option value="7">7</option>
+                                                    <option value="8">8</option>
+                                                    <option value="9">9</option>
+                                                    <option value="10">10</option>
+                                                </select>
+                                                ~
+                                                <select name="peopleMax" required class="form-control" style="width:90px; height:30px;display: inline-block;">
+                                                    <option value="1" selected>1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                    <option value="7">7</option>
+                                                    <option value="8">8</option>
+                                                    <option value="9">9</option>
+                                                    <option value="10">10</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" style="padding: 10px 10px;">
+                                            <label>방 기본가격</label>
+                                            <div><input input type="varhcar" name="price" maxlength="100" required class="form-control" style="width:200px; height:30px;" ></div>
+                                        </div>
+                                        <div class="form-group" style="padding: 10px 10px;">
+                                            <label>시간당 추가 금액</label>
+                                            <select name="TPRate" required class="form-control" style="width:200px; height:30px;">
+                                                <option value="1000" selected>￦ 1,000</option>
+                                                <option value="2000">￦ 2,000</option>
+                                                <option value="3000">￦ 3,000</option>
+                                                <option value="4000">￦ 4,000</option>
+                                                <option value="5000">￦ 5,000</option>
+                                                <option value="6000">￦ 6,000</option>
+                                                <option value="7000">￦ 7,000</option>
+                                                <option value="8000">￦ 8,000</option>
+                                                <option value="9000">￦ 9,000</option>
+                                                <option value="10000">￦ 10,000</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group" style="padding: 10px 10px;">
+                                            <label>인원당 추가 금액</label>
+                                            <select name="PPRate" required class="form-control" style="width:200px; height:30px;">
+                                                <option value="1000" selected>￦ 1,000</option>
+                                                <option value="2000">￦ 2,000</option>
+                                                <option value="3000">￦ 3,000</option>
+                                                <option value="4000">￦ 4,000</option>
+                                                <option value="5000">￦ 5,000</option>
+                                                <option value="6000">￦ 6,000</option>
+                                                <option value="7000">￦ 7,000</option>
+                                                <option value="8000">￦ 8,000</option>
+                                                <option value="9000">￦ 9,000</option>
+                                                <option value="10000">￦ 10,000</option>
+                                            </select>
+                                        </div>
+                                    </div>                                
+                                </div>
+                            </form>
+                            <div class="text-left">
+                                <td colspan="2">
+                                    <td><button type="button" class="btn btn-warning" style="padding:4px 12px;" onclick="insert()">등록</a></button></td>
+                                    <td><button type="button" class="btn btn-primary" style="padding:4px 12px;" onclick="location.href='/admin/room';">목록</button></td>                                                
+                                </td>
+                            </div>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<%-include('../adminFrame/footer.ejs')%>
+<script>
+function insert(){
+    oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD",[]); // 스마트에디터 내용 추가
+    let form = $("#roomInfoForm")[0]; 
+	let data = new FormData(form);          
+    $.ajax({
+            type : 'post' , 
+            url : '/admin/roomInfoProcess',
+            data : data , 
+            dataType : 'json' ,              
+            processData:false, 
+            contentType:false,
+    }).done(function(data){                
+        alert(data.msg);
+        if(data.result == 'success'){
+            location.href = '/admin/room'
+        }            
+    }).fail(function(e){
+            console.log(JSON.stringify(e));
+    })
+}
+function chk_file_type(obj) {
+     var file_kind = obj.value.lastIndexOf('.');
+    var file_name = obj.value.substring(file_kind+1,obj.length);
+    var file_type = file_name.toLowerCase();
+    var check_file_type=new Array();
+    check_file_type=['jpg','gif','png','jpeg','bmp'];
+    if(check_file_type.indexOf(file_type)==-1){
+        alert('이미지 파일만 선택할 수 있습니다.');
+        obj.value = '';
+         return false;
+    }
+}
+var oEditors = []; 
+nhn.husky.EZCreator.createInIFrame({ 
+    oAppRef : oEditors, 
+    elPlaceHolder : "smartEditor",  
+    sSkinURI : "../../SmartEditor2Skin.html",  
+    fCreator : "createSEditor2", 
+    htParams : {  
+        bUseToolbar : true,   // 툴사용여부 
+        bUseVerticalResizer : false, // 입력창 크기 조절 바 
+        //bSkipXssFilter : true, // xss 필터 
+        bUseModeChanger : false  // 텍스트 모드 변경 
+        },
+    fOnAppLoad : function(){
+        //oEditors.getById["smartEditor"].exec("PASTE_HTML", ['${text}']); // 미리 적용할 텍스트 내용이 있는경우 
+    },		
+});
+</script>

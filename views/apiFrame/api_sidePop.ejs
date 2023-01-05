@@ -1,0 +1,77 @@
+<div class="api_sidepop" style="display:none;" id="pop_side">
+  <div class="api_aside">
+    <div class="div-block-48">
+      <% if(session.isLogin){ %>
+        <!--로그인 했을때-->
+        <a href="myinfo" class="myinfo w-inline-block"><img src="../user/images/mypage.svg" loading="lazy" alt="" class="image-41">
+          <div><%=session.name%> 님</div>
+        </a>
+      <% } else {%>
+        <!--로그인 안했을때-->
+        <a href="login" class="myinfo w-inline-block"><img src="../user/images/mypage.svg" loading="lazy" alt="" class="image-41">
+          <div>로그인</div>
+        </a>  
+      <% } %>
+    </div>
+    <a href="gamesearch" class="sidemenubtn_1 w-inline-block">
+      <div>게임</div>
+    </a>
+    <a href="roomsearch" class="sidemenubtn_1 w-inline-block">
+      <div>방 예약</div>
+    </a>
+    <% if(session.isLogin){ %>
+      <!--로그인 했을때-->
+    <div class="asidewarp">
+      <a href="#" onclick="menuToggle(this)" class="sidemenubtn_1 w-inline-block">
+        <div>마이페이지</div><img src="../user/images/Icon-awesome-caret-down.svg" loading="lazy" alt="" class="arow">
+      </a>
+      <div class="aside_toggle">
+        <a href="alarmlog" class="sidemenubtn_2 w-inline-block">
+          <div>알림내역</div>
+        </a>
+        <a href="reservation" class="sidemenubtn_2 w-inline-block">
+          <div>예약정보</div>
+        </a>
+        <a href="myinfo" class="sidemenubtn_2 w-inline-block">
+          <div>푸시알림설정</div>
+        </a>
+        <a href="myinfo-modify" class="sidemenubtn_2 w-inline-block">
+          <div>내 정보 수정</div>
+        </a>
+        <a href="questionboard" class="sidemenubtn_2 w-inline-block">
+          <div>문의</div>
+        </a>
+      </div>
+    </div>
+    <% } else {%>
+    <% } %>
+    <div class="asidewarp">
+      <a href="#" onclick="menuToggle(this)" class="sidemenubtn_1 w-inline-block">
+        <div>고객센터</div><img src="../user/images/Icon-awesome-caret-down.svg" loading="lazy" alt="" class="arow">
+      </a>
+      <div class="aside_toggle">
+        <a href="eventboard" class="sidemenubtn_2 w-inline-block">
+          <div>이벤트</div>
+        </a>
+        <a href="noticeboard" class="sidemenubtn_2 w-inline-block">
+          <div>공지사항</div>
+        </a>
+        <a href="terms" class="sidemenubtn_2 w-inline-block">
+          <div>이용약관</div>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="asideexist" id =outer_sidepop onclick = sidePopClose()></div>
+</div>
+<script>
+    function menuToggle(self){    
+    $(self).next().slideToggle();    
+  }
+  function sidePop(){
+    $(".api_sidepop").css("display","flex");
+  }
+  function sidePopClose(){
+    $(".api_sidepop").css("display","none");
+  }
+</script>

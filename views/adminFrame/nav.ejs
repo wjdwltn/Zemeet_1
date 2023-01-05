@@ -1,0 +1,128 @@
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+    <div class="navbar-header">               
+        <a class="navbar-brand" href="/admin/reservation">ZEMEET 관리자 페이지</a>
+    </div>
+    <!-- /.navbar-header -->
+
+    <ul class="nav navbar-top-links navbar-right">               
+        <!-- /.dropdown -->
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                <li><a href="login"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                </li>
+            </ul>
+            <!-- /.dropdown-user -->
+        </li>
+        <!-- /.dropdown -->
+    </ul>
+    <!-- /.navbar-top-links -->
+
+    <div class="navbar-default sidebar" role="navigation">
+        <div class="sidebar-nav navbar-collapse">
+            <ul class="nav" id="side-menu">
+				<li>
+					<a href="#"><i class="fa fa-caret-right fa-fw"></i> 예약 관리<span class="fa arrow"></span></a>
+					<ul class="nav nav-second-level">
+						<li><a href="/admin/reservation">전체 예약 리스트 (달력)</a></li>
+                        <li><a href="/admin/reservation_list?result=1">현재 예약 리스트</a></li>
+                        <li><a href="/admin/reservation_list?result=0">과거 예약 리스트</a></li>
+					</ul>
+				</li>
+                <!-- <li class="">
+                    <a href="#"><i class="fa fa-caret-right"></i> 예약 관리<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse in" aria-expanded="true" style="">
+                        <li>
+                            <a href="/admin/reservation">달력형태</a>
+                        </li>
+                        <li>
+                            <a href="/admin/reservation_list">리스트형태</a>
+                        </li>
+                    </ul>                    
+                </li>                 -->
+                <!-- <li>
+                    <a href="#"><i class="fa fa-caret-right"></i> 정산 </a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-caret-right"></i> Q & A </a>
+                </li> -->
+                <li>
+                    <a href="/admin/member"><i class="fa fa-caret-right fa-fw"></i> 회원 관리 </a>
+                </li>
+                <li>
+                    <a href="/admin/staff"><i class="fa fa-caret-right fa-fw"></i> 직원 관리 </a>
+                </li>
+                <li>
+                    <a href="/admin/menu"><i class="fa fa-caret-right fa-fw"></i> 메뉴 관리 </a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="/admin/menu">메뉴 등록</a></li>
+						<li><a href="/admin/order">주문 관리</a></li>
+					</ul>
+                </li> 
+                <li>
+                    <a href="/admin/game"><i class="fa fa-caret-right fa-fw"></i> 게임 관리 </a>
+                </li>
+                <li>
+                    <a href="/admin/room"><i class="fa fa-caret-right fa-fw"></i> 방 관리 </a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="/admin/room">방 관리</a></li>
+						<li><a href="/admin/roomlog">방 사용 관리</a></li>
+					</ul>
+                </li>
+                <!-- <li>
+                    <a href="#"><i class="fa fa-caret-right"></i> 대기실 관리 </a>
+                </li> -->
+                <li>
+                    <a href="/admin/calculate"><i class="fa fa-caret-right fa-fw"></i>정산 관리 </a>
+                </li>
+                <li>
+                    <a href="/admin/settings"><i class="fa fa-caret-right fa-fw"></i> 적립금 관리 </a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="/admin/settings">포인트 및 등급 관리</a></li>
+						<li><a href="/admin/pointlog">적립 내역 리스트</a></li>
+					</ul>
+                </li>
+                <!-- <li>
+                    <a href="/admin/todolist"><i class="fa fa-caret-right"></i> To-do-list </a>
+                </li> -->
+                <!-- <li>
+                    <a href="#"><i class="fa fa-caret-right"></i> 채팅 관리 </a>
+                </li>
+                <li>
+                    <a href="/admin/todolist"><i class="fa fa-caret-right"></i> 알림 설정 </a>
+                </li>
+                <li>
+                    <a href="/admin/todolist"><i class="fa fa-caret-right"></i> 지점별 게임기기 관리 </a>
+                </li> -->
+                <li>
+                    <a href="/admin/chat"><i class="fa fa-caret-right fa-fw"></i> 채팅 관리 </a>
+                </li>
+                <li>
+                    <a href="/admin/todolist"><i class="fa fa-caret-right fa-fw"></i> To-do-list </a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="/admin/todolist">To-do-list 관리</a></li>
+						<li><a href="/admin/todolog">완료된 업무 관리</a></li>
+					</ul>
+                </li>
+                <li>
+                    <a href="/admin/wifi"><i class="fa fa-caret-right fa-fw"></i> wifi </a>
+                </li>
+                <li>
+                    <a href="/admin/notice"><i class="fa fa-caret-right fa-fw"></i> 고객센터 </a>
+                    <ul class="nav nav-second-level">
+						<li><a href="/admin/notice">공지사항</a></li>
+						<li><a href="/admin/event">이벤트</a></li>
+                        <li><a href="/admin/qa">문의내역</a></li>
+                        <li><a href="/admin/alarmlog">알림내역</a></li>
+                        <li><a href="/admin/terms">이용약관</a></li>
+					</ul>
+                </li>
+            </ul>
+        </div>
+        <!-- /.sidebar-collapse -->
+    </div>
+    <!-- /.navbar-static-side -->
+</nav>

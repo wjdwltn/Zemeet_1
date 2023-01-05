@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%-include('../adminFrame/head.ejs') %>
+</head>
+
+<body>
+    <div id="wrapper">
+        <%-include('../adminFrame/nav.ejs') %>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-10">
+                    <h1 class="page-header">방 상세보기</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            방 세부사항
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <form id="roomForm" role="form">
+                                <input type="hidden" name="idx" value="<%=list.idx%>">
+                                <div class="row" style="margin-bottom:15px">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>사진</label>
+                                            <% for(var i = 0; i < rows.length ; i++) {  
+                                                    %>
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">No.<%= i+1 %></div>
+                                                <div class="panel-body">
+                                                    <img src= "/<%= rows[i].file %>" style="width: 100%; padding: 10px 10px; box-sizing: border-box; float:center;" id="pic_<%= rows[i].subIdx %>"> 
+                                                </div>
+                                            </div>
+                                            <%}%>
+                                        </div>
+                                    </div>
+                                    <!-- <"col-lg-6" nest> -->
+                                    <div class="col-lg-5" >
+                                        <div class="form-group" style="padding: 10px 10px;">
+                                            <label>방 이름</label>
+                                            <pre><%= list.name %></pre>
+                                        </div>
+                                        <div class="form-group" style="padding: 10px 10px;">
+                                            <label>방 번호</label>
+                                            <pre><%= list.roomNm%> 번</pre>
+                                        </div>
+                                        <div class="form-group" style="padding: 10px 10px;">
+                                            <label>이용가능 인원수</label>
+                                            <pre><%= list.peopleMin%>~<%= list.peopleMax%>명</pre>
+                                        </div>
+                                        <div class="form-group" style="padding: 10px 10px;">
+                                            <label>방 이용현황</label>
+                                            <% if(list.status == 0) { %>
+                                                <pre>이용 가능</pre>
+                                            <% } else if(list.status == 1) { %>
+                                                <pre>이용 중</pre>
+                                            <% } else { %>
+                                                <pre>예약</pre>
+                                            <% } %>    
+                                        </div>
+                                        <div class="form-group" style="padding: 10px 10px;">
+                                            <label>방 기본가격</label>
+                                            <pre>￦ <%= list.price%> 원</pre>
+                                        </div>
+                                        <div class="form-group" style="padding: 10px 10px;">
+                                            <label>시간별 추가 금액</label>
+                                            <pre>￦ <%= list.TPRate%> 원</pre>
+                                        </div>
+                                        <div class="form-group" style="padding: 10px 10px;">
+                                            <label>인원별 추가 금액</label>
+                                            <pre>￦ <%= list.PPRate%> 원</pre>
+                                        </div>
+                                        <div class="form-group" style="padding: 10px 10px;">
+                                            <label>방 등록일</label>
+                                            <pre><%= list.rdate.toLocaleString().slice(0,-3)%></pre>
+                                        </div>
+                                        <div class="form-group" style="padding: 10px 10px;">
+                                            <label>방 설명</label>
+                                            <pre style="height:280px" style="word-wrap: break-word;"><%- list.account.replace(/(?:\r\n|\r|\n)/g, '<br/>') %></pre>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-left">
+                                    <td colspan="2">
+                                        <td><button type="button" class="btn btn-primary" style="padding:4px 12px;" onclick="location.href='/admin/room';">목록</button></td> 
+                                        <td><button type="button" class="btn btn-warning" style="padding:4px 12px;" onclick="location.href='/admin/room_update?idx=<%= list.idx %>';">수정</button></td>
+                                        <td><button type="button" class="btn btn-danger" style="padding:4px 12px;" onclick= "fileDelete('<%= list.idx%>')">삭제</button></td>
+                                    </td>
+                                </div>
+                            </form> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<%-include('../adminFrame/footer.ejs')%>
+<script>
+ function fileDelete(idx){
+        if(confirm("삭제하시겠습니까?")){
+            $.ajax({
+                type : 'get' , 
+                url : '/admin/deleteRoom?idx='+idx , 
+            }).done(function(data){                
+                alert(data.msg);
+                if(data.result == 'success'){
+                    location.href='/admin/room'
+                }            
+            }).fail(function(e){
+                    console.log(JSON.stringify(e));
+            })            
+        }
+    }
+</script>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="17.5" height="17.5" viewBox="0 0 17.5 17.5">
+  <g id="controls-alt" transform="translate(-3.25 -3.25)" opacity="0.8">
+    <circle id="타원_1" data-name="타원 1" cx="2" cy="2" r="2" transform="translate(7 4)" fill="none" stroke="#fff" stroke-linecap="square" stroke-width="1.5"/>
+    <path id="패스_5" data-name="패스 5" d="M4,6H7" fill="none" stroke="#fff" stroke-linecap="square" stroke-width="1.5"/>
+    <path id="패스_6" data-name="패스 6" d="M11,6h9" fill="none" stroke="#fff" stroke-linecap="square" stroke-width="1.5"/>
+    <circle id="타원_2" data-name="타원 2" cx="2" cy="2" r="2" transform="translate(7 16)" fill="none" stroke="#fff" stroke-linecap="square" stroke-width="1.5"/>
+    <path id="패스_7" data-name="패스 7" d="M4,18H7" fill="none" stroke="#fff" stroke-linecap="square" stroke-width="1.5"/>
+    <path id="패스_8" data-name="패스 8" d="M11,18h9" fill="none" stroke="#fff" stroke-linecap="square" stroke-width="1.5"/>
+    <circle id="타원_3" data-name="타원 3" cx="2" cy="2" r="2" transform="translate(13 10)" fill="none" stroke="#fff" stroke-linecap="square" stroke-width="1.5"/>
+    <path id="패스_9" data-name="패스 9" d="M4,12h9" fill="none" stroke="#fff" stroke-linecap="square" stroke-width="1.5"/>
+    <path id="패스_10" data-name="패스 10" d="M17,12h3" fill="none" stroke="#fff" stroke-linecap="square" stroke-width="1.5"/>
+  </g>
+</svg>

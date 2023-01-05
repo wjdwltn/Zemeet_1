@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%-include('../adminFrame/head.ejs') %>
+</head>
+
+<body>
+    <div id="wrapper">
+        <%-include('../adminFrame/nav.ejs') %>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">게임 상세정보</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            게임 세부사항
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <form id="reservationForm" role="form">
+                                <div class="row" style="margin-bottom:15px">
+                                    <div class="col-lg-5">
+                                        <input type="hidden" name="idx" value="<%=info.idx%>">
+                                        <div class="form-group">
+                                            <label>메인사진</label>
+                                            <div><img src="/<%= info.pic %>" width="150px;"/></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>게임 이름(한글)</label>
+                                            <div><%= info.Kname %></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>게임 이름(영문)</label>
+                                            <div><%= info.Ename %></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>장르</label>
+                                            <div><%= info.genre %></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>검색 횟수</label>
+                                            <div><%= info.grank %>번</div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>최소 인원</label>
+                                            <div><%= info.umin %>명</div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>최대인원</label>
+                                            <div><%= info.umax %>명</div>
+                                        </div>
+                                    </div>        
+                                    <!-- /.col-lg-5 (nested) -->
+                                    <div class="col-lg-5">
+                                        <div class="form-group">
+                                            <label>플레이 시간</label>
+                                            <div><%= info.playtime %></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>설명 시간 </label>
+                                            <div><%= info.explantime%></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>난이도</label>
+                                            <div><%= info.level%></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>진열 위치</label>
+                                            <div><%= info.loc%></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>한 줄 설명</label>
+                                            <div><%= info.simexplan%></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>설명 영상</label>
+                                            <div><video src="/<%= info.vid%>" width="150px;" controls="controls" autoplay="autoplay" loop="loop" /></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>게임 설명</label>
+                                            <div id="explantext" style="word-wrap:break-word;">
+                                                <%- info.explan.replace(/(?:\r\n|\r|\n)/g, '<br/>') %>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>등록일</label>
+                                            <div><%= info.udate.toLocaleString() %></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <tr>
+                                    <td colspan="2">
+                                        <td><button type="button" class="btn btn-primary" style="padding:4px 12px;" onclick="location.href='/admin/game';">목록</button></td> 
+                                        <td><button type="button" class="btn btn-warning" style="padding:4px 12px;" onclick="location.href='/admin/game_update?idx=<%= info.idx %>';">수정</button></td>
+                                        <td><button type="button" class="btn btn-danger" style="padding:4px 12px;" onclick= "fileDelete('<%= info.idx%>')">삭제</button></td>
+                                        
+                                    </td>
+                                </tr>
+                            </form> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<%-include('../adminFrame/footer.ejs')%>
+<script>
+ function fileDelete(idx){
+        if(confirm("삭제하시겠습니까?")){
+            $.ajax({
+                type : 'get' , 
+                url : '/admin/deleteGame?idx='+idx , 
+            }).done(function(data){                
+                alert(data.msg);
+                if(data.result == 'success'){
+                    location.href='/admin/game'
+                }            
+            }).fail(function(e){
+                    console.log(JSON.stringify(e));
+            })            
+        }
+}
+
+// function texta(id){
+//     var str = $("#explan_text").html();
+//     console.log($("#"+id).html())
+//     str = str.replace(/(?:\r\n|\r|\n)/g, '<br />');
+//     $("#"+id).html(str);
+//   }
+</script>

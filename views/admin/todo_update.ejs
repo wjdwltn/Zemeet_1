@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<script type="text/javascript" src="../../js/HuskyEZCreator.js" charset="utf-8"></script>
+<head>
+    <%-include('../adminFrame/head.ejs') %>
+</head>
+
+<body>
+    <div id="wrapper">
+        <%-include('../adminFrame/nav.ejs') %>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">todolist 수정하기</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            todolist 세부사항
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <form id="todoUpdateForm" role="form">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label>내용</label>
+                                            <input id = "inputContent" class="form-control" type="varchar" name="content" value="<%= todo.content %>" placeholder="내용을 입력하세요" required/>
+                                        </div>
+                                    </div>   
+                                </div>     
+                                    <!-- /.col-lg-5 (nested) -->
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <div class="col-lg-3" style="padding-left:0px;">
+                                            <div class="form-group">
+                                                <label>시작일</label>
+                                                <input id = "inputStime" class="form-control" type="date" name="stime" style="margin-left:0px;" value="" required/>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3" style="padding-left:0px;">
+                                            <div class="form-group">
+                                                <label>종료일</label>
+                                                <input id = "inputEtime" class="form-control" type="date" name="etime" value="" required/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-bottom:25px;">
+                                    <div class="col-lg-6">
+                                        <br>
+                                        <label>반복</label>
+                                        <label class="radio-inline">
+                                        <input type="radio" name="day" value="0" onchange="setDisplay(1)" <% if(todo.day == '0'){ %> checked <%} %>/>매일
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="day" id="selday"  value="selday" onchange="setDisplay(2)" <% if(todo.day != '-1'&& todo.day !='0'){ %> checked <%} %>/>요일선택
+                                        </label>
+                                        <div><label class="checkbox-inline" style="padding:0px">매주</label><label class="checkbox-inline">
+                                            <input type="checkbox" name="day"  id="daysel" value="2" disabled <% if(dayarray.includes(2)){ %> checked <%} %>/>월
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="day" id="daysel" value="3" disabled<% if(dayarray.includes(3)){ %> checked <%} %>/>화
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="day" id="daysel" value="4" disabled <% if(dayarray.includes(4)){ %> checked <%} %>/>수
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="day" id="daysel" value="5" disabled <% if(dayarray.includes(5)){ %> checked <%} %>/>목
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="day" id="daysel" value="6" disabled <% if(dayarray.includes(6)){ %> checked <%} %>/>금
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="day" id="daysel" value="7" disabled <% if(dayarray.includes(7)){ %> checked <%} %>/>토
+                                            </label>            
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="day" id="daysel" value="1" disabled <% if(dayarray.includes(1)){ %> checked <%} %>/>일
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form> 
+                            <div class="text-left">
+                                <td colspan="2">
+                                    <td><button type="button" class="btn btn-primary" style="padding:4px 12px;" onclick="location.href='/admin/todolist?idx=<%= todo.idx %>';">뒤로</a></button></td> 
+                                    <td><button type="button" class="btn btn-warning" style="padding:4px 12px;" onclick="todoUpdate('<%= todo.gidx %>')">수정</button></td>
+                                </td>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<%-include('../adminFrame/footer.ejs')%>
+<script>
+    function setDisplay(num){
+        console.log("dd")
+        if(num=='2'){
+            console.log("33")
+            $("input[id=daysel]").prop("disabled", false);
+        }
+        else{
+            $("input[id=daysel]").prop("checked", false);
+            $("input[id=daysel]").prop("disabled", true);
+        }
+    }   
+    $(document).ready(function(){
+        if($("#selday").is(':checked')){
+            $("input[id=daysel]").prop("disabled", false);
+        }
+    })
+function todoUpdate(gidx){
+	let data = $("#todoUpdateForm").serialize() + "&gidx="+gidx
+    console.log("data",data)
+    $.ajax({
+            type : 'post' , 
+            url : '/admin/todoUpdateProcess' , 
+            data : data , 
+            dataType : 'json' ,                
+    }).done(function(data){                
+        alert(data.msg);
+        if(data.result == 'success'){
+            location.href = '/admin/todolist?idx=<%= todo.idx%>'
+        }            
+    }).fail(function(e){
+            console.log(JSON.stringify(e));
+    })
+}
+$(document).ready(function(){
+    $("#inputStime").val(dateFormat('<%=todo.stime%>'))
+    $("#inputEtime").val(dateFormat('<%=todo.etime%>'))
+});
+var replaceNotPhone = /[^0123456789-]/g; //전화번호가 아닌 경우 비입력 처리
+    $(document).ready(function(){
+        $("#inputPhone").on("focusout", function() {
+            var x = $(this).val();
+            if (x.length > 0) {
+                if (x.match(replaceNotPhone)) {
+                   x = x.replace(replaceNotPhone, "");
+                }
+                $(this).val(x);
+            }
+        }).on("keyup", function() {
+            $(this).val($(this).val().replace(replaceNotPhone, ""));
+        });
+});
+var replaceNotInt = /[^0-9]/gi; //숫자가 아닌 경우 비입력 처리
+    $(document).ready(function(){
+        $("[id*=int_]").on("focusout", function() {
+            var x = $(this).val();
+            if (x.length > 0) {
+                if (x.match(replaceNotInt)) {
+                   x = x.replace(replaceNotInt, "");
+                }
+                $(this).val(x);
+            }
+        }).on("keyup", function() {
+            $(this).val($(this).val().replace(replaceNotInt, ""));
+        });
+    });
+var replaceChar = /[a-zA-Z~!@\#$%^&*\()\-=+_'\;<>0-9\/.\`:\"\\,\[\]?|{}]/gi;  // 완성형 한글이 아닌 경우 비입력 처리
+ var replaceNotFullKorean = /[ㄱ-ㅎㅏ-ㅣ]/gi;
+ $(document).ready(function(){
+     $("#inputName").on("focusout", function() {
+         var x = $(this).val();
+         if (x.length > 0) {
+             if (x.match(replaceChar) || x.match(replaceNotFullKorean)) {
+                 x = x.replace(replaceChar, "").replace(replaceNotFullKorean, "");
+             }
+             $(this).val(x);
+         }
+         }).on("keyup", function() {
+             $(this).val($(this).val().replace(replaceChar, ""));
+    });
+ });      
+ var replaceNotAN = /[^0-9a-zA-Z]/gi; //알파벳과 숫자만 입력 가능
+    $(document).ready(function(){
+        $("[id*=inputAN_]").on("focusout", function() {
+            var x = $(this).val();
+            if (x.length > 0) {
+                if (x.match(replaceNotAN)) {
+                   x = x.replace(replaceNotAN, "");
+                }
+                $(this).val(x);
+            }
+        }).on("keyup", function() {
+            $(this).val($(this).val().replace(replaceNotAN, ""));
+        });
+    });
+</script>

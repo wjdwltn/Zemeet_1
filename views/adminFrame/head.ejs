@@ -1,0 +1,104 @@
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>ZEMEET 관리자 페이지</title>
+
+<!-- Bootstrap Core CSS -->
+<link href="../admin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- MetisMenu CSS -->
+<link href="../admin/vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+<!-- Custom CSS -->
+<link href="../admin/dist/css/sb-admin-2.css" rel="stylesheet">
+
+<!-- Calendar CSS -->
+<link href="../admin/dist/css/style2.css" rel="stylesheet">
+
+<!-- Morris Charts CSS -->
+<link href="../admin/vendor/morrisjs/morris.css" rel="stylesheet">
+
+<!-- Custom Fonts -->
+<link href="../admin/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    function dateFormat_month(sdate) {
+    let date = new Date(sdate);
+    let month = date.getMonth() + 1;
+    month = month >= 10 ? month : '0' + month;
+    return date.getFullYear() + '-' + month;
+}
+function dateFormat(sdate) {
+    let date = new Date(sdate);
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    month = month >= 10 ? month : '0' + month;
+    day = day >= 10 ? day : '0' + day;
+    return date.getFullYear() + '-' + month + '-' + day;
+}
+function dateOfficialFormat(sdate) {
+    let date = new Date(sdate);
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    month = month >= 10 ? month : '0' + month;
+    day = day >= 10 ? day : '0' + day;
+    return date.getFullYear() + '' + month + '' + day;
+}
+function dateTimeFormat(sdate) {
+    let date = new Date(sdate);
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    let hour = date.getHours();
+    let minute = date.getMinutes();
+    let second = date.getSeconds();
+
+    month = month >= 10 ? month : '0' + month;
+    day = day >= 10 ? day : '0' + day;
+    hour = hour >= 10 ? hour : '0' + hour;
+    minute = minute >= 10 ? minute : '0' + minute;
+    second = second >= 10 ? second : '0' + second;
+
+    return date.getFullYear() + '-' + month + '-' + day + ' | ' + hour + ':' + minute + ':' + second;
+}
+function dateTimeOfficialFormat(sdate) {//input란에 ISO 시간대로 입력하기 위한 포맷
+    let date = new Date(sdate);
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    let hour = date.getHours();
+    let minute = date.getMinutes();
+    let second = date.getSeconds();
+
+    month = month >= 10 ? month : '0' + month;
+    day = day >= 10 ? day : '0' + day;
+    hour = hour >= 10 ? hour : '0' + hour;
+    minute = minute >= 10 ? minute : '0' + minute;
+    second = second >= 10 ? second : '0' + second;
+
+    return date.getFullYear() + '-' + month + '-' + day + 'T' + hour + ':' + minute + ':' + second;
+}
+function dateTimeOfficialFormat2(sdate) {//input란에 ISO 시간대로 입력하기 위한 포맷
+    let date = new Date(sdate);
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    let hour = date.getHours();
+    let minute = date.getMinutes();
+    let second = date.getSeconds();
+
+    month = month >= 10 ? month : '0' + month;
+    day = day >= 10 ? day : '0' + day;
+    hour = hour >= 10 ? hour : '0' + hour;
+    minute = minute >= 10 ? minute : '0' + minute;
+    second = second >= 10 ? second : '0' + second;
+
+    return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute;
+}
+</script>
+
+
+

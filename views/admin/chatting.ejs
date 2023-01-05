@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<script type="text/javascript" src="../../js/HuskyEZCreator.js" charset="utf-8"></script>
+<html lang="en">
+
+<head>
+    <%-include('../adminFrame/head.ejs')%>
+</head>
+<body>
+    <div id="wrapper">
+        <!-- Navigation -->
+        <%-include('../adminFrame/nav.ejs')%>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">채팅 매크로 관리</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            채팅 세부사항
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="row" style="margin-bottom:15px">
+                                <div class="col-lg-8">
+                                    <form method="get" action="/admin/chat" id="searchForm" class="form-3" style="float:right; display:flex;">
+                                        <input type="hidden" name="page" id="pageIndex" value="0">
+                                    </form>
+                                </div>
+                            </div>
+                            <form id="macroForm" role="form">
+                                <div class="row">
+                                    <div class="col-lg-12"  >
+                                        <% for(var i=0; i< list.length ;i++) {%>
+                                        <div class="form-group" style="padding: 10px 10px; float:center; ">
+                                            <!-- <label style="margin-left:180px;"><%=i+1%>.</label> -->
+                                            <input type="int" class="form-control" id="macroupdate_<%=list[i].idx%>" value="<%=list[i].macro%>"  style="width:65%; margin-left:16%; height:50px;display:inline; " required/>
+                                            <td colspan="2">
+                                                <td><button type="button" class="btn btn-warning" style="width:60px; height:50px; margin-left:6px; margin-bottom:7px"  onclick="macroUpdate('<%=list[i].idx%>',$('#macroupdate_<%=list[i].idx%>').val())">수정</button></td>
+                                                <td><button type="button" class="btn btn-danger" style="width:60px; height:50px; margin-bottom:7px;"  onclick="macroDelete('<%= list[i].idx %>')">삭제</button></td>
+                                            </td>
+                                        </div>
+                                        <%}%>
+                                    </div>
+                                </div>
+                            </form> 
+                            <div class="text-center">
+                                <div class="panel-body">
+                                    <!-- Nav tabs -->
+                                    <ul class="pagination">
+                                        <% if(page == 0) { %>
+                                            <li class="paginate_button"><a href="javascript:void(0)">&laquo;</a></li>
+                                        <% }else { %>
+                                            <li class="paginate_button"><a href="javascript:paging(<%=page-1%>)">&laquo;</a></li>
+                                        <% } %>
+                                        <% if(Math.ceil(totalitems/countperpage) == 0) { %>
+                                            <li class="paginate_button active"><a href="javascript:paging(<%=0%>)" class="page">1</a></li>
+                                        <% }else { %>
+                                        <%  for(var j = 0; j < Math.ceil(totalitems/countperpage) ; j++){  %>                                            
+                                            <li class="paginate_button <% if (page == j) { %> active<%}%>"><a href="javascript:paging(<%=j%>)" class="page"><%= j + 1 %></a></li>
+                                        <%}%>         
+                                        <%}%>                                          
+                                        <% if(page+1 == Math.ceil(totalitems/countperpage)) { %>
+                                            <li class="paginate_button"><a href="javascript:void(0)">&raquo;</a></li>
+                                        <% }else { %>
+                                            <li class="paginate_button"><a href="javascript:paging(<%=page+1%>)">&raquo;</a></li>
+                                        <% } %>                                        
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-group" style="padding: 10px 10px;text-align : left;">
+                                <td colspan="2">
+                                    <input type="int" class="form-control"  id="macro_insert" value="" style="width:65%; margin-left:16%; height:50px;display:inline;" placeholder="추가할 매크로를 입력해주세요." required/>
+                                    <td><button type="button" class="btn btn-warning" style="width:60px; height:50px; margin-left:5px; margin-bottom:4px;" onclick="macroinsert($('#macro_insert').val())">추가</a></button></td>                                          
+                                </td>
+                            </div>  
+                        </div>
+                    </div>
+                </div>    
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<%-include('../adminFrame/footer.ejs')%>
+<script>
+    function macroUpdate(idx,macro){
+        console.log("idx,",idx)
+        console.log("macro",macro)
+        $.ajax({
+                type : 'get' , 
+                url : '/admin/macroUpdateProcess?idx='+idx+'&macro='+macro,
+                dataType : 'json' ,                
+        }).done(function(data){                
+            alert(data.msg);
+            if(data.result == 'success'){
+                location.href = '/admin/chat'
+            }            
+        }).fail(function(e){
+                console.log(JSON.stringify(e));
+        })
+    }
+    function macroinsert(macro){
+        console.log("macro,",macro)
+        $.ajax({
+                type : 'get' , 
+                url : '/admin/macroinsert?macro='+macro, 
+                dataType : 'json' ,                
+        }).done(function(data){                
+            alert(data.msg);
+            if(data.result == 'success'){
+                location.href = '/admin/chat'
+            }            
+        }).fail(function(e){
+                console.log(JSON.stringify(e));
+        })
+    }
+    function macroDelete(idx){
+        if(confirm("삭제하시겠습니까?")){
+            $.ajax({
+                type : 'get' , 
+                url : '/admin/macrodelete?idx='+idx , 
+            }).done(function(data){                
+                alert(data.msg);
+                if(data.result == 'success'){
+                    location.href='/admin/chat'
+                }             
+            }).fail(function(e){
+                    console.log(JSON.stringify(e));
+            })            
+        }
+    }
+    function paging(num){      
+      $("#pageIndex").val(num);      
+      $("#searchForm").submit();
+    }
+</script>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="23.5" height="23.5" viewBox="0 0 23.5 23.5">
+  <g id="grid2" transform="translate(-114.404 -861.404)">
+    <g id="grid" transform="translate(115.154 862.154)">
+      <rect id="사각형_185" data-name="사각형 185" width="8.555" height="8.555" transform="translate(0 0)" fill="rgba(0,0,0,0)" stroke="#fad17f" stroke-linecap="square" stroke-width="1.5"/>
+      <rect id="사각형_186" data-name="사각형 186" width="8.555" height="8.555" transform="translate(13.444 0)" fill="rgba(0,0,0,0)" stroke="#fad17f" stroke-linecap="square" stroke-width="1.5"/>
+      <rect id="사각형_187" data-name="사각형 187" width="8.555" height="8.555" transform="translate(0 13.444)" fill="rgba(0,0,0,0)" stroke="#fad17f" stroke-linecap="square" stroke-width="1.5"/>
+      <rect id="사각형_188" data-name="사각형 188" width="8.555" height="8.555" transform="translate(13.444 13.444)" fill="rgba(0,0,0,0)" stroke="#fad17f" stroke-linecap="square" stroke-width="1.5"/>
+    </g>
+  </g>
+</svg>

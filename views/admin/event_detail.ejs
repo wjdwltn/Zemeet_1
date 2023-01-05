@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%-include('../adminFrame/head.ejs') %>
+</head>
+
+<body>
+    <div id="wrapper">
+        <%-include('../adminFrame/nav.ejs') %>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">이벤트 상세보기</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            이벤트 세부사항
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <form id="staffForm" role="form">
+                                <div class="row" style="margin-bottom:15px">
+                                    <div class="col-lg-6">
+                                        <input type="hidden" name="idx" value="<%=rows.idx%>">
+                                        <div class="form-group">
+                                            <label>제목</label>
+                                            <div style="word-break:break-all;word-wrap:break-word;"><%= rows.title %></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>내용</label>
+                                            <div id="content" style="word-wrap:break-word;">
+                                                <%- rows.content.replace(/(?:\r\n|\r|\n)/g, '<br/>') %>
+                                            </div>
+                                    
+                                        </div>
+                                        <div class="form-group">
+                                            <label>시작일</label>
+                                            <div><script>document.write(dateFormat('<%=rows.start%>'))</script></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>종료일</label>
+                                            <div><script>document.write(dateFormat('<%=rows.end%>'))</script></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>진행여부</label>
+                                            <div>
+                                                <script>
+                                                    if(dateFormat('<%-rows.start%>') <= '<%-today%>' && '<%-today%>' <= dateFormat('<%-rows.end%>'))
+                                                        document.write("진행중");
+                                                    else if(dateFormat('<%-rows.start%>') > '<%-today%>')
+                                                        document.write("진행 예정");
+                                                    else if(dateFormat('<%-rows.end%>') < '<%-today%>')
+                                                        document.write("진행 종료");
+                                                </script>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>등록일</label>
+                                            <div><script>document.write(dateFormat('<%=rows.udate%>'))</script></div>
+                                        </div>
+                                    </div>        
+                                </div>
+                                    <td colspan="2">
+                                        <td><button type="button" class="btn btn-primary" style="padding:4px 12px;" onclick="location.href='/admin/event';">목록</button></td> 
+                                        <td><button type="button" class="btn btn-warning" style="padding:4px 12px;" onclick="location.href='/admin/event_update?idx=<%= rows.idx %>';">수정</button></td>
+                                        <td><button type="button" class="btn btn-danger" style="padding:4px 12px;" onclick= "fileDelete('<%= rows.idx%>')">삭제</button></td>
+                                    </td>
+                            </form> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        img{
+            max-width:750px;
+            max-height:600px;
+        }
+    </style>
+</body>
+</html>
+<%-include('../adminFrame/footer.ejs')%>
+<script>
+function fileDelete(idx){
+        if(confirm("삭제하시겠습니까?")){
+            $.ajax({
+                type : 'get' , 
+                url : '/admin/deleteEvent?idx='+idx , 
+            }).done(function(data){                
+                alert(data.msg);
+                if(data.result == 'success'){
+                    location.href='/admin/event'
+                }             
+            }).fail(function(e){
+                    console.log(JSON.stringify(e));
+            })            
+        }
+    }
+</script>

@@ -1,0 +1,76 @@
+<!DOCTYPE html><!--  This site was created in Webflow. http://www.webflow.com  -->
+<!--  Last Published: Thu Mar 31 2022 01:51:32 GMT+0000 (Coordinated Universal Time)  -->
+<html data-wf-page="6243b9dd5563bcef68fceb32" data-wf-site="61fb361452ff0215fe4db1db">
+<head>
+  <title>API_notice_detail</title>
+  <meta content="API_notice_detail" property="og:title">
+  <meta content="API_notice_detail" property="twitter:title">
+  <%-include('../apiFrame/head.ejs') %>
+</head>
+<body class="api_body">
+  <div class="api_frame">
+    <div class="api_top return">
+      <div>이벤트</div>
+      <a href="eventboard" class="api_topreturn w-inline-block"><img src="../user/images/chevron-left.svg" loading="lazy" alt="" class="image-25"></a>
+    </div>
+    <div class="api_innerframe">
+      <div class="api_section">
+        <div class="api_list_container">
+          <div class="title" style="word-break:break-all;word-wrap:break-word;"><%=list.title%></div> 
+          <% if(new Date(list.start.getTime() - (list.start.getTimezoneOffset() * 60000)).toISOString().slice(0,10) <= today && today <= new Date(list.end.getTime() - (list.end.getTimezoneOffset() * 60000)).toISOString().slice(0,10)) { %>
+            <div class="api_detail_subtxt"><script>document.write(dateFormat('<%=list.start%>')+"~"+dateFormat('<%=list.end%>'))</script> / 진행중</div>
+          <%} else if( new Date(list.start.getTime() - (list.start.getTimezoneOffset() * 60000)).toISOString().slice(0,10) > today) {%>
+            <div class="api_detail_subtxt"><script>document.write(dateFormat('<%=list.start%>')+"~"+dateFormat('<%=list.end%>'))</script> / <span style="color:rgb(82, 82, 218);">진행 예정</span></div>
+          <%} else if(new Date(list.end.getTime() - (list.end.getTimezoneOffset() * 60000)).toISOString().slice(0,10) < today) {%>
+            <div class="api_detail_subtxt"><script>document.write(dateFormat('<%=list.start%>')+"~"+dateFormat('<%=list.end%>'))</script> / <span style="color:rgb(247, 76, 76);">진행 종료</span></div>
+          <%}%>
+          
+          <div class="api_detailbord"  style="word-wrap:break-word;">
+            <div><%- list.content.replace(/(?:\r\n|\r|\n)/g, '<br/>') %></div>
+          </div>
+        </div>
+        <div class="detail_bottom">
+          <% if (next.length == 0) {%>
+            <div class="api_detail_bbtn w-inline-block"><img src="../user/images/Icon-awesome-caret-down.svg" loading="lazy" alt="" class="arrow1">
+              <div class="title4">다음 글</div>
+              <div>다음 글이 없습니다.</div>
+            </div>
+          <% } else {%>  
+            <a href="#" class="api_detail_bbtn w-inline-block" onclick="location.href='/api/eventdetail?idx=<%= next[0].idx%>&no=<%=Number(no)-1%>'"><img src="../user/images/Icon-awesome-caret-down.svg" loading="lazy" alt="" class="arrow1">
+              <div class="title4">다음 글</div>
+              <div><%=next[0].title%></div>
+            </a>
+          <%}%>
+          <% if (prev.length == 0) {%>
+            <div class="api_detail_bbtn w-inline-block"><img src="../user/images/Icon-awesome-caret-down.svg" loading="lazy" alt="" class="arrow2">
+              <div class="title4">이전 글</div>
+              <div>이전 글이 없습니다.</div>
+            </div>
+          <% } else {%>  
+            <a href="#" class="api_detail_bbtn w-inline-block" onclick="location.href='/api/eventdetail?idx=<%=prev[0].idx%>&no=<%=Number(no)+1%>'"><img src="../user/images/Icon-awesome-caret-down.svg" loading="lazy" alt="" class="arrow2">
+              <div class="title4">이전 글</div>
+              <div><%=prev[0].title%></div>
+            </a>
+          <%}%>
+        </div>
+      </div>
+    </div>
+    <div class="bottom">
+      <a href="main" class="api_bottombtn w-inline-block"><img src="../user/images/home.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/home2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>홈</div>
+      </a>
+      <a href="gamesearch" class="api_bottombtn w-inline-block"><img src="../user/images/grid.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/grid2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>게임</div>
+      </a>
+      <a href="roomsearch" class="api_bottombtn w-inline-block"><img src="../user/images/calendar.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/calendar2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>예약</div>
+      </a>
+      </a>
+      <a href="customer" aria-current="page" class="api_bottombtn select w-inline-block w--current"><img src="../user/images/headset_white.svg" loading="lazy" alt="" class="api_bottombtn_img _1 select"><img src="../user/images/headset_color.svg" loading="lazy" alt="" class="api_bottombtn_img _2 select">
+        <div>고객센터</div>
+      </a>
+    </div>
+  </div>
+  <%-include('../apiFrame/footer.ejs') %>
+</body>
+</html>

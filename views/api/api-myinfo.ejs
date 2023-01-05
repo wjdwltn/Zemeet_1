@@ -1,0 +1,216 @@
+<!DOCTYPE html><!--  This site was created in Webflow. http://www.webflow.com  -->
+<!--  Last Published: Tue Mar 15 2022 02:52:20 GMT+0000 (Coordinated Universal Time)  -->
+<html data-wf-page="6214692eaa9aba3a41c6de76" data-wf-site="61fb361452ff0215fe4db1db">
+<head>
+  <title>API_MyInfo</title>
+  <meta content="API_MyInfo" property="og:title">
+  <meta content="API_MyInfo" property="twitter:title">
+  <%-include('../apiFrame/head.ejs') %>
+</head>
+<body class="api_body">
+  <div class="api_frame">
+    <div class="api_top return">
+      <div>Home</div>
+      <a href="main" class="api_topreturn w-inline-block"><img src="../user/images/chevron-left.svg" loading="lazy" alt="" class="image-25"></a>
+    </div>
+    <div class="api_innerframe">
+      <div class="mypage_container">
+        <a href="#" class="mypage_box w-inline-block"><img src="../user/images/imag1_3.png" loading="lazy" alt="" class="profile_icon">
+          <div>
+            <% if(session.isLogin){ %>
+            <div class="mypage_title"><%=session.nick%> 님 <span class="mypage_gradespan gold">등급: <%=session.ranking%></span></div>
+            <% } else {%>
+              <div class="mypage_title">비회원 님 <span class="mypage_gradespan gold"></span></div>
+              <div class="text-block-9">로그인 후 이용가능합니다</div>
+            <% } %>
+          </div>
+        </a>
+        <% if(session.isLogin){ %>
+        <a href="myinfo-modify" class="mypage_box _2 w-inline-block">
+          <div>계정정보 관리</div>
+        </a>
+        <div class="mypage_block">
+          <a href="rewardboard" class="mypage_box _2 w-inline-block">
+            <div>적립내역</div>
+            <div class="pointtxt">Point:<%= info[0].point %> P</div>
+          </a>
+          <a href="reservation" class="mypage_box w-inline-block">
+            <div>예약관리</div>
+            <div class="mypage_subtext">예약조회 및 관리</div>
+          </a>
+          <a href="alarmlog" class="mypage_box w-inline-block">
+            <div>알림 내역</div>
+          </a>
+          <a href="questionboard" class="mypage_box w-inline-block">
+            <div>문의</div>
+          </a>
+          <a href="#" class="mypage_box w-inline-block">
+            <div>푸쉬 알람 설정</div>
+            <% if(info[0].push == 'N') {%>
+            <div class="push_btnarea" onclick="pushalarm()">
+              <div class="push_circle"></div>
+            </div>
+            <%} else if(info[0].push == 'Y') {%>
+              <div class="push_btnarea click" onclick="pushalarm()">
+                <div class="push_circle"></div>
+              </div>
+            <%}%>
+          </a>
+        </div>
+        <% } else {%>
+        <% } %>
+        <div class="mypage_block">
+          <% if(session.isLogin){ %>
+            <!--로그인 했을때-->
+            <a href="javascript:openPop('pop_logout')" class="mypage_box _2 w-inline-block">
+              <div>로그아웃</div>
+            </a>
+          <% } else {%>
+            <!--로그인 안했을때-->  
+            <a href="login" class="mypage_box _2 w-inline-block">
+                <div>로그인</div>
+              </a>
+          <% } %>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="bottom">
+      <a href="main" class="api_bottombtn w-inline-block"><img src="../user/images/home.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/home2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>홈</div>
+      </a>
+      <a href="gamesearch" class="api_bottombtn w-inline-block"><img src="../user/images/grid.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/grid2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>게임</div>
+      </a>
+      <a href="roomsearch" class="api_bottombtn w-inline-block"><img src="../user/images/calendar.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/calendar2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>예약</div>
+      </a>
+      </a>
+      <a href="customer" class="api_bottombtn w-inline-block"><img src="../user/images/headset_white.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/headset_color.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>고객센터</div>
+      </a>
+    </div>
+    <div class="api_pop" style="display:none;">
+      <div class="logout_pop" style="display:none;" id="pop_logout">
+        <div class="div-block-3">
+          <div class="div-block-5">
+            <div>로그아웃 하시겠습니까?</div>
+          </div>
+          <div class="div-block-4">
+            <a href="logout" class="api_btn_pop w-button">확인</a>
+            <a href="javascript:closePop()" class="api_btn_pop cancle w-button">취소</a>
+          </div>
+        </div>
+      </div>
+      <div class="push_pop" style="display:none;" id="pop_push">
+        <div class="div-block-3">
+          <div class="div-block-5">
+            <div>푸쉬알림을 해제하시겠습니까?<br><span class="small">해제를 원하실 경우 확인을 눌러주세요.</span>‍<a href="terms" class="link"><br>(이용동의 약관으로 이동)</a>
+            </div>
+          </div>
+          <div class="apipop_btnarea">
+            <a href="javascript:pushonoff('off')" class="apipop_btn _2 w-button">확인</a>
+            <a href="javascript:closePop()" class="apipop_btn w-button">취소</a>
+          </div>
+        </div>
+      </div>
+      <div class="push_pop" style="display:none;" id="pop_pushon" style="z-index: 100000;">
+        <div class="div-block-3">
+          <div class="div-block-5">
+            <div>푸쉬알림을 설정하시겠습니까?<br><span class="small">설정를 원하실 경우 확인을 눌러주세요.</span>‍<a href="terms" class="link"><br>(이용동의 약관으로 이동)</a>
+            </div>
+          </div>
+          <div class="apipop_btnarea">
+            <a href="javascript:pushonoff('on')" class="apipop_btn _2 w-button">확인</a>
+            <a href="javascript:closePop()" class="apipop_btn w-button">취소</a>
+          </div>
+        </div>
+      </div>
+      <div class="push_pop" style="display:none;" id="pushsuccess">
+        <div class="div-block-3">
+          <div class="div-block-5">
+            <div>푸쉬 알림이 해제되었습니다.</div>
+          </div>
+          <div class="apipop_btnarea" >
+            <a href="javascript:closePop()" class="apipop_btn _2 w-button" style="margin-left:60px;">확인</a>
+          </div>
+        </div>
+      </div>
+      <div class="push_pop" style="display:none;" id="pushsuccesson">
+        <div class="div-block-3">
+          <div class="div-block-5">
+            <div>푸쉬 알림이 설정되었습니다.</div>
+          </div>
+          <div class="apipop_btnarea" >
+            <a href="javascript:closePop()" class="apipop_btn _2 w-button" style="margin-left:60px;">확인</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%-include('../apiFrame/footer.ejs') %>
+</body>
+</html>
+<script>
+function openPop(id){
+  $("#"+id).css("display","flex");
+  $(".api_pop").css("display","flex");
+}
+function closePop(){
+  $("[id*=pop_]").css("display","none");
+  $("#pushsuccess").css("display","none");
+  $("#pushsuccesson").css("display","none");
+  $(".api_pop").css("display","none");
+}
+function pushalarm(){
+  $.ajax({
+      type : 'get' , 
+      url : '/pushalarmcheck',
+    }).done(function(data){
+      if(data.result == 'success'){    
+        if(data.push[0].push=='N'){
+          $("#pop_pushon").css("display","flex")
+          $(".api_pop").css("display","flex");
+        }else if(data.push[0].push=='Y'){
+          $("#pop_push").css("display","flex")
+          $(".api_pop").css("display","flex");
+        }
+      }      
+    }).fail(function(e){
+      console.log(JSON.stringify(e));
+    })           
+  // if($(".push")){
+  //   $("#pop_push").css("display","flex")
+  //   $(".api_pop").css("display","flex");
+  // }
+  // else if()
+  // if(status=='on'){
+  //   $("#pop_pushon").css("display","flex")
+  //   $(".api_pop").css("display","flex");
+  // }else if(status == 'off'){
+  //   $("#pop_push").css("display","flex")
+  //   $(".api_pop").css("display","flex");
+  // }
+}
+function pushonoff(status){
+  $.ajax({
+      type : 'get' , 
+      url : '/pushalarm?status='+status ,
+    }).done(function(data){
+      if(data.result == 'success'){
+        closePop()
+        if(status=='on'){
+        $("#pushsuccesson").css("display","flex");
+        $(".push_btnarea").addClass('click')
+        }
+        else{
+          $("#pushsuccess").css("display","flex");
+          $(".push_btnarea").removeClass('click')
+        }
+        $(".api_pop").css("display","flex");    
+      }      
+    }).fail(function(e){
+      console.log(JSON.stringify(e));
+    })           
+}
+</script>

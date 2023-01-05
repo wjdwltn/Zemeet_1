@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script type="text/javascript" src="../../js/HuskyEZCreator.js" charset="utf-8"></script>
+<head>
+    <%-include('../adminFrame/head.ejs')%>
+</head>
+<body>
+    <div id="wrapper">
+        <!-- Navigation -->
+        <%-include('../adminFrame/nav.ejs')%>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Q&A 답변하기</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            문의내역 답변
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <form id="qaForm"  enctype="multipart/form-data"  method="post" >
+                                <div class="row" style="margin-bottom:15px">
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label>제목</label>
+                                                    <pre><%= info.title %></pre>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="form-group">
+                                                    <label>문의자</label>
+                                                    <pre><%= info.member %></pre>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="form-group">
+                                                    <label>카테고리</label>
+                                                    <pre><%= info.category %></pre>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="form-group">
+                                                    <label>문의날짜</label>
+                                                    <pre><%= info.udate.toLocaleString() %></pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                       
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label>내용</label>
+                                                    <pre style="height:280px" style="word-wrap: break-word;"><%- info.content.replace(/(?:\r\n|\r|\n)/g, '<br/>') %></pre>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label>답변 내용</label>
+                                                    <textarea id="smartEditor" rows="15" name="anscontent" style="height:400px; " wrap="hard" ><%= info.anscontent %></textarea>
+                                                </div>
+                                                <input type="hidden" name="idx" id="idx" value="<%=info.idx%>">
+                                                
+                                            </div>     
+                                        </div>    
+                                    </div>                                                     
+                                </div>
+                                <div>   
+                                    <td colspan="2">
+                                        <td><button type="button" class="btn btn-warning" style="padding:4px 12px;" onclick="fileUpdate()">답변등록</button></td> 
+                                        <td><button type="button" class="btn btn-primary" style="padding:4px 12px;" onclick="location.href='/admin/qa_detail?idx=<%=info.idx%>';">목록</button></td>
+                                    </td>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+        </div>
+    </div>
+    <style>
+       .textarea {
+            width: 100%;
+            height: 1000px;
+        }       
+        pre{
+            padding:10px;
+            overflow: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</body>
+</html>
+<%-include('../adminFrame/footer.ejs')%>
+<script>
+
+    function fileUpdate(){
+        oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD",[]); // 스마트에디터 내용 추가
+        let formData = $("#qaForm").serialize();
+        $.ajax({
+                type : 'post' , 
+                url : '/admin/answerQuestion', 
+                data : formData , 
+                dataType : 'json' ,                 
+        }).done(function(data){                
+            alert(data.msg);
+            if(data.result == 'success'){
+                let url = '/admin/qa_detail?idx='+$("#idx").val()
+                location.replace(url)
+                answeralarm(data.idx)
+            }            
+        }).fail(function(e){
+                console.log(JSON.stringify(e));
+        })
+    }
+    function answeralarm(qa){
+        console.log("문의?들어옴?")
+        $.ajax({
+                type : 'get' , 
+                url : '/admin/answeralarm?qa='+qa   
+        }).done(function(data){       
+        }).fail(function(e){
+                console.log(JSON.stringify(e));
+        })
+    }
+    var oEditors = []; 
+    nhn.husky.EZCreator.createInIFrame({ 
+        oAppRef : oEditors, 
+        elPlaceHolder : "smartEditor",  
+        sSkinURI : "../SmartEditor2Skin.html",  
+        fCreator : "createSEditor2", 
+        htParams : {  
+            bUseToolbar : true,   // 툴사용여부 
+            bUseVerticalResizer : false, // 입력창 크기 조절 바 
+            //bSkipXssFilter : true, // xss 필터 
+            bUseModeChanger : false  // 텍스트 모드 변경 
+            },
+        fOnAppLoad : function(){
+            //oEditors.getById["smartEditor"].exec("PASTE_HTML", ['${text}']); // 미리 적용할 텍스트 내용이 있는경우 
+        },		
+    });
+
+</script>

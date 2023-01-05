@@ -1,0 +1,182 @@
+<!DOCTYPE html><!--  This site was created in Webflow. http://www.webflow.com  -->
+<html data-wf-page="6215a089a60251d42f1f1f01" data-wf-site="61fb361452ff0215fe4db1db">
+<head>
+  <meta charset="utf-8">
+  <meta content="API_Registration" property="og:title">
+  <meta content="API_Registration" property="twitter:title">
+  <%-include('../apiFrame/head.ejs') %>
+</head>
+<body class="api_body">
+  <div class="api_frame">
+    <div class="api_top return">
+      <div>Login</div>
+      <a href="login" class="api_topreturn w-inline-block"><img src="../user/images/chevron-left.svg" loading="lazy" alt="" class="image-25"></a>
+    </div>
+    <div class="api_innerframe">
+      <div class="div-block-11">
+        <div class="div-block-12"><img src="../user/images/zemeet_logo.svg" loading="lazy" alt="" class="image-26">
+          <div class="div-block-13">
+            <div class="title3">회원가입</div>
+            <div class="w-form">
+              <form id="registrationForm" name="email-form" data-name="Email Form" method="post">
+                <div> ID (아이디)</div><input id="inputAN_Id"  type="varchar" class="text-field-5 w-input" maxlength="8" name="id" placeholder="아이디를 입력하세요 (최대 8자리)">
+                <div>회원명(이름)</div><input id="inputName" type="varchar" class="text-field-5 w-input" maxlength="8" name="name" placeholder="이름을 입력하세요">
+                <div>닉네임</div><input id="inputAN_nick" type="varchar" class="text-field-5 w-input" maxlength="8" name="nick" placeholder="닉네임을 입력하세요 (최대 8자리)">
+                <div>연락처</div><input id ="inputPhone" type="varchar" class="text-field-5 w-input" maxlength="13" name="number"  placeholder = "ex) 010-1234-5678">
+                <div>생년월일</div><input type="date" class="text-field-5 w-input" name="birth" placeholder="ex) 19991231">
+                <div>PW (비밀번호)</div><input  type="password" class="text-field-5 w-input" maxlength="12" name="pw" placeholder="비밀번호를 입력하세요 (최대 12자리)">
+                <div>PW Check (비밀번호 확인)</div><input type="password" class="text-field-5 w-input" maxlength="12" name="pwcheck" placeholder="비밀번호를 다시 입력하세요">
+              </form>
+            </div>
+            <button type="button" class="button-10 _2 w-button" onclick="Register()">회원가입</button>
+          </div>
+          <div class="div-block-14">
+            <a href="login" class="link-block-14 w-inline-block">
+              <div>로그인</div>
+            </a>
+            <div>/</div>
+            <a href="#" class="link-block-14 w-inline-block">
+              <div>비밀번호 찾기</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="api_pop" style="display:none;">
+      <div class="simplepop" style="display:none;" id="pop_alert">
+        <div class="simplepop_box">
+          <div class="poptitle">알림</div>
+          <div class="simplepop_warp">
+            <div id = "alertMsg"></div>
+          </div>
+          <div class="btnarea1">
+            <a href="javascript:closePop()" class="okbtn w-button">확인</a>
+          </div>
+        </div>
+      </div>
+      <div class="simplepop" style="display:none;" id="pop_success">
+        <div class="simplepop_box">
+          <div class="poptitle">알림</div>
+          <div class="simplepop_warp">
+            <div id = "successMsg">회원가입 되었습니다.</div>
+          </div>
+          <div class="btnarea1">
+            <a href="login" class="okbtn w-button">확인</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom">
+      <a href="main" class="api_bottombtn w-inline-block"><img src="../user/images/home.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/home2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>홈</div>
+      </a>
+      <a href="gamesearch" class="api_bottombtn w-inline-block"><img src="../user/images/grid.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/grid2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>게임</div>
+      </a>
+      <a href="roomsearch" class="api_bottombtn w-inline-block"><img src="../user/images/calendar.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/calendar2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>예약</div>
+      </a>
+      </a>
+      <a href="customer" class="api_bottombtn w-inline-block"><img src="../user/images/mypage.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/mypage2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>고객센터</div>
+      </a>
+    </div>
+  </div>
+  <%-include('../apiFrame/footer.ejs') %>
+<script>
+  function closePop(){
+  $("[id*=pop_]").css("display","none");
+  $(".api_pop").css("display","none");
+}
+function Register(){
+    let formData = $("#registrationForm").serialize(); // formData 
+    $.ajax({
+            type : 'post' , // post / get (noticeWrite.do) (네트워크 주소 설정)
+            url : '/api/registrationProcess' , 
+            data : formData , 
+            dataType : 'json' ,                 
+    }).done(function(data){                
+          if(data.result == 'success'){
+            $(".api_pop").css("display","flex");
+            $("#pop_success").css("display","flex");
+            RegisterAlarm(data.id)
+            console.log("data.id",data.id)
+          }else{
+            $(".api_pop").css("display","flex");
+            $("#pop_alert").css("display","flex");
+            $("#alertMsg").html(data.msg);
+          }              
+    }).fail(function(e){
+            console.log(JSON.stringify(e));
+    })
+}
+function RegisterAlarm(id){
+  console.log("들어감?")
+    $.ajax({
+            type : 'get' , 
+            url : '/api/registerAlarm?id='+id ,             
+    }).done(function(data){            
+    }).fail(function(e){
+            console.log(JSON.stringify(e));
+    })
+}
+var replaceNotPhone = /[^0123456789-]/g; //전화번호가 아닌 경우 비입력 처리
+    $(document).ready(function(){
+        $("#inputPhone").on("focusout", function() {
+            var x = $(this).val();
+            if (x.length > 0) {
+                if (x.match(replaceNotPhone)) {
+                   x = x.replace(replaceNotPhone, "");
+                }
+                $(this).val(x);
+            }
+        }).on("keyup", function() {
+            $(this).val($(this).val().replace(replaceNotPhone, ""));
+        });
+});
+var replaceNotInt = /[^0-9]/gi; //숫자가 아닌 경우 비입력 처리
+    $(document).ready(function(){
+        $("[id*=int_]").on("focusout", function() {
+            var x = $(this).val();
+            if (x.length > 0) {
+                if (x.match(replaceNotInt)) {
+                   x = x.replace(replaceNotInt, "");
+                }
+                $(this).val(x);
+            }
+        }).on("keyup", function() {
+            $(this).val($(this).val().replace(replaceNotInt, ""));
+        });
+    });
+var replaceChar = /[a-zA-Z~!@\#$%^&*\()\-=+_'\;<>0-9\/.\`:\"\\,\[\]?|{}]/gi;  // 완성형 한글이 아닌 경우 비입력 처리
+ var replaceNotFullKorean = /[ㄱ-ㅎㅏ-ㅣ]/gi;
+ $(document).ready(function(){
+     $("#inputName").on("focusout", function() {
+         var x = $(this).val();
+         if (x.length > 0) {
+             if (x.match(replaceChar) || x.match(replaceNotFullKorean)) {
+                 x = x.replace(replaceChar, "").replace(replaceNotFullKorean, "");
+             }
+             $(this).val(x);
+         }
+         }).on("keyup", function() {
+             $(this).val($(this).val().replace(replaceChar, ""));
+    });
+ }); 
+ var replaceNotAN = /[^0-9a-zA-Z]/gi; //알파벳과 숫자만 입력 가능
+    $(document).ready(function(){
+        $("[id*=inputAN_]").on("focusout", function() {
+            var x = $(this).val();
+            if (x.length > 0) {
+                if (x.match(replaceNotAN)) {
+                   x = x.replace(replaceNotAN, "");
+                }
+                $(this).val(x);
+            }
+        }).on("keyup", function() {
+            $(this).val($(this).val().replace(replaceNotAN, ""));
+        });
+    });
+</script>
+</body>
+</html>

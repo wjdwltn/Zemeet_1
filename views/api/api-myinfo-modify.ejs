@@ -1,0 +1,205 @@
+<!DOCTYPE html><!--  This site was created in Webflow. http://www.webflow.com  -->
+<!--  Last Published: Tue Apr 05 2022 05:32:01 GMT+0000 (Coordinated Universal Time)  -->
+<html data-wf-page="624bcbb37903d870684bb09c" data-wf-site="61fb361452ff0215fe4db1db">
+<head>
+  <title>API_Myinfo_Modify</title>
+  <meta content="API_Myinfo_Modify" property="og:title">
+  <meta content="API_Myinfo_Modify" property="twitter:title">
+  <%-include('../apiFrame/head.ejs') %>
+</head>
+<body class="api_body">
+  <div class="api_frame">
+    <div class="api_top return">
+      <div>내 정보</div>
+      <a href="myinfo" class="api_topreturn w-inline-block"><img src="../user/images/chevron-left.svg" loading="lazy" alt="" class="image-25"></a>
+    </div>
+    <div class="api_innerframe">
+      <div class="api_section">
+        <div class="api_list_container">
+          <div class="title">계정정보 관리</div>
+          <div class="api_detail_subtxt">개인정보 및 계정 관리</div>
+          <div class="api_detailbord">
+            <div class="div-block-36">
+              <div class="form-block-13 w-form">
+                <form id="memberForm" name="email-form" data-name="Email Form" method="get">
+                  <input type="hidden" class="modify_box w-input" maxlength="256" name="idx" value="<%=info.idx%>">
+                  <div>아이디</div>
+                  <div class="modify_box">
+                    <div><%=info.id%></div>
+                    <input type="hidden" class="modify_box w-input" maxlength="15" name="id" value="<%=info.id%>">
+                  </div>
+                  <div>이름</div><input id = "inputName" type="varchar" class="modify_box w-input" maxlength="8" name="name" value="<%=info.name%>" placeholder="이름 입력하세요 (최대 8자리)" required>
+                  <div>닉네임</div>
+                  <div class="modify_box">
+                    <div><%=info.nick%></div>
+                    <input id = "inputAN_nick" type="hidden" class="modify_box w-input" maxlength="8" name="nick" value="<%=info.nick%>" placeholder="닉네임을 입력하세요 (최대 8자리)">
+                  </div>
+                  <div>생년월일</div><input type="date" class="modify_box w-input" name="birth"  input value="<%= new Date(info.birth.getTime() - (info.birth.getTimezoneOffset() * 60000)).toISOString().slice(0,10) %>"  required="">
+                  <div>등급</div>
+                  <div class="modify_box">
+                    <div>회원등급: <span class="grade bronz"><%=info.ranking%></span></div>
+                    <input type="hidden" class="modify_box w-input" name="ranking" value="<%=info.ranking%>">
+                  </div>
+                  <div>가입일</div>
+                  <div class="modify_box">
+                    <div><script>document.write(dateFormat('<%=info.rdate%>'))</script></div>
+                    <input type="hidden" class="modify_box w-input" name="rdate" value="<%=info.rdate.toISOString().slice(0,-2)%>">
+                  </div>
+                  <div>전화번호</div><input id = "inputPhone" type="text" class="modify_box w-input" maxlength="13" name="number" value="<%=info.number.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`) %>" placeholder="ex) 010-1234-5678" required=>
+                  <div>비밀번호 변경</div><input id = "inputAN_pw" type="password" class="modify_box w-input" maxlength="12" name="pw" placeholder="비밀번호를 입력하세요 (최대 12자리)" required>
+                  <div>비밀번호 변경 확인</div><input id = "inputAN_pwchange" type="password" class="modify_box w-input" maxlength="12" name="pwcheck" placeholder="비밀번호를 다시 입력하세요" required>
+                </form>
+              </div>
+              <a href="javascript:openPop('pop_simple')" class="button-26 w-button">수정하기</a>
+              <a href="myinfo" class="button-26 _2 w-button">취소</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="api_pop" style="display:none;">
+      <div class="api_simplepop" style="display:none;" id = pop_simple>
+        <div class="api_popbox">
+          <div class="apipop_title">알림</div>
+          <div class="apipop_warp">
+            <div>개인정보를 수정하시겠습니까?</div>
+          </div>
+          <div class="apipop_btnarea">
+            <a href="javascript:memberUpdate()" class="apipop_btn _2 w-button">확인</a>
+            <a href="javascript:closePop()" class="apipop_btn w-button">취소</a>
+          </div>
+        </div>
+      </div>
+      <div class="simplepop" style="display:none;" id="pop_alert">
+        <div class="simplepop_box">
+          <div class="poptitle">알림</div>
+          <div class="simplepop_warp">
+            <div id = "alertMsg"></div>
+          </div>
+          <div class="btnarea1">
+            <a href="javascript:closePop()" class="okbtn w-button">확인</a>
+          </div>
+        </div>
+      </div>
+      <div class="simplepop" style="display:none;" id="pop_success">
+        <div class="simplepop_box">
+          <div class="poptitle">알림</div>
+          <div class="simplepop_warp">
+            <div id = "successMsg">수정 완료되었습니다.</div>
+          </div>
+          <div class="btnarea1">
+            <a href="myinfo" class="okbtn w-button">확인</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom">
+      <a href="main" class="api_bottombtn w-inline-block"><img src="../user/images/home.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/home2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>홈</div>
+      </a>
+      <a href="gamesearch" class="api_bottombtn w-inline-block"><img src="../user/images/grid.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/grid2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>게임</div>
+      </a>
+      <a href="roomsearch" class="api_bottombtn w-inline-block"><img src="../user/images/calendar.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/calendar2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>예약</div>
+      </a>
+      </a>
+      <a href="customer" class="api_bottombtn w-inline-block"><img src="../user/images/headset_white.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/headset_color.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>고객센터</div>
+      </a>
+    </div>
+  </div>
+  <%-include('../apiFrame/footer.ejs') %>
+</body>
+</html>
+<script>
+function openPop(id){
+  $("#"+id).css("display","flex");
+  $(".api_pop").css("display","flex");
+}
+function closePop(){
+  $("[id*=pop_]").css("display","none");
+  $(".api_pop").css("display","none");
+}
+function closeAlertPop(){
+    $("#pop_alert").css("display","none");
+  }
+function memberUpdate(){
+  console.log("pushed")
+	let data = $("#memberForm").serialize();
+    $.ajax({
+            type : 'post' , 
+            url : '/api/memberUpdateProcess' , 
+            data : data , 
+            dataType : 'json' ,                
+    }).done(function(data){                
+        if(data.result == 'success'){
+            $(".api_pop").css("display","flex");
+            $("#pop_success").css("display","flex");
+          }else{
+            $(".api_pop").css("display","flex");
+            $("#pop_alert").css("display","flex");
+            $("#alertMsg").html(data.msg);
+          }           
+    }).fail(function(e){
+            console.log(JSON.stringify(e));
+    })
+}
+var replaceNotPhone = /[^0123456789-]/g; //전화번호가 아닌 경우 비입력 처리
+    $(document).ready(function(){
+        $("#inputPhone").on("focusout", function() {
+            var x = $(this).val();
+            if (x.length > 0) {
+                if (x.match(replaceNotPhone)) {
+                   x = x.replace(replaceNotPhone, "");
+                }
+                $(this).val(x);
+            }
+        }).on("keyup", function() {
+            $(this).val($(this).val().replace(replaceNotPhone, ""));
+        });
+});
+var replaceNotInt = /[^0-9]/gi; //숫자가 아닌 경우 비입력 처리
+    $(document).ready(function(){
+        $("[id*=int_]").on("focusout", function() {
+            var x = $(this).val();
+            if (x.length > 0) {
+                if (x.match(replaceNotInt)) {
+                   x = x.replace(replaceNotInt, "");
+                }
+                $(this).val(x);
+            }
+        }).on("keyup", function() {
+            $(this).val($(this).val().replace(replaceNotInt, ""));
+        });
+    });
+var replaceChar = /[a-zA-Z~!@\#$%^&*\()\-=+_'\;<>0-9\/.\`:\"\\,\[\]?|{}]/gi;  // 완성형 한글이 아닌 경우 비입력 처리
+ var replaceNotFullKorean = /[ㄱ-ㅎㅏ-ㅣ]/gi;
+ $(document).ready(function(){
+     $("#inputName").on("focusout", function() {
+         var x = $(this).val();
+         if (x.length > 0) {
+             if (x.match(replaceChar) || x.match(replaceNotFullKorean)) {
+                 x = x.replace(replaceChar, "").replace(replaceNotFullKorean, "");
+             }
+             $(this).val(x);
+         }
+         }).on("keyup", function() {
+             $(this).val($(this).val().replace(replaceChar, ""));
+    });
+ }); 
+ var replaceNotAN = /[^0-9a-zA-Z]/gi; //알파벳과 숫자만 입력 가능
+    $(document).ready(function(){
+        $("[id*=inputAN_]").on("focusout", function() {
+            var x = $(this).val();
+            if (x.length > 0) {
+                if (x.match(replaceNotAN)) {
+                   x = x.replace(replaceNotAN, "");
+                }
+                $(this).val(x);
+            }
+        }).on("keyup", function() {
+            $(this).val($(this).val().replace(replaceNotAN, ""));
+        });
+    });
+</script>

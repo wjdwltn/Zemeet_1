@@ -1,0 +1,59 @@
+<!DOCTYPE html><!--  This site was created in Webflow. http://www.webflow.com  -->
+<!--  Last Published: Tue Apr 19 2022 05:28:06 GMT+0000 (Coordinated Universal Time)  -->
+<html data-wf-page="6205cf1f41cdbc519972c5dc" data-wf-site="61fb361452ff0215fe4db1db">
+<head>
+  <title>API_Customer</title>
+  <meta content="API_Customer" property="og:title">
+  <meta content="API_Customer" property="twitter:title">
+  <%-include('../apiFrame/head.ejs') %>
+</head>
+<body class="api_body">
+  <div class="api_frame">
+    <div class="api_top">
+      <%-include('../apiFrame/api_top.ejs') %>
+    </div>
+    <div class="api_innerframe">
+      <div class="api_section">
+        <div class="title">고객센터</div>
+        <div class="mypage_container">
+          <div>
+            <div>
+              <a href="eventboard" class="mypage_box _1 w-inline-block">
+                <div>이벤트</div>
+              </a>
+              <a href="noticeboard" class="mypage_box w-inline-block">
+                <div>공지사항</div>
+              </a>
+            </div>
+            <a href="terms" class="mypage_box w-inline-block">
+              <div>이용약관</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom">
+      <a href="main" class="api_bottombtn w-inline-block"><img src="../user/images/home.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/home2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>홈</div>
+      </a>
+      <a href="gamesearch" class="api_bottombtn w-inline-block"><img src="../user/images/grid.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/grid2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>게임</div>
+      </a>
+      <a href="roomsearch" class="api_bottombtn w-inline-block"><img src="../user/images/calendar.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/calendar2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>예약</div>
+      </a>
+      </a>
+      <a href="customer" aria-current="page" class="api_bottombtn select w-inline-block w--current"><img src="../user/images/headset_white.svg" loading="lazy" alt="" class="api_bottombtn_img _1 select"><img src="../user/images/headset_color.svg" loading="lazy" alt="" class="api_bottombtn_img _2 select">
+        <div>고객센터</div>
+      </a>
+    </div>
+    <%-include('../apiFrame/api_sidePop.ejs') %>
+  </div>
+  <%-include('../apiFrame/footer.ejs') %>
+</body>
+</html>
+<script>
+  function menuToggle(self){    
+    $(self).next().slideToggle();    
+  }
+</script>

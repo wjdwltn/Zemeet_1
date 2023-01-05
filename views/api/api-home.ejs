@@ -1,0 +1,622 @@
+<!DOCTYPE html><!--  This site was created in Webflow. http://www.webflow.com  -->
+<!--  Last Published: Thu Mar 31 2022 05:09:21 GMT+0000 (Coordinated Universal Time)  -->
+<html data-wf-page="6204ca74409e847a2f78554a" data-wf-site="61fb361452ff0215fe4db1db">
+<head>
+  <title>API_home</title>
+  <meta content="API_Home" property="og:title">
+  <meta content="API_Home" property="twitter:title">
+  <%-include('../apiFrame/head.ejs') %>
+</head>
+<body class="api_body">
+  <div class="api_frame">
+    <div class="api_top">
+      <%-include('../apiFrame/api_top.ejs') %>
+    </div>
+    <div class="api_innerframe">
+      <div class="homebanner">
+        <div class="div-block-49">
+          <div>검색순위 TOP5 게임</div>
+        </div>
+        <div class="home_box1">
+          <div data-delay="4000" data-animation="slide" class="slider-6 w-slider" data-autoplay="false" data-easing="ease" data-hide-arrows="false" data-disable-swipe="false" data-autoplay-limit="0" data-nav-spacing="3" data-duration="500" data-infinite="false">
+            <div class="w-slider-mask">
+              <% if (rows.length == 0) {%>
+                <div id="mainnogame" style="color:#a9a9a9">검색된 게임이 없습니다.</div>
+              <% } else {%>
+                <% for(var i = 0; i < rows.length; i++) { %>
+                  <div class="w-slide">
+                    <a href="javascript:topgamepop('<%=rows[i].idx%>')" class="home_content w-inline-block"><img loading="lazy" src="/<%= rows[i].pic %>" alt="" class="image-16" height="185.66" >
+                      <div class="api_submenu_title"><span class="reward _1st"><%= i+1 %>위</span> <%= rows[i].Kname %></div>
+                      <div><%= rows[i].umin %>~<%= rows[i].umax %>인용 / <%= rows[i].playtime %> / <%= rows[i].genre %> / <%= rows[i].level %></div>
+                    </a>
+                  </div>
+                <% } %>
+              <% } %>
+            </div>
+            <% if (rows.length != 0) {%>
+              <div class="w-slider-arrow-left">
+                <div class="w-icon-slider-left"></div>
+              </div>
+              <div class="w-slider-arrow-right">
+                <div class="w-icon-slider-right"></div>
+              </div>
+              <div class="w-slider-nav"></div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+      <div class="home_block1">
+        <a href="roomsearch" class="home_btn1 w-inline-block">
+          <div>방</div><img src="../user/images/chevron-right.svg" loading="lazy" alt="" class="image-17">
+        </a>
+        <div class="home">
+          <div class="home_box_scroll">
+            <div class="home_box1">
+              <div data-delay="4000" data-animation="slide" class="slider-6 w-slider" data-autoplay="false" data-easing="ease" data-hide-arrows="false" data-disable-swipe="false" data-autoplay-limit="0" data-nav-spacing="3" data-duration="500" data-infinite="true">
+                <div class="w-slider-mask">
+                  <% if (info.length == 0) {%>
+                    <div id="mainnoroom" style="color:#a9a9a9">검색된 방이 없습니다.</div>
+                  <% } else {%>
+                    <% for(var i = 0; i < info.length; i++) { %>
+                      <div class="w-slide">
+                        <a href="#" class="home_content w-inline-block" onclick="location.href='/api/roomsearch?mainidx=<%=info[i].idx%>'"><img loading="lazy" src="/<%= info[i].file %>" alt="" class="image-16" height="185.66" width="298.59">
+                          <div class="api_submenu_title"><span class="reward _1st"><%= info[i].roomNm %>번)</span> <%= info[i].name %></div>
+                          <div><%= info[i].peopleMin %>~<%= info[i].peopleMax %>인용 / 이용 가능 시간</div>
+                        </a>
+                      </div>
+                    <% } %>
+                  <% } %>
+                </div>
+                <% if (rows.length != 0) {%>
+                  <div class="w-slider-arrow-left">
+                    <div class="w-icon-slider-left"></div>
+                  </div>
+                  <div class="w-slider-arrow-right">
+                    <div class="w-icon-slider-right"></div>
+                  </div>
+                  <div class="w-slider-nav"></div>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="home_block2">
+      <a href="#" class="link-block-6 w-inline-block">
+        <div class="yellowbox"><img src="../user/images/zemeet_logo.svg" loading="lazy" alt="" class="image-32"></div>
+        <div>
+          <div class="api_submenu_title">심플마블</div>
+          <div>미리 즐겨보기</div>
+        </div><img src="../user/images/chevron-right.svg" loading="lazy" alt="" class="image-17">
+      </a>
+    </div> -->
+  </div>
+  <div class="bottom" >
+    <a href="main" aria-current="page" class="api_bottombtn select w-inline-block w--current"><img src="../user/images/home.svg" loading="lazy" alt="" class="api_bottombtn_img _1 select"><img src="../user/images/home2.svg" loading="lazy" alt="" class="api_bottombtn_img _2 select">
+      <div>홈</div>
+    </a>
+    <a href="gamesearch" class="api_bottombtn w-inline-block"><img src="../user/images/grid.svg" loading="lazy" alt="" class="api_bottombtn_img _1 "><img src="../user/images/grid2.svg" loading="lazy" alt="" class="api_bottombtn_img _2 ">
+      <div>게임</div>
+    </a>
+    <a href="roomsearch" class="api_bottombtn w-inline-block"><img src="../user/images/calendar.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/calendar2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+      <div>예약</div>
+    </a>
+    <a href="customer" class="api_bottombtn w-inline-block"><img src="../user/images/headset_white.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/headset_color.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+      <div>고객센터</div>
+    </a>
+  </div>
+    <!-- ==============================================================================================================팝업 -->
+    <div class="api_pop" style="display:none;">
+      <div class="bottom" id="tembottom" >
+        <a href="main" aria-current="page" class="api_bottombtn select w-inline-block w--current"><img src="../user/images/home.svg" loading="lazy" alt="" class="api_bottombtn_img _1 select"><img src="../user/images/home2.svg" loading="lazy" alt="" class="api_bottombtn_img _2 select">
+          <div>홈</div>
+        </a>
+        <a href="gamesearch" class="api_bottombtn w-inline-block"><img src="../user/images/grid.svg" loading="lazy" alt="" class="api_bottombtn_img _1 "><img src="../user/images/grid2.svg" loading="lazy" alt="" class="api_bottombtn_img _2 ">
+          <div>게임</div>
+        </a>
+        <a href="roomsearch" class="api_bottombtn w-inline-block"><img src="../user/images/calendar.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/calendar2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+          <div>예약</div>
+        </a>
+        <a href="customer" class="api_bottombtn w-inline-block"><img src="../user/images/headset_white.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/headset_color.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+          <div>고객센터</div>
+        </a>
+      </div>
+      <div class="api_simplepop" style="display:none;" id="pop_simple">
+        <div class="api_popbox">
+          <div class="apipop_title">알림</div>
+          <div class="apipop_warp">
+            <div>앱을 종료하시겠습니까?</div>
+          </div>
+          <div class="apipop_btnarea">
+            <a href="#" class="apipop_btn _2 w-button">확인</a>
+            <a href="#" class="apipop_btn w-button">취소</a>
+          </div>
+        </div>
+      </div>
+      <div class="apihome_gamepop" style="display:none;" id="pop_game">
+        <div class="apihome_gamepopbox">
+          <div class="apipop_title">게임 설명</div><img src="../user/images/img1_1.png" id="gameimg" loading="lazy" alt="" class="image-43">
+          <div id="gamename">5분마블</div>
+          <div class="apihome_gamepopwarp">
+            <div id="gametext" style="word-wrap: break-word; width:100%;"></div>
+          </div>
+          <div class="apipop_btnarea">
+            <a href="javascript:closePop()" class="button-36 w-button">닫기</a>
+          </div>
+        </div>
+      </div>
+      <div class="apihome_roompop" style="display:none;" id="pop_room">
+        <div class="roomselect_pop" style="display:none;" id="pop_roomselect">
+          <div class="reservation_block" style="z-index: 100000;">
+            <div data-delay="4000" data-animation="slide" class="slider-5 w-slider" data-autoplay="false" data-easing="ease" data-hide-arrows="false" data-disable-swipe="false" data-autoplay-limit="0" data-nav-spacing="3" data-duration="500" data-infinite="true">
+              <div class="w-slider-slicker" id = "roomPic">
+              </div>
+            </div>
+            <div class="arrow_selection">
+              <div id = "roomInfo"></div>
+            </div>
+            <div id = "roomPeople"></div>
+            <% if(session.isLogin){ %>
+              <a herf = "javascript:buyPop()" class="button-7 w-button" id = "toBuyPop">해당 방 예약하기</a>
+              <a href="javascript:closeRoomPop()" class="popexsitbtn w-inline-block"><img src="../user/images/Icon-material-close.svg" loading="lazy" alt="" class="image-27"></a>
+           <% } else {%>
+              <a href="javascript:openPop('pop_needLogin')" class="button-7 w-button">해당 방 예약하기</a>
+              <a href="javascript:closeRoomPop()" class="popexsitbtn w-inline-block"><img src="../user/images/Icon-material-close.svg" loading="lazy" alt="" class="image-27"></a>
+            <% } %>
+          </div>
+        </div>
+      </div>
+      <div class="simplepop" style="display:none;" id="pop_needLogin">
+        <div class="simplepop_box">
+          <div class="poptitle">알림</div>
+          <div class="simplepop_warp">
+            <div>로그인 후 이용이 가능합니다.<a href="login" class="link"><br>(로그인 하기)</a></div>
+          </div>
+          <div class="btnarea1">
+            <a href="javascript:closeLoginPop()" class="okbtn w-button">확인</a>
+          </div>
+        </div>
+      </div>
+      <div class="simplepop" style="display:none;" id="pop_alert"> 
+        <div class="simplepop_box">
+          <div class="poptitle">알림</div>
+          <div class="simplepop_warp">
+            <div id = "unavilable_messasge"></div>
+          </div>
+          <div class="btnarea1">
+            <a href="javascript:closeAlertPop()" class="okbtn w-button">확인</a>
+          </div>
+        </div>
+      </div>
+      <div class="simplepop" style="display:none;" id="pop_success">
+        <div class="simplepop_box">
+          <div class="poptitle">알림</div>
+          <div class="simplepop_warp">
+            <div id = "success_messasge"></div>
+          </div>
+          <div class="btnarea1">
+            <a href="javascript:closeSucessPop()" class="okbtn w-button">확인</a>
+          </div>
+        </div>
+      </div>
+      <div class="buypop_api" style="display:none;" id="pop_buy">
+        <div class="apibuypop_box" style="max-height:95%;">
+          <input type = "hidden" value = "" id = "h_Oidx">
+          <input type = "hidden" value = "" id = "OroomNm">
+            <div id = "roomName2"></div>
+            <div data-delay="4000" data-animation="slide" class="slider-4 w-slider" data-autoplay="false" data-easing="ease" data-hide-arrows="false" data-disable-swipe="false" data-autoplay-limit="0" data-nav-spacing="3" data-duration="500" data-infinite="true">
+              <div class="w-slider-slicker2" id = "roomPic2" style="position:absolute;top:0;left:0;right:0;bottom:0;max-width:100%;height:100%;object-fit:cover; background-size:100% 100%;overflow:hidden;border-radius:4%;">
+              </div>
+            </div>
+            <div class="form-block-11 w-form">
+                <div class="api_sectiontitle">사용 일자</div>
+                <input type="datetime-local" class="text-field-7 w-input" onchange = "checkReservation()"  maxlength="256" name="date" data-name="Field 2" placeholder="" id="input_stime" required />
+              <div class="w-form-done">
+                <div>Thank you! Your submission has been received!</div>
+              </div>
+              <div class="w-form-fail">
+                <div>Oops! Something went wrong while submitting the form.</div>
+              </div>
+            </div>
+            <div class="api_buypop_block2">
+              <div class="buy_warp">
+                <div>시간(분)</div>
+                <div class="unitblock">
+                  <a href="javascript:plusOrMinus('duration','0')" class="unit_btn w-inline-block">
+                    <div>-</div>
+                  </a>
+                  <div id = "input_duration" name = "time">30</div>
+                  <input type="hidden" maxlength="2" name="stime" value = "" id = "input_stime">
+                  <a href="javascript:plusOrMinus('duration','1')" class="unit_btn w-inline-block">
+                    <div>+</div>
+                  </a>
+                </div>
+              </div>
+              <div class="buy_warp">
+                <div>인원수</div>
+                <div class="unitblock">
+                  <a href="javascript:plusOrMinus('people','0')" class="unit_btn w-inline-block">
+                    <div>-</div>
+                  </a>
+                  <div id = "input_people" name = "people">1</div>
+                  <a href="javascript:plusOrMinus('people','1')" class="unit_btn w-inline-block">
+                    <div>+</div>
+                  </a>
+                </div>
+              </div>
+              <div class="api_reservetxt1" style = "color:#fad17f;">총 <span class="text-span-6" id = "input_expense"></span>원</div>
+              <div class="accumulate_area">
+                <div>적립</div>
+                <div class="accumulate_txtbox" id = "input_reserve"></div>
+              </div>
+            </div>
+            <a href="javascript:closeBuyPop()" class="popexist w-inline-block"><img src="../user/images/close_icon.svg" loading="lazy" alt="" class="exsiticon"></a>
+            <div class="w-form">
+                <div class="api_sectiontitle">추가 요청 사항</div>
+                  <form id="ReservationForm" role="form">
+                    <input id ="output_ridx" name = "ridx" type = "hidden">
+                    <input id ="output_stime" name = "stime" type = "hidden">
+                    <input id ="output_duration" name = "duration" type = "hidden" value="1"> 
+                    <input id ="output_people" name = "people" type = "hidden">
+                    <input id ="output_expense" name = "expense" type = "hidden">
+                    <input id ="output_reserve" name = "reserve" type = "hidden">
+                    <!-- <input id ="output_memo" name = "memo" type = "hidden" > -->
+                    <textarea id = "output_memo" placeholder="" maxlength="5000" name="memo" data-name="Field 3" class="textarea-3 w-input"></textarea>
+                   </form>
+                <div id = "room_warn" class="api_warn"></div>
+                <div class="api_warn">예약 시작 후 30분까지 미입장시 예약이 자동취소됩니다.</div>
+              <div class="w-form-done">
+                <div>Thank you! Your submission has been received!</div>
+              </div>
+              <div class="w-form-fail">
+                <div>Oops! Something went wrong while submitting the form.</div>
+              </div>
+            </div>
+            <!-- 예약시 AJAX로 데이터를 보내기 위해 숨겨진 input에 데이터 연동 (시간과 인원수는 디폴트 값 1씩 부여)-->
+          <a href="javascript:insertReservation()" class="api_reservebtn w-button" style = "display:flex;" id = "available_button">예약</a>
+          <a href="javascript:openPop('pop_alert')" class="api_reservebtn inable w-button" style = "display:none;" id = "unavailable_button">예약불가</a>
+        </div>
+      </div>
+    </div>  
+ 
+  <%-include('../apiFrame/api_sidePop.ejs') %>
+  <%-include('../apiFrame/footer.ejs') %>
+  <%-include('../apiFrame/api_slick.ejs') %>
+  <style>
+.w-slider-dot.w-active {
+  background: #fad17f;
+  opacity:100%;
+}
+ .home_box_scroll::-webkit-scrollbar {
+    width: 4px;
+    height:4px;
+}
+.home_box_scroll::-webkit-scrollbar-thumb {
+    background: #a9a9a9;
+    border-radius:20px;
+    opacity:50%;
+}
+#mainnogame{
+      width: 360px;
+      height:300px;
+      text-align: center;
+      line-height:300px;
+}
+.w-slider-dot{
+    width:35px;
+    height:5px;
+    background:white;
+    opacity:35%; 
+    border-radius:20px;
+  }
+  .w-slider-dot.w-active {
+    background: hsl(40, 92%, 74%);
+    opacity:100%;
+  }
+  ::-webkit-calendar-picker-indicator {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="hsl(40, 92%, 74%)" d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/></svg>');
+}
+  </style>
+</body>
+</html>
+<script>
+ 
+  //=================================================================================================================================기능 구현
+  
+  function menuToggle(self){    
+    $(self).next().slideToggle();    
+  }
+  function openPop(id){
+    $("#"+id).css("display","flex");
+    $(".api_pop").css("display","flex");
+  }
+  function roomPop(){
+    $(".apihome_roompop").css("display","flex");
+    $(".roomselect_pop").css("display","flex");
+    $(".api_pop").css("display","flex");
+  }
+  function closePop(){
+    $("[id*=pop_]").css("display","none");
+    $(".api_pop").css("display","none");
+    $(".apihome_roompop").css("display","none");
+  }
+  function closeRoomPop(){
+    $("[id*=pop_]").css("display","none");
+    $(".api_pop").css("display","none");
+    $(".apihome_roompop").css("display","none");
+    $('.w-slider-slicker').empty()
+    $('.w-slider-slicker').slick('destroy');
+  }
+  function topgamepop(idx){
+    $.ajax({
+      type : 'get' , 
+      url : '/gettopgamepop?idx='+idx , 
+    }).done(function(data){
+      if(data.result == 'success'){
+        $("#gameimg").attr('src',"/"+data.msg.pic)
+        $("#gamename").html(data.msg.Kname)
+        $("#gametext").text(data.msg.simexplan)
+        $(".apihome_gamepop").css('display','flex');
+        $(".api_pop").css('display','flex');
+      }
+      else if (data.result == 'fail'){
+       commonpop('준비된 영상이 없습니다')
+      } 
+    }).fail(function(e){
+      console.log(JSON.stringify(e));
+    })
+  }
+  function texta(id){
+    var str = $("#"+id).html();
+    console.log($("#"+id).html());
+    str = str.replace(/(?:\r\n|\r|\n)/g, '<br />');
+    $("#"+id).html(str);
+  }
+  function topRoomPop(Oidx){
+    console.log("idx",Oidx)
+    // $('.w-slider-slicker').empty()
+    // $(".apihome_roompop").css("display","flex");
+    // $(".roomselect_pop").css("display","flex");
+    // $(".api_pop").css("display","flex");
+    // $("#tembottom").css("display","flex")
+    // $.ajax({
+    //   type : 'get' , 
+    //   url : '/gettoproompop?idx='+Oidx , 
+    // }).done(function(data){
+    //   if(data.result == 'success'){
+    //     // $('.w-slider-slicker').empty()
+    //       if ($('.w-slider-slicker').hasClass('slick-initialized')) {
+    //       $('.w-slider-slicker').slick('destroy');
+    //     }    
+    //       for(var i = 0; i < data.pics.length; i++){
+    //         $("#roomPic").append('<div class="w-slide"><img src="/" loading="lazy" width="525" height = "215" alt="" class="image-22" id = "subIdx_'+data.pics[i].subIdx+'"></div>');
+    //         $("#subIdx_"+data.pics[i].subIdx).attr('src',"/"+data.pics[i].file);
+    //       }
+    //       $('.w-slider-slicker').slick({
+    //         slide: 'div',		//슬라이드 되어야 할 태그 ex) div, li 
+    //         infinite : true, 	//무한 반복 옵션	 
+    //         slidesToShow : 1,		// 한 화면에 보여질 컨텐츠 개수
+    //         slidesToScroll : 1,		//스크롤 한번에 움직일 컨텐츠 개수
+    //         // speed : 200,	 // 다음 버튼 누르고 다음 화면 뜨는데까지 걸리는 시간(ms)
+    //         arrows : true, 		// 옆으로 이동하는 화살표 표시 여부
+    //         dots : true, 		// 스크롤바 아래 점으로 페이지네이션 여부
+    //         autoplay : true,			// 자동 스크롤 사용 여부
+    //         autoplaySpeed : 2000, 		// 자동 스크롤 시 다음으로 넘어가는데 걸리는 시간 (ms)
+    //         // pauseOnHover : true,		// 슬라이드 이동	시 마우스 호버하면 슬라이더 멈추게 설정buyPop
+    //         vertical : false,		// 세로 방향 슬라이드 옵션
+    //         prevArrow : '<div class="w-slider-arrow-left"><div class="w-icon-slider-left"></div></div>',  // 이전 화살표 모양 설정
+    //         nextArrow : '<div class="w-slider-arrow-right"><div class="w-icon-slider-right"></div></div>',  // 다음 화살표 모양 설정
+    //         // dotsClass : "w-slider-nav", 	//아래 나오는 페이지네이션(점) css class 지정 
+    //         draggable : true, 	//드래그 가능 여부
+    //       });
+    //     $("#roomInfo").html(data.msg.roomNm + "번) " + data.msg.name);
+    //     $("#roomPeople").text(data.msg.peopleMin + "~" + data.msg.peopleMax + " 인용");
+    //     $("#toBuyPop").attr("href", "Javascript:buyPop('"+Oidx+"')")
+    //   } else if (data.result == 'fail'){
+    //   } 
+    // }).fail(function(e){
+    //   console.log(JSON.stringify(e));
+    // })
+  }
+  function buyPop(Oidx){ //방 상세 예약 팝업
+    $(".api_pop").css("display","flex");
+    $(".buypop_api").css("display","flex");
+    $("#input_stime").val(new Date().toLocaleString('sv').replace(' ','T').slice(0,-3)); 
+    $.ajax({
+      type : 'get' , 
+      url : '/getRoomPopHomeApi?idx='+Oidx
+    }).done(function(data){
+      if(data.result == 'success'){
+        console.log(data); 
+        $('.w-slider-slicker2').empty()
+        if ($('.w-slider-slicker2').hasClass('slick-initialized')) {
+          $('.w-slider-slicker2').slick('destroy');
+        }      
+        //append 사용시 방을 클릭할 때마다 요소가 추가되는 문제가 있음 -> 나갈 경우 삭제해줘야 함
+        for(var i = 0; i < data.pics.length; i++){
+          $("#roomPic2").append('<div class="w-slide"><img src="/" loading="lazy" alt="" class="image-35" id = "subIdx2_'+data.pics[i].subIdx+'" style="min-height:135px;"></div>');
+            $("#subIdx2_"+data.pics[i].subIdx).attr('src',"/"+data.pics[i].file);
+        }
+        $('.w-slider-slicker2').slick({
+          slide: 'div',		//슬라이드 되어야 할 태그 ex) div, li 
+            infinite : true, 	//무한 반복 옵션	 
+            slidesToShow : 1,		// 한 화면에 보여질 컨텐츠 개수
+            slidesToScroll : 1,		//스크롤 한번에 움직일 컨텐츠 개수
+            // speed : 200,	 // -+다음 버튼 누르고 다음 화면 뜨는데까지 걸리는 시간(ms)
+            arrows : true, 		// 옆으로 이동하는 화살표 표시 여부
+            dots : true, 		// 스크롤바 아래 점으로 페이지네이션 여부
+            autoplay : false,			// 자동 스크롤 사용 여부
+            autoplaySpeed : 10000, 		// 자동 스크롤 시 다음으로 넘어가는데 걸리는 시간 (ms)
+            // pauseOnHover : true,		// 슬라이드 이동	시 마우스 호버하면 슬라이더 멈추게 설정
+            vertical : false,		// 세로 방향 슬라이드 옵션
+            prevArrow : '<div class="left-arrow w-slider-arrow-left"><div class="w-icon-slider-left"></div></div>',  // 이전 화살표 모양 설정
+            nextArrow : '<div class="right-arrow w-slider-arrow-right"><div class="w-icon-slider-right"></div></div>',  // 다음 화살표 모양 설정
+            // dotsClass : "w-slider-nav", 	//아래 나오는 페이지네이션(점) css class 지정 
+            draggable : true, 	//드래그 가능 여부
+          });
+        $("#roomName2").html('<span class="text-span-5" id = "roomNm2"></span> '+data.msg.name);
+        $("#roomNm2").html(data.msg.roomNm + "번)");
+        $("#OroomNm").val(data.msg.roomNm);
+        $("#input_expense").html(data.msg.price)
+        $("#output_expense").val(data.msg.price)
+        let rrate = data.set[0].rrate / 100
+        $("#input_reserve").html(data.msg.price * rrate)
+        $("#output_reserve").val(data.msg.price * rrate)
+        $("#h_Oidx").val(data.msg.idx)
+        const peopleMin = JSON.parse(data.msg.peopleMin);
+        $("#input_people").html(peopleMin);
+        $("#output_people").val(peopleMin);
+        $("#room_warn").html("해당 방은 "+data.msg.peopleMin+"~"+data.msg.peopleMax+"인용 방 입니다. 추가 인원 입장 시 추가 이용금이 부과됩니다.");
+        checkReservation();
+        } else if (data.result == 'fail'){
+      } 
+    }).fail(function(e){
+      console.log(JSON.stringify(e));
+    })
+  }
+  function checkReservation(){
+    var Oidx = $("#h_Oidx").val();//방번호?
+    var start = $("#input_stime").val();
+    var duration = $("#input_duration").html();
+    var startT = start.replace('T', ' ');
+    var date = new Date(start.replace('T', ' '));
+    var endT = new Date(date.setTime(date.getTime() + (duration*60*60*1000))).toLocaleString('sv');
+    const now = new Date().toLocaleString('sv');
+    $.ajax({
+          type : 'get' , 
+          url : '/getReserInfo?idx='+Oidx+'&startT='+startT+'&endT='+endT
+        }).done(function(data){
+          if(data.result == 'success' && startT >= now){
+              console.log("success")
+              $("#available_button").css("display","flex");
+              $("#unavailable_button").css("display","none");
+              
+            } else if (data.result == 'fail' || startT < now){
+              console.log("fail")
+              console.log("roomNm",data.roomNm)
+              $("#available_button").css("display","none");
+              $("#unavailable_button").css("display","flex");
+              $("#unavilable_messasge").html(data.roomNm+"번 방 예약이 불가능합니다.<br>(사유: 이미 예약된 방입니다.)");
+          } 
+        }).fail(function(e){
+          console.log(JSON.stringify(e));
+        });
+  }
+  $("#ReservationForm").keydown(function (key) {        
+        if (key.keyCode == 13) {
+          return false;
+        }
+  });
+  function insertReservation(){ //예약 정보 작성
+    var roomNum = $("#OroomNm").val();
+    var ridx = $("#h_Oidx").val();
+    var stime =$("#input_stime").val();
+    $("#output_ridx").val(ridx);
+    $("#output_stime").val(stime);
+    let data = $("#ReservationForm").serialize();
+      $.ajax({
+              type : 'post' , 
+              url : '/api/reservationWriteProcess' , 
+              data : data , 
+              dataType : 'json' ,   
+      }).done(function(data){                
+          if(data.result == 'success'){
+            openPop('pop_success');
+            $("#success_messasge").html(roomNum+"번 방이 예약되었습니다.");
+          } else if (data.result == 'fail'){
+            $("#success_messasge").html(data.msg);
+            openPop('pop_success');
+            }      
+      }).fail(function(e){
+              console.log(JSON.stringify(e));
+      })
+  }
+  
+  function plusOrMinus(type, status){//선택한 방의 시간별 가격,인원수별 가격에 따라서 가격 산출, 인원수 적용
+    let Oidx = $("#h_Oidx").val()
+    $.ajax({
+      type : 'get' , 
+      url : '/getRoomPopApi?idx='+Oidx ,
+    }).done(function(data){
+      if(data.result == 'success'){
+        var dv = +$("#input_"+type).html();
+        var cp = +$("#input_expense").html();
+        const TPRate = JSON.parse(data.msg.TPRate);
+        const PPRate = JSON.parse(data.msg.PPRate);
+        if (status == 0 && dv > 30 && type == "duration") {
+          var tv = dv - 10;
+          var cp = cp - TPRate;
+        } else if (status == 0 && dv > data.msg.peopleMin && type == "people"){
+            var tv = dv - 1;
+            var cp = cp - PPRate;
+        } else if (status == 1 && dv < 300 && type == "duration"){
+            var tv = dv + 10;
+            var cp = cp + TPRate;
+        } else if (status == 1 && dv < data.msg.peopleMax && type == "people"){
+            var tv = dv + 1;
+            var cp = cp + PPRate;
+        } else {
+          var tv = dv;
+          var cp = cp;
+        }
+      $("#input_"+type).html(tv);
+      $("#output_"+type).val(tv);
+      $("#output_expense").val(cp);
+      $("#input_expense").html(cp)
+      let rrate = data.set[0].rrate / 100 //새로 산출된 총 금액에 적립률 곱하기
+      $("#input_reserve").html(cp * rrate)
+      $("#output_reserve").val(cp * rrate)
+      if (type == 'duration') {
+        checkReservation();
+      }
+        } else if (data.result == 'fail'){
+      } 
+    }).fail(function(e){
+      console.log(JSON.stringify(e));
+    })
+  }
+  
+  function closePop(){
+    $("[id*=pop_]").css("display","none");
+    $(".api_pop").css("display","none");
+    $("#input_duration").html(30);
+    $("#input_people").html(1);
+  }
+  function closeRoomPop(){
+    $("[id*=pop_]").css("display","none");
+    $(".api_pop").css("display","none");
+    $(".apihome_roompop").css("display","none");
+    $('.w-slider-slicker').empty()
+    $('.w-slider-slicker').slick('destroy');
+    $('.w-slider-slicker2').empty()
+    $('.w-slider-slicker2').slick('destroy');
+    $("#output_memo").val('');
+  }
+  function closeBuyPop(){
+    $(".buypop_api").css("display","none");
+    $(".api_pop").css("display","flex");
+    $('.w-slider-slicker2').empty()
+    $('.w-slider-slicker2').slick('destroy');
+    $("#input_duration").html(30);
+    $("#input_people").html(1);
+    $("#output_memo").val('');
+  }
+  function closeSucessPop(){
+    $("#pop_success").css("display","none");
+    $(".buypop_api").css("display","none");
+    $(".api_pop").css("display","none");
+    $("#input_duration").html(30);
+    $("#input_people").html(1);
+    $("#output_memo").val('');
+  }
+  function closeAlertPop(){
+    $("#pop_alert").css("display","none");
+    $(".api_pop").css("display","flex");
+  }
+  function closeLoginPop(){
+    $("#pop_needLogin").css("display","none");
+    $(".api_pop").css("display","flex");
+  }
+  
+</script>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%-include('../adminFrame/head.ejs')%>
+</head>
+<body>
+    <div id="wrapper">
+        <!-- Navigation -->
+        <%-include('../adminFrame/nav.ejs')%>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">메뉴 수정하기</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            메뉴 수정
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <form id="menuFileForm"  enctype="multipart/form-data"  method="post" >
+                                <div class="row" style="margin-bottom:15px">
+                                    <div class="col-lg-5">
+                                        <!--어떤 idx의 게시물을 수정하는지 -->
+                                        <input type="hidden" name="idx" value="<%=rows.idx%>"/>
+                                        <!--새 사진 저장 안했을때는 기존 사진 정보를 넣어줌 -->
+                                        <input type="hidden" name="originFile" value="<%=rows.pic%>"/>
+                                        <div class="form-group">
+                                            <label>기존 이미지</label>
+                                            <div><img src="/<%= rows.pic %>" width="150px;"/></div>
+                    
+                                        </div>
+                                        <div class="form-group">
+                                            <label>메뉴 이미지</label>
+                                            <input type="file" name="pic" id="piccheck" accept="image/*" onchange='chk_file_type(this)'>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>메뉴명</label>
+                                            <input input value="<%= rows.name %>" type="varhcar" name="name" maxlength="100" required class="form-control" style="width:200px; height:30px;" >
+                                        </div>
+                                        <div class="form-group">
+                                            <label>카테고리</label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="category" value="Food" <% if(rows.category == 'Food'){ %> checked <%} %> />Food
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="category" value="Cafe" <% if(rows.category == 'Cafe'){ %> checked <%} %>/>Cafe
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="category" value="Pub" <% if(rows.category == 'Pub'){ %> checked <%} %> />Pub
+                                            </label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>가격</label>
+                                            <input input value="<%= rows.price %>" name="price" maxlength="100" required class="form-control" style="width:200px; height:30px;" >
+                                        </div>
+                                        <div class="form-group">
+                                            <label>품절 여부</label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="sell" value="0" <% if(rows.sell == '0'){ %> checked <%} %> />품절
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="sell" value="1" <% if(rows.sell == '1'){ %> checked <%} %> />판매
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>   
+                                    <td colspan="2">
+                                        <td><button type="button" class="btn btn-warning" style="padding:4px 12px;" onclick="fileUpdate()">수정</button></td> 
+                                        <td><button type="button" class="btn btn-primary" style="padding:4px 12px;" onclick="location.href='/admin/menu';">목록</button></td>
+                                    </td>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+        </div>
+    </div>
+    <style>
+       .textarea {
+            width: 100%;
+            height: 1000px;
+        }       
+    </style>
+</body>
+</html>
+<%-include('../adminFrame/footer.ejs')%>
+<script>
+    function fileUpdate(){
+        let form = $("#menuFileForm")[0]; 
+        let data = new FormData(form);   
+        console.log("data,",data)
+        $.ajax({
+                type : 'post' , 
+                url : '/admin/updateMenu' , 
+                data : data , 
+                dataType : 'json' ,                
+                processData:false, 
+                contentType:false,
+        }).done(function(data){                
+            alert(data.msg);
+            if(data.result == 'success'){
+                location.href = '/admin/menu_detail?idx=<%=rows.idx%>'
+            }            
+        }).fail(function(e){
+                console.log(JSON.stringify(e));
+        })
+        
+    }
+    
+    function chk_file_type(obj) {
+        var file_kind = obj.value.lastIndexOf('.');
+        var file_name = obj.value.substring(file_kind+1,obj.length);
+        var file_type = file_name.toLowerCase();
+        var check_file_type=new Array();
+
+        check_file_type=['jpg','gif','png','jpeg','bmp'];
+
+
+
+        if(check_file_type.indexOf(file_type)==-1){
+            alert('이미지 파일만 선택할 수 있습니다.');
+            obj.value = '';
+            return false;
+        }
+    }
+
+</script>

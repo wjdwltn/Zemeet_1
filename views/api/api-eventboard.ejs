@@ -1,0 +1,88 @@
+<!DOCTYPE html><!--  This site was created in Webflow. http://www.webflow.com  -->
+<!--  Last Published: Thu Mar 31 2022 01:51:32 GMT+0000 (Coordinated Universal Time)  -->
+<html data-wf-page="6243b4cb4f72b5472cb005be" data-wf-site="61fb361452ff0215fe4db1db">
+<head>
+  <title>API_eventBoard</title>
+  <meta content="API_eventBoard" property="og:title">
+  <meta content="API_eventBoard" property="twitter:title">
+  <%-include('../apiFrame/head.ejs') %>
+</head>
+<body class="api_body">
+  <div class="api_frame">
+    <div class="api_top return">
+      <div>고객센터</div>
+      <a href="customer" class="api_topreturn w-inline-block"><img src="../user/images/chevron-left.svg" loading="lazy" alt="" class="image-25"></a>
+    </div>
+    <div class="api_innerframe">
+      <div class="api_section">
+        <div class="api_list_container">
+          <div class="title">이벤트</div>
+          <% if (rows.length == 0) {%>
+            <div id="nodata">등록된 이벤트가 없습니다.</div>
+          <% } else {%>
+            <% for(var i = 0; i < rows.length ; i++) { %>
+              <a href="#" class="custtomer_btn w-inline-block"  onclick="location.href='/api/eventdetail?idx=<%= rows[i].idx%>&no=<%= rows[i].no%>'">
+                <% if(rows[i].title.length>30){%>
+                  <div class="api_listbord_title" style="word-wrap:break-word;"><%= rows[i].title.substr(0,30)+"..." %></div>
+                <%} else {%>
+                  <div class="api_listbord_title"><%= rows[i].title %></div>
+                <%}%>
+               
+                <div class="api_listbord_date"><script>document.write(dateFormat('<%=rows[i].udate%>'))</script></div>
+                <% if(new Date(rows[i].start.getTime() - (rows[i].start.getTimezoneOffset() * 60000)).toISOString().slice(0,10) <= today && today <= new Date(rows[i].end.getTime() - (rows[i].end.getTimezoneOffset() * 60000)).toISOString().slice(0,10)) { %>
+                  <div class="event_date"><script>document.write(dateFormat('<%=rows[i].start%>')+"~"+dateFormat('<%=rows[i].end%>'))</script> / 진행중</div>
+                <%} else if( new Date(rows[i].start.getTime() - (rows[i].start.getTimezoneOffset() * 60000)).toISOString().slice(0,10) > today) {%>
+                  <div class="event_date"><script>document.write(dateFormat('<%=rows[i].start%>')+"~"+dateFormat('<%=rows[i].end%>'))</script> / <span style="color:rgb(82, 82, 218);">진행 예정</span></div>
+                <%} else if(new Date(rows[i].end.getTime() - (rows[i].end.getTimezoneOffset() * 60000)).toISOString().slice(0,10) < today) {%>
+                  <div class="event_date"><script>document.write(dateFormat('<%=rows[i].start%>')+"~"+dateFormat('<%=rows[i].end%>'))</script> / <span style="color:rgb(247, 76, 76);">진행 종료</span></div>
+                <%}%>
+              </a>
+            <%}%>
+          <%}%>
+        </div>
+      </div>
+      <div class="api_list_page">
+        <% if(page == 0) { %>
+          <a href="javascript:void()" class="button-13 _2 w-button">&lt;&lt;</a>
+        <% }else { %>
+          <a href="/api/eventboard?page=<%=page-1%>" class="button-13 _2 w-button">&lt;&lt;</a>
+        <% } %>
+        <%  for(var j = 0; j < Math.ceil(totalitems/countperpage) ; j++){  %>   
+          <a href="/api/eventboard?page=<%=j%>" class="button-13 w-button <% if (page == j) { %> click<%}%>"><%= j + 1 %></a>
+        <%}%>                                        
+        <% if(page+1 == Math.ceil(totalitems/countperpage)) { %>
+          <a href="javascript:void(0)" class="button-13 _2 w-button">&gt;&gt;</a>
+        <% }else { %>
+          <a href="/api/eventboard?page=<%=page+1%>" class="button-13 _2 w-button">&gt;&gt;</a>
+        <% } %>                                        
+      </div>
+    </div>
+    <div class="bottom">
+      <a href="main" class="api_bottombtn w-inline-block"><img src="../user/images/home.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/home2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>홈</div>
+      </a>
+      <a href="gamesearch" class="api_bottombtn w-inline-block"><img src="../user/images/grid.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/grid2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>게임</div>
+      </a>
+      <a href="roomsearch" class="api_bottombtn w-inline-block"><img src="../user/images/calendar.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/calendar2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>예약</div>
+      </a>
+      </a>
+      <a href="customer" aria-current="page" class="api_bottombtn select w-inline-block w--current"><img src="../user/images/headset_white.svg" loading="lazy" alt="" class="api_bottombtn_img _1 select"><img src="../user/images/headset_color.svg" loading="lazy" alt="" class="api_bottombtn_img _2 select">
+        <div>고객센터</div>
+      </a>
+    </div>
+  </div>
+  <%-include('../apiFrame/footer.ejs') %>
+  <style>
+    #nodata{
+      width: 100%;
+      height:500px;
+      text-align: center;
+      line-height:530px;
+    }
+</style>
+</body>
+</html>
+<script>
+</script>

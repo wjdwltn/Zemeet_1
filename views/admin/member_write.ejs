@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%-include('../adminFrame/head.ejs') %>
+</head>
+
+<body>
+    <div id="wrapper">
+        <%-include('../adminFrame/nav.ejs') %>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">회원정보 등록하기</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            예약정보 세부사항
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <form id="memberForm" role="form">
+                                <div class="row" style="margin-bottom:15px">
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label>아이디</label>
+                                            <input id = "inputAN_id" class="form-control" type="varchar" name="id" maxlength="8" placeholder="아이디를 입력하세요 (최대 8자리)" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>이름</label>
+                                            <input id = "inputName" class="form-control" type="varchar" name="name" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>닉네임</label>
+                                            <input id = "inputAN_nick" class="form-control" type="varchar" name="nick" maxlength="8" placeholder="닉네임을 입력하세요 (최대 8자리)" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>등급</label>
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="ranking" value="일반" checked>일반
+                                                </label>
+                                            </div>
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="ranking" value="프리미엄">프리미엄
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>알림설정</label>
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="push" value="Y" checked>Y
+                                                </label>
+                                            </div>
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="push" value="N">N
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>        
+                                    <!-- /.col-lg-5 (nested) -->
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label>비밀번호</label>
+                                            <input id = "inputAN_pw" class="form-control" type="varchar" name="pw" maxlength="12" placeholder="비밀번호를 입력하세요 (최대 12자리)" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>생년월일</label>
+                                            <input class="form-control" type="date" name="birth" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>가입일</label>
+                                            <input class="form-control" type="date" name="rdate" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>전화번호</label>
+                                            <input id = "inputPhone" class="form-control" type="varchar" name="number" maxlength="13" placeholder = "ex) 010-1234-5678" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>포인트</label>
+                                            <div class="form-group input-group">
+                                                <span class="input-group-addon">￦</span>
+                                                <input id = "int_point" type="int" class="form-control" name="point" value="0" placeholder="0" required/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>누적사용액</label>
+                                            <div class="form-group input-group">
+                                                <span class="input-group-addon">￦</span>
+                                                <input id = "int_total" type="int" class="form-control" name="" value="" placeholder="0" required/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-left">
+                                    <td colspan="2">
+                                        <td><button type="button" class="btn btn-warning" style="padding:4px 12px;" onclick="memberInsert()">등록</a></button></td>
+                                        <td><button type="button" class="btn btn-primary" style="padding:4px 12px;" onclick="location.href='/admin/member';">목록</button></td>
+                                    </td>
+                                </div>
+                            </form> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<%-include('../adminFrame/footer.ejs')%>
+<script>
+function memberInsert(){
+    let data = $("#memberForm").serialize();
+    console.log("data,",data)
+    $.ajax({
+            type : 'post' , 
+            url : '/admin/memberWriteProcess' , 
+            data : data , 
+            dataType : 'json' ,   
+    }).done(function(data){                
+        console.log(data);
+        alert(data.msg);
+        if(data.result == 'success'){
+            location.href = '/admin/member';
+        }            
+    }).fail(function(e){
+            console.log(JSON.stringify(e));
+    })
+}
+var replaceNotPhone = /[^0123456789-]/g; //전화번호가 아닌 경우 비입력 처리
+    $(document).ready(function(){
+        $("#inputPhone").on("focusout", function() {
+            var x = $(this).val();
+            if (x.length > 0) {
+                if (x.match(replaceNotPhone)) {
+                   x = x.replace(replaceNotPhone, "");
+                }
+                $(this).val(x);
+            }
+        }).on("keyup", function() {
+            $(this).val($(this).val().replace(replaceNotPhone, ""));
+        });
+});
+var replaceNotInt = /[^0-9]/gi; //숫자가 아닌 경우 비입력 처리
+    $(document).ready(function(){
+        $("[id*=int_]").on("focusout", function() {
+            var x = $(this).val();
+            if (x.length > 0) {
+                if (x.match(replaceNotInt)) {
+                   x = x.replace(replaceNotInt, "");
+                }
+                $(this).val(x);
+            }
+        }).on("keyup", function() {
+            $(this).val($(this).val().replace(replaceNotInt, ""));
+        });
+    });
+var replaceChar = /[a-zA-Z~!@\#$%^&*\()\-=+_'\;<>0-9\/.\`:\"\\,\[\]?|{}]/gi; 
+ var replaceNotFullKorean = /[ㄱ-ㅎㅏ-ㅣ]/gi; // 완성형 아닌 한글 정규식
+ $(document).ready(function(){
+     $("#inputName").on("focusout", function() {
+         var x = $(this).val();
+         if (x.length > 0) {
+             if (x.match(replaceChar) || x.match(replaceNotFullKorean)) {
+                 x = x.replace(replaceChar, "").replace(replaceNotFullKorean, "");
+             }
+             $(this).val(x);
+         }
+         }).on("keyup", function() {
+             $(this).val($(this).val().replace(replaceChar, ""));
+    });
+ });      
+ var replaceNotAN = /[^0-9a-zA-Z]/gi; //알파벳과 숫자만 입력 가능
+    $(document).ready(function(){
+        $("[id*=inputAN_]").on("focusout", function() {
+            var x = $(this).val();
+            if (x.length > 0) {
+                if (x.match(replaceNotAN)) {
+                   x = x.replace(replaceNotAN, "");
+                }
+                $(this).val(x);
+            }
+        }).on("keyup", function() {
+            $(this).val($(this).val().replace(replaceNotAN, ""));
+        });
+    });
+</script>

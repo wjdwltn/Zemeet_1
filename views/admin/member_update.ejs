@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%-include('../adminFrame/head.ejs') %>
+</head>
+
+<body>
+    <div id="wrapper">
+        <%-include('../adminFrame/nav.ejs') %>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">회원정보 수정하기</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            예약정보 세부사항
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <form id="memberForm" role="form">
+                                <div class="row" style="margin-bottom:15px">
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label>회원번호</label>
+                                            <input class="form-control" type="form-control" name="idx" value="<%=rows.idx%>" disabled>
+                                            <input class="form-control" type="hidden" name="idx" value="<%=rows.idx%>">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>아이디</label>
+                                            <input id = "inputAN_id" class="form-control" type="varchar" name="id" value="<%= rows.id %>" maxlength="8" placeholder="아이디를 입력하세요 (최대 8자리)" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>이름</label>
+                                            <input id = "inputName" class="form-control" type="varchar" name="name" value="<%= rows.name %>" maxlength="8" placeholder="이름을 입력하세요" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>닉네임</label>
+                                            <input id = "inputAN_nick" class="form-control" type="varchar" name="nick" value="<%= rows.nick %>" placeholder="닉네임을 입력하세요 (최대 8자리)" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>등급</label>
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="ranking" value="일반" <% if(rows.ranking == '일반'){ %> checked <%} %>/>일반
+                                                </label>
+                                            </div>
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="ranking" value="프리미엄" <% if(rows.ranking == '프리미엄'){ %> checked <%} %> />프리미엄
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>알림설정</label>
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="push" value="Y" <% if(rows.push == 'Y'){ %> checked <%} %>/>Y
+                                                </label>
+                                            </div>
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="push" value="N" <% if(rows.push == 'N'){ %> checked <%} %> />N
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>        
+                                    <!-- /.col-lg-5 (nested) -->
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label>비밀번호</label>
+                                            <input id = "inputAN_pw" class="form-control" type="varchar" name="pw" value="<%= rows.pw %>" maxlength="12" placeholder="아이디를 입력하세요 (최대 12자리)" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>생년월일</label>
+                                            <input id = "birth" class="form-control" type="date" name="birth" value = "" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>가입일</label>
+                                            <input id = "rdate" class="form-control" type="date" name="rdate" value = "" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>전화번호</label>
+                                            <input id = "inputPhone" class="form-control" type="varchar" name="number" value="<%= rows.number.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`) %>" maxlength="13" placeholder = "ex) 010-1234-5678" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>포인트</label>
+                                            <div class="form-group input-group">
+                                                <span class="input-group-addon">P</span>
+                                                <input id = "int_point" type="int" class="form-control" name="point" value="<%= rows.point %>" required/>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="form-group">
+                                            <label>누적사용액</label>
+                                            <div class="form-group input-group">
+                                                <span class="input-group-addon">￦</span>
+                                                <input id = "int_total" type="int" class="form-control" name="" value="" disabled/>
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </form> 
+                            <div class="text-left">
+                                <td colspan="2">
+                                    <td><button type="button" class="btn btn-primary" style="padding:4px 12px;" onclick="location.href='/admin/member_detail?idx=<%= rows.idx %>';">뒤로</a></button></td> 
+                                    <td><button type="button" class="btn btn-warning" style="padding:4px 12px;" onclick="memberUpdate()">수정</button></td>
+                                </td>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<%-include('../adminFrame/footer.ejs')%>
+<script>
+function memberUpdate(){
+	let data = $("#memberForm").serialize();
+    $.ajax({
+            type : 'post' , 
+            url : '/admin/memberUpdateProcess' , 
+            data : data , 
+            dataType : 'json' ,                
+    }).done(function(data){                
+        alert(data.msg);
+        if(data.result == 'success'){
+            location.href = '/admin/member_detail?idx=<%= rows.idx%>'
+        }            
+    }).fail(function(e){
+            console.log(JSON.stringify(e));
+    })
+}
+$(document).ready(function(){
+    $("#birth").val(dateFormat('<%=rows.birth%>'))
+    $("#rdate").val(dateFormat('<%=rows.rdate%>'))
+});
+var replaceNotPhone = /[^0123456789-]/g; //전화번호가 아닌 경우 비입력 처리
+    $(document).ready(function(){
+        $("#inputPhone").on("focusout", function() {
+            var x = $(this).val();
+            if (x.length > 0) {
+                if (x.match(replaceNotPhone)) {
+                   x = x.replace(replaceNotPhone, "");
+                }
+                $(this).val(x);
+            }
+        }).on("keyup", function() {
+            $(this).val($(this).val().replace(replaceNotPhone, ""));
+        });
+});
+var replaceNotInt = /[^0-9]/gi; //숫자가 아닌 경우 비입력 처리
+    $(document).ready(function(){
+        $("[id*=int_]").on("focusout", function() {
+            var x = $(this).val();
+            if (x.length > 0) {
+                if (x.match(replaceNotInt)) {
+                   x = x.replace(replaceNotInt, "");
+                }
+                $(this).val(x);
+            }
+        }).on("keyup", function() {
+            $(this).val($(this).val().replace(replaceNotInt, ""));
+        });
+    });
+var replaceChar = /[a-zA-Z~!@\#$%^&*\()\-=+_'\;<>0-9\/.\`:\"\\,\[\]?|{}]/gi;  // 완성형 한글이 아닌 경우 비입력 처리
+ var replaceNotFullKorean = /[ㄱ-ㅎㅏ-ㅣ]/gi;
+ $(document).ready(function(){
+     $("#inputName").on("focusout", function() {
+         var x = $(this).val();
+         if (x.length > 0) {
+             if (x.match(replaceChar) || x.match(replaceNotFullKorean)) {
+                 x = x.replace(replaceChar, "").replace(replaceNotFullKorean, "");
+             }
+             $(this).val(x);
+         }
+         }).on("keyup", function() {
+             $(this).val($(this).val().replace(replaceChar, ""));
+    });
+ }); 
+ var replaceNotAN = /[^0-9a-zA-Z]/gi; //알파벳과 숫자만 입력 가능
+    $(document).ready(function(){
+        $("[id*=inputAN_]").on("focusout", function() {
+            var x = $(this).val();
+            if (x.length > 0) {
+                if (x.match(replaceNotAN)) {
+                   x = x.replace(replaceNotAN, "");
+                }
+                $(this).val(x);
+            }
+        }).on("keyup", function() {
+            $(this).val($(this).val().replace(replaceNotAN, ""));
+        });
+    });
+</script>

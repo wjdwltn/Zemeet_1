@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%-include('../adminFrame/head.ejs')%>
+</head>
+<body>
+    <div id="wrapper">
+        <!-- Navigation -->
+        <%-include('../adminFrame/nav.ejs')%>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">게임 수정하기</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            게임 수정
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <form id="gameFileForm"  enctype="multipart/form-data"  method="post" >
+                                <div class="row" style="margin-bottom:15px">
+                                    <div class="col-lg-5">
+                                        <!--어떤 idx의 게시물을 수정하는지 -->
+                                        <input type="hidden" name="idx" value="<%=rows.idx%>"/>
+                                        <!--새 사진 저장 안했을때는 기존 사진 정보를 넣어줌 -->
+                                        <input type="hidden" name="originFile" value="<%=rows.pic%>"/>
+                                        <div class="form-group">
+                                            <label>기존 이미지</label>
+                                            <div><img src="/<%= rows.pic %>" width="150px;"/></div>
+                    
+                                        </div>
+                                        <div class="form-group">
+                                            <label>게임 이미지</label>
+                                            <input type="file" name="pic" id="piccheck" accept="image/*" onchange='chk_file_type(this)'>
+                    
+                                        </div>
+                                        <div class="form-group">
+                                            <label>한글 게임 이름</label>
+                                            <input input value="<%= rows.Kname %>" type="varhcar" name="Kname" maxlength="100" required class="form-control" style="width:200px; height:30px;" >
+                                        </div>
+                                        <div class="form-group">
+                                            <label>영문 게임 이름</label>
+                                            <input input value="<%= rows.Ename %>" type="varhcar" name="Ename" maxlength="100" required class="form-control" style="width:200px; height:30px;" >
+                                        </div>
+                                        <div class="form-group" id="genreclick" >
+                                            <label>게임 장르</label>
+                                            <label class="radio-inline" id="a">
+                                                <input type="radio" name="genre" value="경쟁" <% if(rows.genre == '경쟁'){ %> checked <%} %> />경쟁
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="genre" value="추리" <% if(rows.genre == '추리'){ %> checked <%} %> />추리
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="genre" value="순발력" <% if(rows.genre == '순발력'){ %> checked <%} %> />순발력
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="genre" value="사고" <% if(rows.genre == '사고'){ %> checked <%} %> />사고
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="genre" value="전략" <% if(rows.genre == '전략'){ %> checked <%} %> />전략
+                                            </label>
+                                        </div>
+                                        <div class="form-group" id="uminclick" >
+                                            <label>최소 인원</label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="umin" value="2" <% if(rows.umin == 2){ %> checked <%} %> />2
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="umin" value="3" <% if(rows.umin == 3){ %> checked <%} %> />3
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="umin" value="4" <% if(rows.umin == 4){ %> checked <%} %> />4
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="umin" value="5" <% if(rows.umin == 5){ %> checked <%} %> />5
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="umin" value="6"  <% if(rows.umin == 6){ %> checked <%} %> />5명 이상
+                                            </label>
+                                        </div>
+                                        <div class="form-group" id="umaxclick">
+                                            <label>최대 인원</label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="umax" value="2" <% if(rows.umax == 2){ %> checked <%} %>/>2
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="umax" value="3" <% if(rows.umax == 3){ %> checked <%} %>/>3
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="umax" value="4" <% if(rows.umax == 4){ %> checked <%} %>/>4
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="umax" value="5" <% if(rows.umax == 5){ %> checked <%} %>/>5
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="umax" value="6" <% if(rows.umax == 6){ %> checked <%} %>/>5명 이상
+                                            </label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>플레이 시간</label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="playtime" value="30분 미만" <% if(rows.playtime == '30분 미만'){ %> checked <%} %>/>30분 미만
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="playtime" value="30분" <% if(rows.playtime == '30분'){ %> checked <%} %> />30분
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="playtime" value="45분" <% if(rows.playtime == '45분'){ %> checked <%} %> />45분
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="playtime" value="1시간"  <% if(rows.playtime == '1시간'){ %> checked <%} %>/>1시간
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="playtime" value="1시간 이상" <% if(rows.playtime == '1시간 이상'){ %> checked <%} %> />1시간 이상
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <!-- /.col-lg-5 (nested) -->
+                                    <div class="col-lg-5">
+                                        
+                                        <div class="form-group">
+                                            <label>설명 시간</label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="explantime" value="5분" <% if(rows.explantime == '5분'){ %> checked <%} %> />5분
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="explantime" value="10분" <% if(rows.explantime == '10분'){ %> checked <%} %> />10분
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="explantime" value="15분" <% if(rows.explantime == '15분'){ %> checked <%} %> />15분
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="explantime" value="20분" <% if(rows.explantime == '20분'){ %> checked <%} %> />20분
+                                            </label>
+                                        </div>
+                                        <div class="form-group" id="levelclick" >
+                                            <label>난이도</label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="level" value="easy" <% if(rows.level == 'easy'){ %> checked <%} %> />EASY
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="level" value="normal" <% if(rows.level == 'normal'){ %> checked <%} %> />NORMAL
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="level" value="hard" <% if(rows.level == 'hard'){ %> checked <%} %> />HARD
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="level" value="very hard" <% if(rows.level == 'very hard') { %> checked <%} %> />VERY HARD
+                                            </label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>진열 위치</label>
+                                            <input input value="<%= rows.loc %>" type="varhcar" name="loc" maxlength="100" required class="form-control" style="width:600px; height:30px;" >
+                                        </div>
+                                        <div class="form-group">
+                                            <label>한 줄 설명</label>
+                                            <input input value="<%= rows.simexplan %>" type="varhcar" name="simexplan" maxlength="100" required class="form-control" style="width:600px; height:30px;" >
+                                        </div>
+                                        <input type="hidden" name="originFilevid" value="<%=rows.vid%>"/>
+                                        <div class="form-group">
+                                            <label>기존 영상</label>
+                                            <div><img src="/<%= rows.vid %>" width="150px;"/></div>
+                    
+                                        </div>
+                                        <div class="form-group">
+                                            <label>게임 영상</label>
+                                            <input type="file" name="vid" accept="video/*" onchange='chk_videofile_type(this)'>
+                    
+                                        </div>
+                                        <div class="form-group">
+                                            <label>게임 설명</label>
+                                            <textarea type="varhcar" name="explan" rows="10" cols="100"  maxlength="" required class="form-control" ><%= rows.explan %></textarea>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <tr>
+                                    <td colspan="2">
+                                        <td><button type="button" class="btn btn-warning" style="padding:4px 12px;" onclick="fileUpdate()">수정</button></td> 
+                                        <td><button type="button" class="btn btn-primary" style="padding:4px 12px;" onclick="location.href='/admin/game';">목록</button></td>
+                                    </td>
+                                </tr>
+                            </form>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+        </div>
+    </div>
+    <style>
+       .textarea {
+            width: 100%;
+            height: 1000px;
+        }       
+    </style>
+</body>
+</html>
+<%-include('../adminFrame/footer.ejs')%>
+<script>
+    function fileUpdate(){
+        let form = $("#gameFileForm")[0]; 
+        let data = new FormData(form);   
+        console.log("data,",data)
+        $.ajax({
+                type : 'post' , 
+                url : '/admin/updateGame' , 
+                data : data , 
+                dataType : 'json' ,                
+                processData:false, 
+                contentType:false,
+        }).done(function(data){                
+            alert(data.msg);
+            if(data.result == 'success'){
+                location.href = '/admin/game_detail?idx=<%=rows.idx%>'
+            }            
+        }).fail(function(e){
+                console.log(JSON.stringify(e));
+        })
+        
+    }
+    
+    function chk_file_type(obj) {
+        var file_kind = obj.value.lastIndexOf('.');
+        var file_name = obj.value.substring(file_kind+1,obj.length);
+        var file_type = file_name.toLowerCase();
+        var check_file_type=new Array();
+
+        check_file_type=['jpg','gif','png','jpeg','bmp'];
+
+
+
+        if(check_file_type.indexOf(file_type)==-1){
+            alert('이미지 파일만 선택할 수 있습니다.');
+            obj.value = '';
+            return false;
+        }
+    }
+    function chk_videofile_type(obj) {
+        var file_kind = obj.value.lastIndexOf('.');
+        var file_name = obj.value.substring(file_kind+1,obj.length);
+        var file_type = file_name.toLowerCase();
+
+
+
+        var check_file_type=new Array();
+
+        check_file_type=['mp4','mkv','x-m4v'];
+
+
+
+        if(check_file_type.indexOf(file_type)==-1){
+            alert('동영상 파일만 선택할 수 있습니다.');
+            obj.value ='';
+            return false;
+        }
+    }
+
+</script>

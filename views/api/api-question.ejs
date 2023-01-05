@@ -1,0 +1,104 @@
+<!DOCTYPE html><!--  This site was created in Webflow. http://www.webflow.com  -->
+<!--  Last Published: Thu Mar 31 2022 01:51:32 GMT+0000 (Coordinated Universal Time)  -->
+<html data-wf-page="6243c3fadf6354105a203bba" data-wf-site="61fb361452ff0215fe4db1db">
+<head>
+  <title>API_Question</title>
+  <meta content="API_Question" property="og:title">
+  <meta content="API_Question" property="twitter:title">
+  <%-include('../apiFrame/head.ejs') %>
+</head>
+<body class="api_body">
+  <div class="api_frame">
+    <div class="api_top return">
+      <div>문의사항</div>
+      <a href="questionboard" class="api_topreturn w-inline-block"><img src="../user/images/chevron-left.svg" loading="lazy" alt="" class="image-25"></a>
+    </div>
+    <div class="api_innerframe">
+      <div class="api_section">
+        <div class="api_list_container">
+          <div class="title">문의</div>
+          <form id="questionForm" enctype="multipart/form-data" name="questionForm" onsubmit="return false;" method="post">
+            <div class="api_question">
+              <div class="w-form">
+                  <div class="question_title">문의분류</div>
+                  <select  name="category" class="select-field-4 w-select">
+                    <option value="">문의 종류를 선택해주세요...</option>
+                    <option value="예약">예약</option>
+                    <option value="게임">게임</option>
+                    <option value="기타">기타</option>
+                  </select>
+                  <div class="question_title">문의제목</div><input type="text" class="text-field-6 w-input" maxlength="100" name="title" data-name="Field 3" placeholder="제목을 입력하세요" id="field-3" required="">
+                  <div class="question_title">문의사항</div><textarea placeholder="내용을 입력하세요" maxlength="5000" id="field" name="content" data-name="field" class="textarea-2 w-input"></textarea>
+              </div>
+            </div>
+            <div class="detail_file">
+              <span class="link-block-19 first w-inline-block">
+                <div style="width:90px"><img src="../user/images/Icon-open-plus.svg" loading="lazy" alt="" class="image-34">첨부파일</div><input type="file" name="pic1" accept="image/*,video/*" onchange='chk_file_type(this)'>
+              </span>
+              <span class="link-block-19 first w-inline-block">
+                <div style="width:90px"><img src="../user/images/Icon-open-plus.svg" loading="lazy" alt="" class="image-34">첨부파일</div><input type="file" name="pic2" accept="image/*,video/*" onchange='chk_file_type(this)'>
+              </span>
+            </div>
+            <a href="#" class="button-25 w-button"  onclick="fileUpload()">문의접수</a>
+          </form>
+      </div>
+    </div>
+    <div class="bottom">
+      <a href="main" class="api_bottombtn w-inline-block"><img src="../user/images/home.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/home2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>홈</div>
+      </a>
+      <a href="gamesearch" class="api_bottombtn w-inline-block"><img src="../user/images/grid.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/grid2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>게임</div>
+      </a>
+      <a href="roomsearch" class="api_bottombtn w-inline-block"><img src="../user/images/calendar.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/calendar2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>예약</div>
+      </a>
+      </a>
+      <a href="customer" class="api_bottombtn w-inline-block"><img src="../user/images/headset_white.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/headset_color.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>고객센터</div>
+      </a>
+    </div>
+  </div>
+  <%-include('../apiFrame/footer.ejs') %>
+</body>
+</html>
+<script>
+  function fileUpload(){
+        let form = $("#questionForm")[0]; 
+        let data = new FormData(form);    
+        console.log("data,",data)
+        $.ajax({
+                type : 'post' , 
+                url : '/api/questionFileProcess' , 
+                data : data , 
+                dataType : 'json' ,   
+                // processData / contentType 설명 https://repacat.tistory.com/38 참고               
+                processData:false, 
+                contentType:false,
+        }).done(function(data){                
+            alert(data.msg);
+            if(data.result == 'success'){
+              location.href = '/api/questionboard'
+            }            
+        }).fail(function(e){
+                console.log(JSON.stringify(e));
+        })
+    }
+    function chk_file_type(obj) {
+        var file_kind = obj.value.lastIndexOf('.');
+        var file_name = obj.value.substring(file_kind+1,obj.length);
+        var file_type = file_name.toLowerCase();
+        var check_file_type=new Array();
+
+        check_file_type=['jpg','gif','png','jpeg','bmp','mp4','mkv','x-m4v'];
+
+
+
+        if(check_file_type.indexOf(file_type)==-1){
+            alert('이미지와 동영상 파일만 선택할 수 있습니다.');
+            obj.value = '';
+            return false;
+        }
+    }
+    
+</script>

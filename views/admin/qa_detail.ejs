@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%-include('../adminFrame/head.ejs') %>
+</head>
+<script>
+    function getfilename(name){
+    var parts = name.split('.');
+    return parts[parts.length - 1];
+  }
+
+  function isVideo(name){
+    var name = getfilename(name);
+    switch(name.toLowerCase()){
+      case 'm4v':
+      case 'avi':
+      case 'mpg':
+      case 'mp4':
+        return true;
+    }
+    return false;
+  }
+  function isImage(name){
+    var name = getfilename(name);
+    switch(name.toLowerCase()){
+      case 'jpg':
+      case 'gif':
+      case 'bmp':
+      case 'png':
+        return true;
+    }
+    return false;
+  } 
+</script>
+<body>
+    <div id="wrapper">
+        <%-include('../adminFrame/nav.ejs') %>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Q&A 상세정보</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            문의내역 세부사항
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <form id="reservationForm" role="form">
+                                <div class="row" style="margin-bottom:15px">
+                                    <div class="col-lg-5">
+                                        <input type="hidden" name="idx" value="<%=info.idx%>">
+                                        
+                                        <div class="form-group">
+                                            <label>카테고리</label>
+                                            <div><%= info.category %></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>제목</label>
+                                            <div style="word-break:break-all;word-wrap:break-word;"><%= info.title %></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>내용</label>
+                                            <div style="word-wrap: break-word;"><%- info.content.replace(/(?:\r\n|\r|\n)/g, '<br/>') %></div>
+                                            <% if(info.pic1==''){%>
+                                                <% if(info.pic2=='') { %>
+                                                <% }else { %>
+                                                  <a href="/<%= info.pic2%>" download="<%= info.pic2%>" class="link-block-19 w-inline-block"><img src="../user/images/Icon-open-plus.svg" loading="lazy" alt="" class="image-34">
+                                                    <div><%= info.pic2%></div>
+                                                  </a>
+                                                <% } %>
+                                            <% }else { %>
+                                                <% if(info.pic2=='') { %>
+                                                    <a href="/<%= info.pic1%>" download="<%= info.pic1%>" class="link-block-19 first w-inline-block"><img src="../user/images/Icon-open-plus.svg" loading="lazy" alt="" class="image-34">
+                                                    <div><%= info.pic1%></div>
+                                                    </a>
+                                                <% }else { %>
+                                                    <a href="/<%= info.pic1%>" download="<%= info.pic1%>" class="link-block-19 first w-inline-block"><img src="../user/images/Icon-open-plus.svg" loading="lazy" alt="" class="image-34">
+                                                    <div><%= info.pic1%></div>
+                                                    </a>
+                                                    <a href="/<%= info.pic2%>" download="<%= info.pic2%>" class="link-block-19 w-inline-block"><img src="../user/images/Icon-open-plus.svg" loading="lazy" alt="" class="image-34">
+                                                    <div><%= info.pic2%></div>
+                                                    </a>
+                                                <% } %>
+                                            <% } %>
+                                           
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <div class="form-group">
+                                            <label>답변 여부</label>
+                                            <div><%= info.anscheck %></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>문의일</label>
+                                            <div><%= info.udate.toLocaleString() %></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>답변 내용</label>
+                                            <% if(info.anscontent == null) { %>
+                                                <div>X</div>
+                                            <% }else { %>
+                                                <div style="word-wrap: break-word;"><%- info.anscontent.replace(/(?:\r\n|\r|\n)/g, '<br/>') %></div>
+                                            <% } %>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>답변일</label>
+                                            <% if(info.ansdate == null) { %>
+                                                <div>X</div>
+                                            <% }else { %>
+                                                <div><%= info.ansdate.toLocaleString() %></div>
+                                            <% } %>
+                                        </div>
+                                    </div>    
+                                </div>
+                                <tr>
+                                    <td colspan="2">
+                                        <td><button type="button" class="btn btn-primary" style="padding:4px 12px;" onclick="location.href='/admin/qa';">목록</button></td> 
+                                        <td><button type="button" class="btn btn-warning" style="padding:4px 12px;" onclick="location.href='/admin/qa_answer?idx=<%= info.idx %>';">답변하기</button></td>
+                                        <td><button type="button" class="btn btn-danger" style="padding:4px 12px;" onclick= "fileDelete('<%= info.idx%>')">삭제</button></td>
+                                    </td>
+                                </tr>
+                            </form> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        img{
+            max-width:300px;
+            max-height:300px;
+        }
+    </style>
+</body>
+</html>
+<%-include('../adminFrame/footer.ejs')%>
+<script>
+ function fileDelete(idx){
+        if(confirm("삭제하시겠습니까?")){
+            $.ajax({
+                type : 'get' , 
+                url : '/admin/deleteQuestion?idx='+idx , 
+            }).done(function(data){                
+                alert(data.msg);
+                if(data.result == 'success'){
+                    location.href='/admin/qa'
+                }            
+            }).fail(function(e){
+                    console.log(JSON.stringify(e));
+            })            
+        }
+}
+</script>

@@ -1,0 +1,459 @@
+<!DOCTYPE html><!--  This site was created in Webflow. http://www.webflow.com  -->
+<!--  Last Published: Thu Mar 31 2022 01:51:32 GMT+0000 (Coordinated Universal Time)  -->
+<html data-wf-page="6205d2d03b8a764fd6fc01ea" data-wf-site="61fb361452ff0215fe4db1db">
+<head>
+  <title>API_gameSearch</title>
+  <meta content="API_GameSearch" property="og:title">
+  <meta content="API_GameSearch" property="twitter:title">
+  <%-include('../apiFrame/head.ejs') %>
+</head>
+<body class="api_body">
+  <div class="api_frame">
+    <div class="api_top">
+      <%-include('../apiFrame/api_top.ejs') %>
+    </div>
+    <div class="api_innerframe">
+      <div class="form-block-5 w-form">
+        <form id="searchForm" name="email-form" method="get">
+          <div class="searchbox">
+            <a href="javascript:search()" class="link-block-7 w-inline-block"><img src="../user/images/search.svg" loading="lazy" alt="" class="image-18"></a>
+            <input type="text" class="text-field-3 w-input" maxlength="256" id="gamesearch" name="gamesearch"  placeholder="검색어를 입력하세요" required="">
+            <input type="hidden" name="people" id="people"/> <!--인원-->
+            <input type="hidden" name="playTime" id="playTime"/> <!--플레이 시간-->
+            <input type="hidden" name="explanTime" id="explanTime"/> <!--설명 시간-->
+            <input type="hidden" name="Genre" id="Genre"/> <!--장르-->
+            <input type="hidden" name="Level" id="Level"/> <!--난이도-->
+          </div>
+        </form>
+      </div>
+      <div class="api_searchword">
+        <div class="search_title">많이 검색한 게임</div>
+        <div class="api_topmenu">
+          <% if (rows.length == 0) {%>
+            검색된 게임이 없습니다.
+          <% } else {%>
+            <% for(var i = 0; i < rows.length ; i++) { %>
+              <a href="#" class="link-block-9 w-inline-block" onclick="location.href='/api/gamedetail?idx=<%= row[i].idx%>';">
+                <div><%= rows[i].Kname %></div>
+              </a>
+            <% } %>
+          <% } %>
+        </div>
+      </div>
+      <!-- 검색옵션 나타나는 부분 -->
+      <div class="top_category">
+        <div class="api_category">
+          <div class="api_category_scroll" style="display:none;">
+            <div class="category_content" id="user_" style="display:none;" onclick="selclose(this,'people','user_')"><img src="../user/images/close_icon_black.svg" style="cursor:pointer" loading="lazy" alt="" class="ximage">
+              <div id="user_text"></div>
+            </div>
+            <div class="category_content" id="playtime_" style="display:none;" onclick="selclose(this,'playTime','playtime_')"><img src="../user/images/close_icon_black.svg" style="cursor:pointer" loading="lazy" alt="" class="ximage">
+              <div id="playtime_text"></div>
+            </div>
+            <div class="category_content" id="explantime_" style="display:none;" onclick="selclose(this,'explanTime','explantime_')"><img src="../user/images/close_icon_black.svg" style="cursor:pointer" loading="lazy" alt="" class="ximage">
+              <div id="explantime_text"></div>
+            </div>
+            <div class="category_content" id="genre_" style="display:none;" onclick="selclose(this,'Genre','genre')"><img src="../user/images/close_icon_black.svg" style="cursor:pointer" loading="lazy" alt="" class="ximage">
+              <div id="genre_text"></div>
+            </div>
+            <div class="category_content" id="level_" style="display:none;"onclick="selclose(this,'Level','level_')"><img src="../user/images/close_icon_black.svg" style="cursor:pointer" loading="lazy" alt="" class="ximage">
+              <div id="level_text"></div>
+            </div>
+          </div>
+        </div>
+        <a href="javascript:openPop('pop_category')" class="link-block-13 w-inline-block"><img src="../user/images/controls-alt.svg" loading="lazy" alt="" class="image-24"></a>
+      </div>
+      <span id="result">
+        <% for(var i = 0; i < row.length ; i++) { %>
+          <div class="inner_listframe" onclick="location.href='/api/gamedetail?idx=<%= row[i].idx%>';" style="cursor:pointer">
+            <div class="listbox"><img src="/<%= row[i].pic %>" loading="lazy" alt="" class="image-20" style="width:100%; height:240px;">
+              <div class="listbox_info">
+                <div class="text-block-8"><%= row[i].Kname %><span class="select-field-5"><%= row[i].Ename %></span></div>
+                <div><%= row[i].umin %> ~ <%= row[i].umax %>인용 / <%= row[i].playtime %> / <%= row[i].genre %> / <%= row[i].level %></div>
+              </div>
+            </div>
+          </div>
+        <% } %>
+      </span>
+    </div>
+    <div class="bottom">
+      <a href="main" class="api_bottombtn w-inline-block"><img src="../user/images/home.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/home2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>홈</div>
+      </a>
+      <a href="gamesearch" aria-current="page" class="api_bottombtn select w-inline-block w--current"><img src="../user/images/grid.svg" loading="lazy" alt="" class="api_bottombtn_img _1 select"><img src="../user/images/grid2.svg" loading="lazy" alt="" class="api_bottombtn_img _2 select">
+        <div>게임</div>
+      </a>
+      <a href="roomsearch" class="api_bottombtn w-inline-block"><img src="../user/images/calendar.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/calendar2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>예약</div>
+      </a>
+      <a href="customer" class="api_bottombtn w-inline-block"><img src="../user/images/headset_white.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/headset_color.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>고객센터</div>
+      </a>
+    </div>
+    <!-- =================================================================================================================================팝업 -->
+    <!-- 팝업 -->
+    <div class="api_pop" style="display:none;">
+      <div class="api_categorypop" style="display:none;" id = "pop_category">
+        <div class="api_categorypopbox">
+          <div class="apipop_title">검색 정보 설정</div>
+          <div class="api_categorypopwarp">
+            <div class="category_warp">
+              <div class="category_title">
+                <div>인원</div>
+              </div>
+              <div class="form-block-12 w-form">
+                <form id="email-form-2" name="email-form-2" data-name="Email Form 2" method="get">
+                  <div class="selectwarp">
+                    <select id="usersel" class="select-field-5 w-select">
+                      <option value="0">인원을 선택하세요...</option>
+                      <option value="2">2명</option>
+                      <option value="3">3명</option>
+                      <option value="4">4명</option>
+                      <option value="5">5명</option>
+                      <option value="6">5명 이상</option>
+                    </select></div>
+                </form>
+              </div>
+            </div>
+            <div class="category_warp">
+              <div class="category_btnbox">
+                <div>play시간</div>
+              </div>
+              <div class="side_scroll">
+                <div class="form-block-12 w-form">
+                  <form id="email-form-2" name="email-form-2" method="get">
+                    <div class="checkbox_grid">
+                      <label class="w-checkbox checkbox-field-4 playTime">
+                        <div class="w-checkbox-input w-checkbox-input--inputType-custom checkbox-3" ></div>
+                        <input type="checkbox" style="opacity:0;position:absolute;z-index:-1">
+                        <span class="w-form-label" for="checkbox-2" value="30분 미만">30분 미만</span>
+                      </label>
+                      <label class="w-checkbox checkbox-field-4 playTime">
+                        <div class="w-checkbox-input w-checkbox-input--inputType-custom checkbox-3" ></div>
+                        <input type="checkbox"  style="opacity:0;position:absolute;z-index:-1">
+                        <span class="w-form-label" for="checkbox-2" value="30분">30분</span>
+                      </label>
+                      <label class="w-checkbox checkbox-field-4 playTime">
+                        <div class="w-checkbox-input w-checkbox-input--inputType-custom checkbox-3" ></div>
+                        <input type="checkbox"  style="opacity:0;position:absolute;z-index:-1">
+                        <span class="w-form-label" for="checkbox-2" value="45분">45분</span>
+                      </label>
+                      <label class="w-checkbox checkbox-field-4 playTime">
+                        <div class="w-checkbox-input w-checkbox-input--inputType-custom checkbox-3" ></div>
+                        <input type="checkbox"  style="opacity:0;position:absolute;z-index:-1">
+                        <span class="w-form-label" for="checkbox-2" value="1시간">1시간</span>
+                      </label>
+                      <label class="w-checkbox checkbox-field-4 playTime">
+                        <div class="w-checkbox-input w-checkbox-input--inputType-custom checkbox-3"></div>
+                        <input type="checkbox" style="opacity:0;position:absolute;z-index:-1">
+                        <span class="w-form-label" for="checkbox-2" value="1시간 이상">1시간 이상</span>
+                      </label>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="category_warp">
+              <div class="category_btnbox">
+                <div>설명시간</div>
+              </div>
+              <div class="side_scroll">
+                <div class="form-block-12 w-form">
+                  <form id="email-form-2" name="email-form-2" data-name="Email Form 2" method="get">
+                    <div class="checkbox_grid">
+                      <label class="w-checkbox checkbox-field-4 explanTime">
+                        <div class="w-checkbox-input w-checkbox-input--inputType-custom checkbox-3"></div>
+                        <input type="checkbox"  style="opacity:0;position:absolute;z-index:-1">
+                        <span class="w-form-label" for="checkbox-2" value="5분">5분</span>
+                      </label>
+                      <label class="w-checkbox checkbox-field-4 explanTime" >
+                        <div class="w-checkbox-input w-checkbox-input--inputType-custom checkbox-3"></div>
+                        <input type="checkbox"  style="opacity:0;position:absolute;z-index:-1">
+                        <span class="w-form-label" for="checkbox-2" value="10분">10분</span>
+                      </label>
+                      <label class="w-checkbox checkbox-field-4 explanTime" >
+                        <div class="w-checkbox-input w-checkbox-input--inputType-custom checkbox-3"></div>
+                        <input type="checkbox"  style="opacity:0;position:absolute;z-index:-1">
+                        <span class="w-form-label" for="checkbox-2" value="15분">15분</span>
+                      </label>
+                      <label class="w-checkbox checkbox-field-4 explanTime" >
+                        <div class="w-checkbox-input w-checkbox-input--inputType-custom checkbox-3"></div>
+                        <input type="checkbox"  style="opacity:0;position:absolute;z-index:-1">
+                        <span class="w-form-label" for="checkbox-2" value="20분">20분</span>
+                      </label>
+                      <label class="w-checkbox checkbox-field-4 explanTime" >
+                        <div class="w-checkbox-input w-checkbox-input--inputType-custom checkbox-3"></div>
+                        <input type="checkbox"  style="opacity:0;position:absolute;z-index:-1">
+                        <span class="w-form-label" for="checkbox-2" value="30분">30분</span>
+                      </label>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="category_warp">
+              <div class="category_btnbox">
+                <div>장르</div>
+              </div>
+              <div class="side_scroll">
+                <div class="form-block-12 w-form">
+                  <form id="email-form-2" name="email-form-2" data-name="Email Form 2" method="get">
+                    <div class="checkbox_grid">
+                      <label class="w-checkbox checkbox-field-4 Genre">
+                        <div class="w-checkbox-input w-checkbox-input--inputType-custom checkbox-3"></div>
+                        <input type="checkbox"   style="opacity:0;position:absolute;z-index:-1">
+                        <span class="w-form-label" for="checkbox-2"  value="경쟁">경쟁</span>
+                      </label>
+                      <label class="w-checkbox checkbox-field-4 Genre">
+                        <div class="w-checkbox-input w-checkbox-input--inputType-custom checkbox-3"></div>
+                        <input type="checkbox"  style="opacity:0;position:absolute;z-index:-1">
+                        <span class="w-form-label" for="checkbox-2" value="추리">추리</span>
+                      </label>
+                      <label class="w-checkbox checkbox-field-4 Genre">
+                        <div class="w-checkbox-input w-checkbox-input--inputType-custom checkbox-3"></div>
+                        <input type="checkbox"  style="opacity:0;position:absolute;z-index:-1">
+                        <span class="w-form-label" for="checkbox-2" value="사고">사고</span>
+                      </label>
+                      <label class="w-checkbox checkbox-field-4 Genre">
+                        <div class="w-checkbox-input w-checkbox-input--inputType-custom checkbox-3"></div>
+                        <input type="checkbox"  style="opacity:0;position:absolute;z-index:-1">
+                        <span class="w-form-label" for="checkbox-2" value="순발력">순발력</span>
+                      </label>
+                      <label class="w-checkbox checkbox-field-4 Genre">
+                        <div class="w-checkbox-input w-checkbox-input--inputType-custom checkbox-3"></div>
+                        <input type="checkbox"  style="opacity:0;position:absolute;z-index:-1">
+                        <span class="w-form-label" for="checkbox-2" value="전략">전략</span>
+                      </label>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="category_warp">
+              <div class="category_btnbox">
+                <div>난이도</div>
+              </div>
+              <div class="side_scroll">
+                <div class="form-block-12 w-form">
+                  <form id="email-form-2" name="email-form-2" data-name="Email Form 2" method="get">
+                    <div class="checkbox_grid">
+                      <label class="w-checkbox checkbox-field-4 Level">
+                        <div class="w-checkbox-input w-checkbox-input--inputType-custom checkbox-3"></div>
+                        <input type="checkbox"  style="opacity:0;position:absolute;z-index:-1">
+                        <span class="w-form-label" for="checkbox-2" value="easy">easy</span>
+                      </label>
+                      <label class="w-checkbox checkbox-field-4 Level">
+                        <div class="w-checkbox-input w-checkbox-input--inputType-custom checkbox-3"></div>
+                        <input type="checkbox"  style="opacity:0;position:absolute;z-index:-1">
+                        <span class="w-form-label" for="checkbox-2" value="normal">normal</span>
+                      </label>
+                      <label class="w-checkbox checkbox-field-4 Level">
+                        <div class="w-checkbox-input w-checkbox-input--inputType-custom checkbox-3"></div>
+                        <input type="checkbox"  style="opacity:0;position:absolute;z-index:-1">
+                        <span class="w-form-label" for="checkbox-2" value="hard">hard</span>
+                      </label>
+                      <label class="w-checkbox checkbox-field-4 Level">
+                        <div class="w-checkbox-input w-checkbox-input--inputType-custom checkbox-3"></div>
+                        <input type="checkbox"  style="opacity:0;position:absolute;z-index:-1">
+                        <span class="w-form-label" for="checkbox-2" value="very hard">very hard</span>
+                      </label>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="apipop_btnarea">
+            <a href="javascript:apisetting()" class="apipop_btn _2 w-button">확인</a>
+            <a href="javascript:closePop()" class="apipop_btn w-button">취소</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%-include('../apiFrame/api_sidePop.ejs') %>
+  </div>
+  <%-include('../apiFrame/footer.ejs') %>
+  <style>
+.api_topmenu_scroll::-webkit-scrollbar {
+width: 4px;
+height:4px;
+}
+.api_topmenu_scroll::-webkit-scrollbar-thumb {
+background: #a9a9a9;
+border-radius:20px;
+opacity:50%;
+}
+.api_category::-webkit-scrollbar {
+width: 4px;
+height:4px;
+}
+.api_category::-webkit-scrollbar-thumb {
+width:100px;
+background: #a9a9a9;
+border-radius:20px;
+opacity:50%;
+}
+.side_scroll::-webkit-scrollbar {
+width: 4px;
+height:4px;
+}
+.side_scroll::-webkit-scrollbar-thumb {
+background: #a9a9a9;
+border-radius:20px;
+opacity:50%;
+}
+#infobox_{
+      height:650px;
+      text-align: center;
+      line-height:600px;
+      color:#a9a9a9;
+}
+</style>
+</body>
+</html>
+<!-- =============================================================================================================================== -->
+<script>
+  $(document).ready(function(){
+    $(".listbox").on('click' , function(){
+      location.href='gamedetail'
+     })  
+     $(".checkbox-field-4").on('click' , function(e){       
+        e.preventDefault(); // 두번실행 방지 
+        let inputId = $(this).attr("class").split(" ")[2];// class 가져와서 공백기준으로 나누고 처음부터 0 1 2 순으로-> id 가져옴
+        let inputValue = '';
+        if($(this).children('div').hasClass("w--redirected-checked")){
+          console.log("체크 지워줌")
+          $(this).children('div').removeClass("w--redirected-checked");          
+        }else{
+          console.log("체크해줌")
+          $(this).parent().find('.w--redirected-checked').removeClass("w--redirected-checked");
+          $(this).children('div').addClass("w--redirected-checked");           
+          inputValue = $(this).children('span').attr("value");
+        }
+        $("#"+inputId).val(inputValue);  
+        console.log(inputId,":", $("#"+inputId).val() )      
+     })
+  })
+
+  $(document).ready(function(){
+    $("#people").val('');
+    $("#usersel").change(function() {
+      console.log("usersel 들어옴")
+      if($("#usersel").val()==0){
+      console.log("0000000000")
+      $("#people").val('');
+    }else{
+      console.log($("#usersel").val())
+      $("#people").val( $("#usersel").val());
+    }
+    console.log("people:", $("#people").val() )   
+});
+  })
+
+  function apisetting(){
+    if(  $("#people").val() != ''){
+      if( $("#people").val() != 6){
+         $("#user_text").html($("#people").val()+'명');// 텍스트 변경
+         console.log($("#user_text").html())
+      }
+      else if($("#people").val() ==6){
+         $("#user_text").html('5명이상');
+         console.log($("#user_text").html())
+      }
+       $("#user_").css('display','flex');//검색옵션 부분에 2명 이런식으로 나타남 
+       $(".api_category_scroll").css('display','flex');
+    }
+    else if( $("#people").val() == ''){
+      $("#user_").css('display','none');//검색옵션 부분에 2명 이런식으로 나타남 
+      $(".api_category_scroll").css('display','none');
+    }
+    apidisplay("playTime","playtime_")
+    apidisplay("explanTime","explantime_")
+    apidisplay("Genre","genre_")
+    apidisplay("Level","level_")
+    //공통함수
+    closePop()//검색정보설정 팝업 닫기
+    search();
+  }
+  function apidisplay(id,text){//playtime,explantime,genre,level 공통 함수
+    if( $("#"+id).val() != ''){
+      $("#"+text+"text").html( $("#"+id).val());
+      console.log($("#"+text).html())
+      $("#"+text).css('display','flex');//검색옵션 부분에 2명 이런식으로 나타남 
+      $(".api_category_scroll").css('display','flex');
+    }
+    else{
+      console.log($("#"+text+"text").html())
+      $("#"+text).css('display','none');//검색옵션 부분에 2명 이런식으로 나타남 \
+    }
+  }
+  function openPop(id){
+      $("#"+id).css("display","flex");
+      $(".api_pop").css("display","flex");
+  }
+  function closePop(){
+    // $(".api_categorypopwarp").
+    // 검색 - jquery 포함아이디 검색
+    $("[id*=pop_]").css("display","none");
+    $(".api_pop").css("display","none");
+  }
+  function selclose(self,id,text){
+    $(self).css('display','none');
+    $("#"+id).val('');
+    $("#"+text+"text").html('');
+    $("."+id).children('div').hasClass("w--redirected-checked")
+    $("."+id).children('div').removeClass("w--redirected-checked");  
+    search();    
+  }
+  //-------------------------------------------
+  $(document).ready(function() {
+    // ID가 message에서 엔터키를 누를 경우
+    $("#gamesearch").keydown(function (key) {        
+        if (key.keyCode == 13) {
+            search();
+        }
+    });
+  });
+
+  function search(){
+    console.log("검색창:",$("#gamesearch").val())
+    // compare($("#gamesearch").val())
+    //$(".popup").attr('id','idx');
+    let data = $("#searchForm").serialize();
+    data = decodeURIComponent(data);
+    $.ajax({
+      type : 'post' , 
+      url : '/getApiSearch' , 
+      data : data,
+      dataType : 'json' ,
+    }).done(function(data){  
+      $("#result").html(datalist(data));
+    }).fail(function(e){
+      console.log(JSON.stringify(e));
+    })            
+  }
+  //---------------------------------------------->>게임 리스팅하는 함수
+  function datalist(data){
+    let str = '';
+    if(data.msg[0].idx == null){// 왜? data.msg.length ==0 이면 안된다..
+      str+='<div class="inner_listframe">';
+      str+='<div id="infobox_">검색 된 게임이 없습니다.</div>';
+      str+='</div>';  
+    }
+    else{
+        for(i=0;i<data.msg.length;i++){
+          str+='<div class="inner_listframe" onclick="location.href'+"='"+'/api/gamedetail?idx='+data.msg[i].idx+"'"+';" style="cursor:pointer">';
+          str+='<div class="listbox"><img src="/'+data.msg[i].pic+'" loading="lazy" alt="" class="image-20" style="width:100%; height:240px;">';
+          str+='<div class="listbox_info">';
+          str+='<div class="text-block-8">'+data.msg[i].Kname+'<br></div>';
+          str+='<div>'+data.msg[i].umin+' ~ '+data.msg[i].umax+'인용 / '+data.msg[i].playtime+' / '+data.msg[i].genre+' / '+data.msg[i].level+'</div>';
+          str+='</div>';
+          str+='</div>';
+          str+='</div>';
+      }
+    }
+    return str;
+  }   
+  
+  
+</script>

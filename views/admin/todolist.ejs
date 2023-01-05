@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <%-include('../adminFrame/head.ejs')%>
+
+</head>
+<script>
+    function a(i,rows){
+        var j=i;
+        var list = [];
+        var day=0;
+        var daydetail=0;
+        for(var i = 0; i< (rows.length+1)/2; i++){
+            day =rows.split(',')[i]
+            if(day=='2'){
+                daydetail='월'
+            }else if(day=='3'){
+                daydetail='화'
+            }else if(day=='4'){
+                daydetail='수'
+            }else if(day=='5'){
+                daydetail='목'
+            }else if(day=='6'){
+                daydetail='금'
+            }else if(day=='7'){
+                daydetail='토'
+            }else if(day=='1'){
+                daydetail='일'
+            }
+            list.push(daydetail)
+        }
+        document.write(list)
+    }
+</script>
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <%-include('../adminFrame/nav.ejs')%>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">To-do-list</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            to-do-list
+                        </div>
+                         <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="row" style="margin-bottom:15px">
+                                <div class="col-lg-12">
+                                    <form method="get" action="/admin/todolist" id="searchForm" class="form-3" style="float:right; display:flex;">
+                                        <input type="hidden" name="page" id="pageIndex" value="0">
+                                        <select name="todoDateType" class="form-control input-sm" style="margin-right:10px; width:150px;">                                            
+                                            <option value="process" <% if(todoProcessType == 'process'){ %> selected  <% } %>>요일선택</option>
+                                            <option value="0" <% if(todoProcessType == '0'){ %> selected  <% } %>>매일</option>
+                                            <option value="2" <% if(todoProcessType == '2'){ %> selected  <% } %>>월</option>
+                                            <option value="3" <% if(todoProcessType == '3'){ %> selected  <% } %>>화</option>
+                                            <option value="4" <% if(todoProcessType == '4'){ %> selected  <% } %>>수</option>
+                                            <option value="5" <% if(todoProcessType == '5'){ %> selected  <% } %>>목</option>
+                                            <option value="6" <% if(todoProcessType == '6'){ %> selected  <% } %>>금</option>
+                                            <option value="7" <% if(todoProcessType == '7'){ %> selected  <% } %>>토</option>
+                                            <option value="1" <% if(todoProcessType == '1'){ %> selected  <% } %>>일</option>
+                                        </select>
+                                        <input type="hidden" name="page" id="pageIndex" value="0">
+                                        <button class="btn btn-default" style="padding:4px 12px;">검색</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <table width="100%" class="table table-striped table-bordered table-hover" >
+                                <thead style="background:rgb(243, 243, 243)">
+                                    <tr>
+                                        <th style="width:35%;">내용</th>
+                                        <th>시작일</th>
+                                        <th>종료일</th>
+                                        <th>요일</th>
+                                        <th style="width:15%;">상세정보</th>
+                                    </tr>
+                                </thead>
+                                <thead>
+                                    <% for(var i = 0; i < rows.length ; i++) { 
+                                        %> 
+                                    <tr>
+                                        <td><%= rows[i].content %></td>
+                                        <td><%= rows[i].stime.toLocaleString('sv').split(' ')[0] %></td>
+                                        <td><%= rows[i].etime.toLocaleString('sv').split(' ')[0] %></td>
+                                        <% if(rows[i].day==-1) {%>
+                                            <td>해당없음</td>
+                                        <%} else if(rows[i].day==0) {%>
+                                            <td>매일</td>
+                                        <%} else {%>
+                                            <td><script>a('<%=i%>','<%=rows[i].day%>')</script></td>
+                                        <%}%>
+                                        <td>
+                                            <button type="button" class="btn btn-warning" style="padding:4px 12px;"  onclick="location.href='/admin/todoUpdate?gidx=<%=rows[i].gidx%>'">수정</button>
+                                            <button type="button" class="btn btn-danger" style="padding:4px 12px;"  onclick="todoDelete('<%=rows[i].idx%>')">삭제</button>
+                                        </td>
+                                    </tr>
+                                    <%}%>
+                                </thead>
+                            </table>
+                            <div class="text-center">
+                                <div class="panel-body">
+                                    <!-- Nav tabs -->
+                                    <ul class="pagination">
+                                        <% if(page == 0) { %>
+                                            <li class="paginate_button"><a href="javascript:void(0)">&laquo;</a></li>
+                                        <% }else { %>
+                                            <li class="paginate_button"><a href="javascript:paging(<%=page-1%>)">&laquo;</a></li>
+                                        <% } %>
+                                        <% if(Math.ceil(totalitems/countperpage) == 0) { %>
+                                            <li class="paginate_button active"><a href="javascript:paging(<%=0%>)" class="page">1</a></li>
+                                        <% }else { %>
+                                        <%  for(var j = 0; j < Math.ceil(totalitems/countperpage) ; j++){  %>                                            
+                                            <li class="paginate_button <% if (page == j) { %> active<%}%>"><a href="javascript:paging(<%=j%>)" class="page"><%= j + 1 %></a></li>
+                                        <%}%>         
+                                        <%}%>                                          
+                                        <% if(page+1 == Math.ceil(totalitems/countperpage)) { %>
+                                            <li class="paginate_button"><a href="javascript:void(0)">&raquo;</a></li>
+                                        <% }else { %>
+                                            <li class="paginate_button"><a href="javascript:paging(<%=page+1%>)">&raquo;</a></li>
+                                        <% } %>                                        
+                                    </ul>
+                                </div>
+                            </div>
+                            <form id="todoForm" role="form" >
+                                <table width="100%" class="table table-striped table-bordered table-hover">
+                                    <h3 style="margin-top:0px;" >To-do-list 등록</h3>
+                                    <thead style="background:rgb(247, 247, 247)">
+                                        <tr>
+                                            <th>내용</th>
+                                            <th>시작일</th>
+                                            <th>종료일</th>
+                                            <th>반복</th>
+                                            <th>추가</th>
+                                        </tr>
+                                    </thead>
+                                    <td style="width:40%"><input type="int" class="form-control"  id="content" name="content" value="" style="width:100%; height:40px;display:inline;" placeholder="추가할 todolist를 입력해주세요." required/></td>
+                                    <td style="width:13%"><input type="date" class="form-control" name="stime"></td>
+                                    <td style="width:13%"><input type="date" class="form-control" name="etime"></td>
+                                    <td>
+                                        <label class="radio-inline">
+                                        <input type="radio" name="day" value="0" onchange="setDisplay(1)" />매일
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="day"  value="selday" onchange="setDisplay(2)" />요일선택
+                                        </label>
+                                        <div><label class="checkbox-inline" style="padding:0px">매주</label><label class="checkbox-inline">
+                                            <input type="checkbox" name="day"  id="daysel" value="2" disabled />월
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="day" id="daysel" value="3" disabled/>화
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="day" id="daysel" value="4" disabled/>수
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="day" id="daysel" value="5" disabled/>목
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="day" id="daysel" value="6" disabled/>금
+                                            </label>
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="day" id="daysel" value="7" disabled/>토
+                                            </label>            
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="day" id="daysel" value="1" disabled/>일
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td><button type="button" class="btn btn-warning" style="height:35px; width:55px; margin-top:2.7px; margin-left:10px; "  onclick="todoinsert()">추가</a></button></td>
+                                </table> 
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>   
+        </div>
+    </div>     
+</body>
+
+</html>
+<%-include('../adminFrame/footer.ejs')%>
+<script>
+    function paging(num){      
+      $("#pageIndex").val(num);      
+      $("#searchForm").submit();
+    }
+
+    function setDisplay(num){
+        console.log("dd")
+        if(num=='2'){
+            console.log("33")
+            $("input[id=daysel]").prop("disabled", false);
+        }
+        else{
+            $("input[id=daysel]").prop("checked", false);
+            $("input[id=daysel]").prop("disabled", true);
+        }
+    }   
+    function todoinsert(){
+        let data = $("#todoForm").serialize();
+        console.log("datadaaa",data)
+        $.ajax({
+                type : 'post' , 
+                url : '/admin/insertTodo' , 
+                data : data , 
+                dataType : 'json' ,   
+        }).done(function(data){                
+            console.log(data);
+            alert(data.msg);
+            if(data.result == 'success'){
+                location.href = '/admin/todolist';
+            }            
+        }).fail(function(e){
+                console.log(JSON.stringify(e));
+        })
+    }
+    function todoDelete(idx){
+        if(confirm("삭제하시겠습니까?")){
+            $.ajax({
+                type : 'get' , 
+                url : '/admin/deleteTodo?idx='+idx , 
+            }).done(function(data){                
+                alert(data.msg);
+                if(data.result == 'success'){
+                    location.href='/admin/todolist'
+                }             
+            }).fail(function(e){
+                    console.log(JSON.stringify(e));
+            })            
+        }
+    }
+    function gidxget(gidx){
+        console.log("g,",gidx)
+        $.ajax({
+                type : 'get' , 
+                url : '/admin/todolist?gidx='+gidx, 
+                dataType : 'json' ,                
+        }).done(function(data){                
+            alert(data.msg);
+            if(data.result == 'success'){
+               console.log("data",data)
+            }            
+        }).fail(function(e){
+                console.log(JSON.stringify(e));
+        })
+    }
+    $(document).ready(function(){
+
+    })
+    
+</script>

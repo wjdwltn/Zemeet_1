@@ -1,0 +1,54 @@
+<!DOCTYPE html><!--  This site was created in Webflow. http://www.webflow.com  -->
+<!--  Last Published: Thu Mar 31 2022 01:51:32 GMT+0000 (Coordinated Universal Time)  -->
+<html data-wf-page="62147c53431e5f0625ff4d2d" data-wf-site="61fb361452ff0215fe4db1db">
+<head>
+  <title>API_terms</title>
+  <meta content="API_terms" property="og:title">
+  <meta content="API_terms" property="twitter:title">
+  <%-include('../apiFrame/head.ejs') %>
+</head>
+<body class="api_body">
+  <div class="api_frame">
+    <div class="api_top return">
+      <div>고객센터</div>
+      <a href="customer" class="api_topreturn w-inline-block"><img src="../user/images/chevron-left.svg" loading="lazy" alt="" class="image-25"></a>
+    </div>
+    <div class="api_innerframe">
+      <div class="mypage_container">
+        <% if (rows.length == 0) {%>
+          <div id="nodata">이용약관이 없습니다.</div>
+        <% } else {%>
+          <div class="div-block-6-copy">
+            <div class="api_title" style="word-break:break-all;word-wrap:break-word;"><%=rows[0].title%> </div>
+            <div style="word-wrap:break-word;"><%- rows[0].content.replace(/(?:\r\n|\r|\n)/g, '<br/>') %></div>
+          </div>
+        <%}%>
+      </div>
+    </div>
+    <div class="bottom">
+      <a href="main" class="api_bottombtn w-inline-block"><img src="../user/images/home.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/home2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>홈</div>
+      </a>
+      <a href="gamesearch" class="api_bottombtn w-inline-block"><img src="../user/images/grid.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/grid2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>게임</div>
+      </a>
+      <a href="roomsearch" class="api_bottombtn w-inline-block"><img src="../user/images/calendar.svg" loading="lazy" alt="" class="api_bottombtn_img _1"><img src="../user/images/calendar2.svg" loading="lazy" alt="" class="api_bottombtn_img _2">
+        <div>예약</div>
+      </a>
+      </a>
+      <a href="customer" aria-current="page" class="api_bottombtn select w-inline-block w--current"><img src="../user/images/headset_white.svg" loading="lazy" alt="" class="api_bottombtn_img _1 select"><img src="../user/images/headset_color.svg" loading="lazy" alt="" class="api_bottombtn_img _2 select">
+        <div>고객센터</div>
+      </a>
+    </div>
+  </div>
+  <%-include('../apiFrame/footer.ejs') %>
+  <style>
+    #nodata{
+      width: 100%;
+      height:70px;
+      text-align: center;
+      line-height:600px;
+    }
+  </style>
+</body>
+</html>
