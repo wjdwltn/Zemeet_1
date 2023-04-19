@@ -48,26 +48,19 @@ sv.router.post("/admin/menuFileProcess", upload.single('pic'),function (req,res)
   } 
   let name = req.body.name;
   let category = req.body.category;
-  let price = req.body.price;
-  let sell = req.body.sell;
-  console.log(" category", category, price)
+  let date = req.body.date;
+  // let explain = req.body.explain;
   if(checkNull(name)){
-    return res.json({'result' : 'fail','msg':'메뉴명을 입력해주세요.'});
+    return res.json({'result' : 'fail','msg':'종류를 선택해주세요.'});
   };
   if(checkNull(category)){
     return res.json({'result' : 'fail','msg':'카테고리을 선택해주세요.'});
   };
-  if(checkNull(price)){
-    return res.json({'result' : 'fail','msg':'가격을 입력해주세요.'});
+  if(checkNull(date)){
+    return res.json({'result' : 'fail','msg':'날짜를 선택해주세요.'});
   };
-  if(checkNull(sell)){
-    return res.json({'result' : 'fail','msg':'품절 여부를 선택해주세요.'});
-  };
-  if(isNaN(price)==true){
-    return res.json({'result' : 'fail','msg':'가격(숫자)을 정확하게 입력해주세요.'});
-  }
   
-  sampleDAO.insertMenuFile(req.file.filename,name,category,price,sell);
+  sampleDAO.insertMenuFile(req.file.filename,name,category,date);
   return res.json({'result' : 'success','msg':'게시물 등록이 완료되었습니다.'});
 })
 
@@ -85,28 +78,21 @@ sv.router.get("/admin/menu_update", async function (req, res) {
 })
 sv.router.post("/admin/updateMenu", upload.single('pic') , function (req,res){
   let name = req.body.name;
-  let category = req.body.category
-  let price = req.body.price;
-  let sell = req.body.sell;
+  let category = req.body.category;
+  let date = req.body.date;
   if(checkNull(name)){
-    return res.json({'result' : 'fail','msg':'메뉴명을 입력해주세요.'});
+    return res.json({'result' : 'fail','msg':'종류를 선택해주세요.'});
   };
   if(checkNull(category)){
-    return res.json({'result' : 'fail','msg':'카테고리를 선택해주세요.'});
+    return res.json({'result' : 'fail','msg':'카테고리을 선택해주세요.'});
   };
-  if(checkNull(price)){
-    return res.json({'result' : 'fail','msg':'가격을 입력해주세요.'});
+  if(checkNull(date)){
+    return res.json({'result' : 'fail','msg':'날짜를 선택해주세요.'});
   };
-  if(checkNull(sell)){
-    return res.json({'result' : 'fail','msg':'품절 여부를 선택해주세요.'});
-  };
-  if(isNaN(price)==true){
-    return res.json({'result' : 'fail','msg':'가격(숫자)을 정확하게 입력해주세요.'});
-  }
   if(req.file == null){ // 새사진 X 
-    sampleDAO.updateMenu(req.body.idx, req.body.originFile, name, category, price, sell);
+    sampleDAO.updateMenu(req.body.idx, req.body.originFile,name,category,date);
   }else{ // 새사진 O
-    sampleDAO.updateMenu(req.body.idx, req.file.filename, name, category, price, sell);
+    sampleDAO.updateMenu(req.body.idx, req.file.filename, name,category,date);
   }
   return res.json({'result' : 'success','msg':'수정완료되었습니다.'});
 })

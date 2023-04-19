@@ -12,7 +12,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">메뉴 등록하기</h1>
+                    <h1 class="page-header">등록하기</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -33,33 +33,41 @@
                                             <input type="file" name="pic" accept="image/*" onchange='chk_file_type(this)' >
                                         </div>
                                         <div class="form-group">
-                                            <label>메뉴명<span class='identify'> *</span></label>
-                                            <input input type="varhcar" name="name" maxlength="100" required class="form-control" style="width:200px; height:30px;" >
+                                            <label>종류<span class='identify'> *</span></label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="name" value="강아지" />강아지
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="name" value="고양이" />고양이
+                                            </label>
                                         </div>
                                         <div class="form-group">
                                             <label>카테고리<span class='identify'> *</span></label>
-                                            <label class="radio-inline">
-                                                <input type="radio" name="category" value="Food" />Food
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio" name="category" value="Cafe" />Cafe
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio" name="category" value="Pub" />Pub
-                                            </label>
+                                    
+                                            <select name="category" class="form-control input-sm" style="width:200px; height:30px;">                                            
+                                                <option  name="category" value="ALLS">지역선택</option>
+                                                <option  name="category" value="서울시">서울시</option>
+                                                <option  name="category" value="인천시" >인천시</option>
+                                                <option  name="category" value="대전시" >대전시</option>
+                                                <option  name="category" value="광주시" >광주시</option>
+                                                <option  name="category" value="대구시" >대구시</option>
+                                                <option  name="category" value="울산시" >울산시</option>
+                                                <option  name="category" value="부산시" >부산시</option>
+                                                <option  name="category" value="경기도" >경기도</option>
+                                                <option  name="category" value="강원도" >강원도</option>
+                                                <option  name="category" value="세종시" >세종시</option>
+                                                <option  name="category" value="충청남도" >충청남도</option>
+                                                <option  name="category" value="충청북도" >충청북도</option>
+                                                <option  name="category" value="전라남도" >전라남도</option>
+                                                <option  name="category" value="전라북도" >전라북도</option>
+                                                <option  name="category" value="경상남도" >경상남도</option>
+                                                <option  name="category" value="경상북도" >경상북도</option>
+                                                <option  name="category" value="제주도" >제주도</option>
+                                            </select>
                                         </div>
                                         <div class="form-group">
-                                            <label>가격<span class='identify'> *</span></label>
-                                            <input input type="varchar" name="price" maxlength="100" required class="form-control" style="width:200px; height:30px;" >
-                                        </div>
-                                        <div class="form-group">
-                                            <label>품절 여부<span class='identify'> *</span></label>
-                                            <label class="radio-inline">
-                                                <input type="radio" name="sell" value="0" />품절
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio" name="sell" value="1" />판매
-                                            </label>
+                                            <label>잃어버린 날짜<span class='identify'> *</span></label>
+                                            <input class="form-control" type="date" name="date" style="width:200px; height:30px;">
                                         </div>
                                     </div>
                                 </div>

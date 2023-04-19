@@ -413,8 +413,8 @@ sampleDAO.listMemberIdx = async function(dat)
 sampleDAO.insertMember = async function(id, name, nick, ranking, pw, rdate, point, birth, number, push) {
 	this.queryexec('insert into member (id, name, nick, ranking, pw, rdate , point, birth, number, push) values ("'+id+'","'+name+'","'+nick+'","'+ranking+'","'+pw+'","'+rdate+'",'+point+',"'+birth+'","'+number+'","'+push+'")');
 }
-sampleDAO.registerMember = async function(id,name,nick,pw,birth,number) {
-	this.queryexec('insert into member (id,name,nick,ranking,push,pw,point,birth,rdate,number) values ("'+id+'","'+name+'","'+nick+'","일반","Y","'+pw+'","0","'+birth+'",now(),"'+number+'")');
+sampleDAO.registerMember = async function(id,name,pw,birth,number) {
+	this.queryexec('insert into member (id,name,nick,ranking,push,pw,point,birth,rdate,number) values ("'+id+'","'+name+'","z","일반","Y","'+pw+'","0","'+birth+'",now(),"'+number+'")');
 }
 sampleDAO.deleteMember = async function(idx){
 	await this.queryexec('delete from member where idx='+ idx)
@@ -627,64 +627,89 @@ sampleDAO.ordercalculate = async function(idx,way,nextsell){
   //+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
   sampleDAO.selectPagingTotalMenu = async function(searchCateType,searchSellType,search) 
   {  
-  let sql = 'SELECT count(*) count FROM menu where 1=1';
+  let sql = 'SELECT count(*) count FROM pet where 1=1';
   if(searchCateType != null && searchCateType != '' && searchCateType !="ALLC"){
     sql += ' AND '
     switch(searchCateType){
-      case"Food": sql += 'category = "Food" '; break;
-      case"Cafe": sql += 'category = "Cafe" '; break;
-      case"Pub": sql += 'category = "Pub" '; break;
-    }
-    }
-  if(searchSellType != null && searchSellType != '' && searchSellType !="ALLS"){
-    sql += ' AND '
-    switch(searchSellType){
-      case"0": sql += 'sell = 0 '; break;
-      case"1": sql += 'sell = 1 '; break;
-    }
-  }
-  if(search != null && search != ''){
-    sql += " AND name like concat ('%' , '"+search+"' , '%') "
-  }
-  return await this.queryselect(sql);
-  }
-  sampleDAO.selectPagingMenu = async function(pagenum, pagepercount,searchCateType,searchSellType,search) 
-  {  
-  let skip = pagenum*pagepercount;
-  let sql = 'SELECT * FROM menu where 1=1 ';
-  if(searchCateType != null && searchCateType != '' && searchCateType !="ALLC"){
-    sql += ' AND '
-    switch(searchCateType){
-    case"Food": sql += 'category = "Food" '; break;
-    case"Cafe": sql += 'category = "Cafe" '; break;
-    case"Pub": sql += 'category = "Pub" '; break;
+    case"강아지": sql += 'name = "강아지" '; break;
+    case"고양이": sql += 'name = "고양이" '; break;
     }
   }
   if(searchSellType != null && searchSellType != '' && searchSellType !="ALLS"){
     sql += 'AND '
     switch(searchSellType){
-      case"0": sql += 'sell= 0 '; break;
-      case"1": sql += 'sell = 1 '; break;
+      case"서울시": sql += 'category= 서울시 '; break;
+      case"인천시": sql += 'category= 인천시 '; break;
+      case"대전시": sql += 'category= 대전시 '; break;
+      case"광주시": sql += 'category= 광주시 '; break;
+      case"대구시": sql += 'category= 대구시 '; break;
+      case"울산시": sql += 'category= 울산시 '; break;
+      case"부산시": sql += 'category= 부산시 '; break;
+      case"경기도": sql += 'category= 경기도 '; break;
+      case"강원도": sql += 'category= 강원도 '; break;
+      case"세종시": sql += 'category= 세종시 '; break;
+      case"충청남도": sql += 'category= 충청남도 '; break;
+      case"충청북도": sql += 'category= 충청북도 '; break;
+      case"전라남도": sql += 'category= 전라남도 '; break;
+      case"전라북도": sql += 'category= 전라북도 '; break;
+      case"경상남도": sql += 'category= 경상남도 '; break;
+      case"경상북도": sql += 'category= 경상북도 '; break;
+      case"제주도": sql += 'category= 제주도 '; break;
     }
   }
-  if(search != null && search != ''){
-    sql += "AND name like concat ('%' , '"+search+"' , '%') "
+  // if(search != null && search != ''){
+  //   sql += " AND name like concat ('%' , '"+search+"' , '%') "
+  // }
+  return await this.queryselect(sql);
   }
-  sql +='order by udate desc '
+  sampleDAO.selectPagingMenu = async function(pagenum, pagepercount,searchCateType,searchSellType,search) 
+  {  
+  let skip = pagenum*pagepercount;
+  let sql = 'SELECT * FROM pet where 1=1 ';
+  if(searchCateType != null && searchCateType != '' && searchCateType !="ALLC"){
+    sql += ' AND '
+    switch(searchCateType){
+    case"강아지": sql += 'name = "강아지" '; break;
+    case"고양이": sql += 'name = "고양이" '; break;
+    }
+  }
+  if(searchSellType != null && searchSellType != '' && searchSellType !="ALLS"){
+    sql += 'AND '
+    switch(searchSellType){
+      case"서울시": sql += 'category= 서울시 '; break;
+      case"인천시": sql += 'category= 인천시 '; break;
+      case"대전시": sql += 'category= 대전시 '; break;
+      case"광주시": sql += 'category= 광주시 '; break;
+      case"대구시": sql += 'category= 대구시 '; break;
+      case"울산시": sql += 'category= 울산시 '; break;
+      case"부산시": sql += 'category= 부산시 '; break;
+      case"경기도": sql += 'category= 경기도 '; break;
+      case"강원도": sql += 'category= 강원도 '; break;
+      case"세종시": sql += 'category= 세종시 '; break;
+      case"충청남도": sql += 'category= 충청남도 '; break;
+      case"충청북도": sql += 'category= 충청북도 '; break;
+      case"전라남도": sql += 'category= 전라남도 '; break;
+      case"전라북도": sql += 'category= 전라북도 '; break;
+      case"경상남도": sql += 'category= 경상남도 '; break;
+      case"경상북도": sql += 'category= 경상북도 '; break;
+      case"제주도": sql += 'category= 제주도 '; break;
+    }
+  }
+  sql +='order by date desc '
   sql += 'limit ' + skip + "," + pagepercount;
   return await this.queryselect(sql);
   }
-  sampleDAO.insertMenuFile = async function(pic,name,category, price, sell) {
-  this.queryexec('insert into menu (pic, name, category, price ,sell, udate) values ("'+pic+'","'+name+'","'+category+'","'+price+'","'+sell+'",now())');
+  sampleDAO.insertMenuFile = async function(pic,name,category, date) {
+  this.queryexec('insert into pet (pic, name, category, date) values ("'+pic+'","'+name+'","'+category+'","'+date+'")');
   }
   sampleDAO.deleteMenu = async function(idx){
-  await this.queryexec('delete from menu where idx='+ idx)
+  await this.queryexec('delete from pet where idx='+ idx)
   }
   sampleDAO.listMenu1 = async function(idx){
-  return await this.queryselect("select * from menu where idx = "+idx);
+  return await this.queryselect("select * from pet where idx = "+idx);
   }
-  sampleDAO.updateMenu = async function(idx,pic, name, category, price, sell){
-  this.queryexec('update menu set pic = "'+pic+'", name = "'+name+'", category = "'+category+'", price = "'+price+'", sell = "'+sell+'" where idx = "'+idx+'"');
+  sampleDAO.updateMenu = async function(idx,pic, name, category, date){
+  this.queryexec('update pet set pic = "'+pic+'", name = "'+name+'", category = "'+category+'", date = "'+date+'" where idx = "'+idx+'"');
   }
   // 추가 사진 정보 (단건)
   sampleDAO.selectMenuFileDetail = async function(idx){
@@ -705,7 +730,7 @@ sampleDAO.listGame1 = async function() // 데이터를 5개 제한 값만 가져
 }
 sampleDAO.listGame2 = async function(idx_) 
 {
-  return await this.queryselect("SELECT * FROM game WHERE idx = '"+idx_+"'" )
+  return await tlanhis.queryselect("SELECT * FROM game WHERE idx = '"+idx_+"'" )
 }
 sampleDAO.listGame3 = async function(idx_) 
 {

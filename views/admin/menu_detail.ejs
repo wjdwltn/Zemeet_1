@@ -11,7 +11,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">메뉴 상세정보</h1>
+                    <h1 class="page-header">상세정보</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -19,7 +19,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            메뉴 세부사항
+                            세부사항
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -32,28 +32,16 @@
                                             <div><img src="/<%= info.pic %>" width="150px;"/></div>
                                         </div>
                                         <div class="form-group">
-                                            <label>메뉴명</label>
+                                            <label>종류</label>
                                             <div><%= info.name %></div>
                                         </div>
                                         <div class="form-group">
-                                            <label>카테고리</label>
+                                            <label>지역</label>
                                             <div><%= info.category %></div>
                                         </div>
                                         <div class="form-group">
-                                            <label>가격</label>
-                                            <div><%= info.price %>원</div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>품절 여부</label>
-                                            <% if( info.sell == 0) { %>
-                                                <div>품절</div>
-                                            <%} else if( info.sell == 1) {%>
-                                                <div>판매중</div>
-                                            <%}%>
-                                        </div>
-                                        <div class="form-group">
                                             <label>등록일</label>
-                                            <div><%= info.udate.toLocaleString() %></div>
+                                            <div><%= info.date.toLocaleString() %></div>
                                         </div>
                                     </div>    
                                 </div>

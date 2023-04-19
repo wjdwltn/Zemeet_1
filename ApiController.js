@@ -263,6 +263,54 @@ const registrationProcess = async function(res , data){
     return res.json({'result' : 'success','msg':'가입이 완료되었습니다.','id':id});
   }
 }
+sv.router.post("/admin/registrationProcess", function (req, res) {  
+  req.on('data' , async function(data){
+    return adminregistrationProcess(res , data);    
+  })
+})
+const adminregistrationProcess = async function(res , data){
+  let jsonData = qs.parse(data.toString());   
+  let id = jsonData.id;
+  let name = jsonData.name;
+  let pw = jsonData.pw;
+  let birth = jsonData.birth;
+  let pwcheck = jsonData.pwcheck;
+  let number = jsonData.number;
+  if(checkNull(id)){
+    return res.json({'result' : 'fail','msg':'아이디를 입력해주세요.'});
+  };
+  if(checkNull(name)){
+    return res.json({'result' : 'fail','msg':'이름을 입력해주세요.'});
+  };  
+  if(checkNull(number)){
+    return res.json({'result' : 'fail','msg':'전화번호를 입력해주세요.'});
+  };
+  if(checkPhone(number)){
+    return res.json({'result' : 'fail','msg':'올바르지 않은 전화번호 형식입니다.'});
+  };
+  if(checkNull(birth)){
+    return res.json({'result' : 'fail','msg':'생년월일을 입력해주세요.'});
+  };
+  if(checkDate(birth)){
+    return res.json({'result' : 'fail','msg':'올바르지 않은 날짜 형식입니다.'});
+  };
+  if(checkNull(pw)){
+    return res.json({'result' : 'fail','msg':'비밀번호를 입력해주세요.'});
+  };
+  if(pw!==pwcheck){
+    return res.json({'result' : 'fail','msg':'비밀번호가 일치하지 않습니다.'});
+  }
+  let checkId =await sampleDAO.checkDuplId(id);
+  let checkNumber =await sampleDAO.checkDuplNumber(number);
+  if(checkId[0] != null){ // 중복된 아이디가 있을때 
+    return res.json({'result' : 'fail','msg':'아이디가 중복되었습니다.'});
+  }else if(checkNumber[0] != null){ // 중복된 연락처가 있을때 
+    return res.json({'result' : 'fail','msg':'연락처가 중복되었습니다.'});
+  }else{
+    await sampleDAO.registerMember(id,name,pw,birth,number);
+    return res.json({'result' : 'success','msg':'가입이 완료되었습니다.','id':id});
+  }
+}
 sv.router.get("/api/registerAlarm", async function (req, res) {
   let id = await sampleDAO.id_(req.query.id);
   await sampleDAO.registerAlarm(id[0].idx)

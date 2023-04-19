@@ -47,6 +47,9 @@ sv.router.get("/admin/logout" , async function(req,res){
   delete req.session.adminLogin;  
   res.redirect('/admin/login') ;
 })
+sv.router.get("/admin/register", async function (req, res) {
+  res.render('admin/register');
+});
 //================================(예약관리)
 sv.router.get("/admin/reservation", async function (req, res) {
   let reservationList = await sampleDAO.listResevation();  
