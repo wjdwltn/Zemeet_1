@@ -1,5 +1,5 @@
-sv = require("./server")
-sampleDAO = require("./dbutil")
+sv = require("../server")
+sampleDAO = require("../dbutil")
 const { json } = require("express/lib/response");
 const fs = require("fs");
 const qs = require('querystring'); //json data parse 
@@ -117,10 +117,14 @@ sv.router.get("/getlistFood_wait", async function (req, res) {
   }
 });
 sv.router.get("/getReservationByNum", async function (req, res) {
+  console.log("어기 들어롤~~~~~~~~~~~~~~~~~~~");
+  console.log("phonenumber", req.query.number);
   if(checkPhoneNohyphen(req.query.number)){
-    return res.json({'result' : 'fail','msg':'올바르지 않은 전화번호 형식입니다.'});
+    console.log("형식 틀림0");
+    return res.json({'result' : 'fail_form','msg':'올바르지 않은 전화번호 형식입니다.'});
   };
   let info = await sampleDAO.listReservation_Kiosk(req.query.number);
+  console.log("info",info);
   if(info.length == 0){
     return res.json({'result' : 'fail','msg':'연락처와 일치하는 예약내역이 없습니다.'});
   }else{
@@ -251,7 +255,9 @@ function stringNumberToInt(stringNumber){// 숫자 ,로 변환된 문자열을 �
   return parseInt(stringNumber.replace(/,/g , ''));
 }
 function checkPhoneNohyphen(str) {
+  console.log("str",str)
   var regExp = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
+  console.log("ddd",!regExp.test(str))
   return !regExp.test(str); // 형식에 맞는 경우 false 리턴
 }
 function dateTimeOfficialFormat(sdate) {//input란에 ISO 시간대로 입력하기 위한 포맷
@@ -267,7 +273,6 @@ function dateTimeOfficialFormat(sdate) {//input란에 ISO 시간대로 입력하
   hour = hour >= 10 ? hour : '0' + hour;
   minute = minute >= 10 ? minute : '0' + minute;
   second = second >= 10 ? second : '0' + second;
-
   return date.getFullYear() + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
 }
 module.exports = MainController;

@@ -1441,7 +1441,11 @@ function clickFood(self,category,num){//카테고리별 메뉴 리스팅
         $("#reser_list").append(str);
         datalist = data.msg
         console.log("daTalist",datalist)
-      } else {
+      }else if (data.result == 'fail_form') {
+        commonpay("올바르지 않은 전화번호.",'reserveinput_pop')
+
+      }
+       else {
         commonpay("연락처와 일치하는 예약내역이 없습니다.",'reserveinput_pop')
       }            
     }).fail(function(e){

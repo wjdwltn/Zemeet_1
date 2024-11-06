@@ -1,5 +1,5 @@
-sv = require("./server")
-sampleDAO = require("./dbutil")
+sv = require("../server")
+sampleDAO = require("../dbutil")
 const qs = require('querystring'); //json data parse 
 
 var MainController={}

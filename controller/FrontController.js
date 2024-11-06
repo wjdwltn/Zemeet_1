@@ -1,5 +1,5 @@
-sv = require("./server")
-sampleDAO = require("./dbutil")
+sv = require("../server")
+sampleDAO = require("../dbutil")
 const { json, contentType } = require("express/lib/response");
 const fs = require("fs");
 const multer = require("multer");

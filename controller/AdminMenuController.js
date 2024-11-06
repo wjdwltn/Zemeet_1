@@ -1,5 +1,5 @@
-sv = require("./server")
-sampleDAO = require("./dbutil")
+sv = require("../server")
+sampleDAO = require("../dbutil")
 const fs = require("fs");
 const multer = require("multer");
 const multiparty = require("multiparty");
